@@ -1,0 +1,750 @@
+* {
+	border:0;
+	padding:0;
+	margin:0;
+	font: 14px/1.2 Verdana;
+	line-height:140%
+}
+a, a:visited {
+	color:#318dbe
+}
+body {
+	background:#f8f8f8
+}
+#left {
+	display: block;
+	width: 670px;
+	float: left;
+}
+#right {
+	display: block;
+	width: 610px;
+	float: right;
+}
+#lineback {
+	border-left: 1px solid #d2d2d2;
+	border-right: 1px solid #d2d2d2;
+	z-index:-1;
+	position:static;
+	width:540px;
+	background:#fff;
+	margin-left: auto;
+	margin-right: auto;
+	height: 25px;
+	text-align:right;
+}
+#game {
+	margin:25px auto 0px auto;
+}
+#arrowSurfaceC, #arrowSurface {
+	position:absolute;
+	pointer-events:none;
+	z-index:2;
+}
+#showDrops {
+	background-color:rgba(255,255,255,0.15);
+	color:#fff;
+}
+#board {
+	background-image:url('http://pad.dawnglare.com/bg.png');
+	background-size:180px 180px;
+	height:450px;
+	border:20px solid #1f201f;
+	clear:both;
+	width:540px;
+	margin: 0 auto;
+	position:relative;
+}
+#total, #multic {
+	float:left;
+	width:270px;
+	height:25px;
+	text-align:center;
+}
+#multic #multi {
+	width:270px;
+	height:25px;
+	text-align:center;
+}
+#damage:before {
+	position:absolute;
+	content:"\a Type: \a Attack: \a Damage Dealt: ";
+	width:200px;
+	margin-left:-200px;
+	text-align:right;
+	display:block;
+	white-space: pre;
+	line-height:25px;
+} 
+#entry {
+	border:1px solid #eee;
+	width:70px;
+    resize: none;
+	font: 18px/1.2 Courier New;
+	height:120px;
+	z-index:1;
+	overflow:hidden;
+}
+#colorchange {
+	width:70px;
+    resize: none;
+	float:right;
+	clear:both;
+	font: 18px/1.2 Courier New;
+	height:200px;
+	z-index:1;
+	margin:20px;
+}
+#colorto, #colorfrom {
+	border:1px solid #eee;
+	float:left;
+	width:30px;
+    resize: none;
+	font: 18px/1.2 Courier New;
+	height:20px;
+	text-align:center;
+}
+#infobooth {
+	width:500px;
+	background:#fff;
+	padding:20px;
+	margin: 0 auto;
+	border-left: 1px solid #d2d2d2;
+	border-right: 1px solid #d2d2d2;
+	min-height:200px;
+}
+#adunit {
+	width:500px;
+	background:#fff;
+	padding:20px;
+	margin: 0 auto;
+	text-align:center;
+	border-left: 1px solid #d2d2d2;
+	border-right: 1px solid #d2d2d2;
+}
+.image1 {
+	background:url("http://pad.dawnglare.com/atk.svg")
+}
+.image2 {
+	background:url("http://pad.dawnglare.com/clock.svg")
+}
+.image3 {
+	background:url("http://pad.dawnglare.com/question.svg")
+}
+.image4 {
+	background:url("http://pad.dawnglare.com/minus.png")
+}
+.image5 {
+	background:url("http://pad.dawnglare.com/plus.png")
+}
+.image6 {
+	background:url("http://pad.dawnglare.com/gear.png")
+}
+.image7 {
+	background:url("wood.png")
+}
+.image8 {
+	background:url("fire.png")
+}
+.image9 {
+	background:url("blue.png")
+}
+.image10 {
+	background:url("light.png")
+}
+.image11 {
+	background:url("dark.png")
+}
+.image12 {
+	background:url("heart.png")
+}
+.topbutton {
+	float:left;
+	margin:2px;
+	background-repeat: no-repeat;
+	background-size:20px 20px;
+	text-indent:-9999px;
+	width:20px;
+	height:20px
+}
+.tophelp {
+	float:left;
+	margin:2px;
+}
+#buttons {
+	padding-top:10px;
+	margin:0 auto;
+	width: 540px;
+	background-color: #fff;
+	min-height:20px
+}
+#buttons button {
+	width:90px;
+	background: #f8f8f8;
+	float:left;
+	border: 1px solid #d2d2d2;
+	border-right: none;
+}
+#buttons button:first-child {
+	border-left: none;
+}
+#colorchange button {
+	border: 1px solid #d2d2d2;
+}
+#buttons button:hover {
+	background: #eee
+}
+.tile, button {
+	-webkit-transition: opacity .4s ease-in-out;
+	-moz-transition: opacity .4s ease-in-out;
+	-ms-transition: opacity .4s ease-in-out;
+	-o-transition: opacity .4s ease-in-out;
+	transition: opacity .4s ease-in-out
+}
+.cornerblock{
+width:20px;height:20px;position:absolute;top:-1px;
+}
+.tile {
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 90px;
+    width: 90px;
+    background-size: 100%;
+    z-index: 1;
+    position: relative;
+}
+.tile::before {
+	content: "";
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 90px;
+    width: 90px;
+    background-size: 100%;
+    z-index: 1;
+    position: absolute;
+}
+.tile::after {
+	content: "";
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 90px;
+    width: 90px;
+    background-size: 100%;
+    z-index: 1;
+    position: absolute;
+}
+.red::before {
+	background-image: url(fire.png);
+}
+.red.blind::before {
+	background-image: url(orb-blind.png);
+}
+.red.blind-duration::before ,.red.blind.blind-duration::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.red.plus::before {
+	background-image: url(plus.png), url(fire.png);
+}
+.red.blind.plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.red.blind-duration.plus::before,.red.blind.blind-duration.plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.red.lock::before {
+	background-image: url(lock.png), url(fire.png);
+}
+.red.blind.lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.red.blind-duration.lock::before,.red.blind.blind-duration.lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.red.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(fire.png);
+}
+.red.blind.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.red.blind-duration.plus.lock::before,.red.blind.blind-duration.lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.blue::before {
+	background-image: url(water.png);
+}
+.blue.blind::before {
+	background-image: url(orb-blind.png);
+}
+.blue.blind-duration::before,.blue.blind.blind-duration::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.blue.plus::before {
+	background-image: url(plus.png), url(water.png);
+}
+.blue.blind.plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.blue.blind-duration.plus::before,.blue.blind.blind-duration.plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.blue.lock::before {
+	background-image: url(lock.png), url(water.png);
+}
+.blue.blind.lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.blue.blind-duration.lock::before,.blue.blind.blind-duration.lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.blue.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(water.png);
+}
+.blue.blind.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.blue.blind-duration.plus.lock::before,.blue.blind.blind-duration.lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.green::before {
+	background-image: url(wood.png);
+}
+.green.blind::before {
+	background-image: url(orb-blind.png);
+}
+.green.blind-duration::before,.green.blind.blind-duration::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.green.plus::before {
+	background-image: url(plus.png), url(wood.png);
+}
+.green.blind.plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.green.blind-duration.plus::before,.green.blind.blind-duration.plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.green.lock::before {
+	background-image: url(lock.png), url(wood.png);
+}
+.green.blind.lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.green.blind-duration.lock::before,.green.blind.blind-duration.lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.green.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(wood.png);
+}
+.green.blind.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.green.blind-duration.plus.lock::before,.green.blind.blind-duration.lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.light::before {
+	background-image: url(light.png);
+}
+.light.blind::before {
+	background-image: url(orb-blind.png);
+}
+.light.blind-duration::before,.light.blind.blind-duration::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.light.plus::before {
+	background-image: url(plus.png), url(light.png);
+}
+.light.blind.plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.light.blind-duration.plus::before,.light.blind.blind-duration.plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.light.lock::before {
+	background-image: url(lock.png), url(light.png);
+}
+.light.blind.lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.light.blind-duration.lock::before,.light.blind.blind-duration.lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.light.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(light.png);
+}
+.light.blind.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.light.blind-duration.plus.lock::before,.light.blind.blind-duration.lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.dark::before {
+	background-image: url(dark.png);
+}
+.dark.blind::before {
+	background-image: url(orb-blind.png);
+}
+.dark.blind-duration::before,.dark.blind.blind-duration::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.dark.plus::before {
+	background-image: url(plus.png), url(dark.png);
+}
+.dark.blind.plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.dark.blind-duration.plus::before,.dark.blind.blind-duration.plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.dark.lock::before {
+	background-image: url(lock.png), url(dark.png);
+}
+.dark.blind.lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.dark.blind-duration.lock::before,.dark.blind.blind-duration.lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.dark.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(dark.png);
+}
+.dark.blind.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.dark.blind-duration.plus.lock::before,.dark.blind.blind-duration.lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.heart::before {
+	background-image: url(heart.png);
+}
+.heart.blind::before {
+	background-image: url(heart-blind.png);
+}
+.heart.blind-duration::before,.heart.blind.blind-duration::before {
+	background-image: url(sunglasses.png), url(heart-blind.png);
+}
+.heart.plus::before {
+	background-image: url(plus.png), url(heart.png);
+}
+.heart.blind.plus::before {
+	background-image: url(plus.png), url(heart-blind.png);
+}
+.heart.blind-duration.plus::before,.heart.blind.blind-duration.plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(heart-blind.png);
+}
+.heart.lock::before {
+	background-image: url(lock.png), url(heart.png);
+}
+.heart.blind.lock::before {
+	background-image: url(lock.png), url(heart-blind.png);
+}
+.heart.blind-duration.lock::before,.heart.blind.blind-duration.lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(heart-blind.png);
+}
+.heart.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(heart.png);
+}
+.heart.blind.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(heart-blind.png);
+}
+.heart.blind-duration.plus.lock::before,.heart.blind.blind-duration.lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(heart-blind.png);
+}
+.poison::before {
+	background-image: url(poison.png);
+}
+.poison.blind::before {
+	background-image: url(poison-blind.png);
+}
+.poison.blind-duration::before,.poison.blind.blind-duration::before {
+	background-image: url(sunglasses.png), url(poison-blind.png);
+}
+.poison.plus::before {
+	background-image: url(plus.png), url(poison.png);
+}
+.poison.blind.plus::before {
+	background-image: url(plus.png), url(poison-blind.png);
+}
+.poison.blind-duration.plus::before,.poison.blind.blind-duration.plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(poison-blind.png);
+}
+.poison.lock::before {
+	background-image: url(lock.png), url(poison.png);
+}
+.poison.blind.lock::before {
+	background-image: url(lock.png), url(poison-blind.png);
+}
+.poison.blind-duration.lock::before,.poison.blind.blind-duration.lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(poison-blind.png);
+}
+.poison.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(poison.png);
+}
+.poison.blind.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(poison-blind.png);
+}
+.poison.blind-duration.plus.lock::before,.poison.blind.blind-duration.lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(poison-blind.png);
+}
+.jammer::before {
+	background-image: url(jammer.png);
+}
+.jammer.blind::before {
+	background-image: url(jammer-blind.png);
+}
+.jammer.blind-duration::before,.jammer.blind.blind-duration::before {
+	background-image: url(sunglasses.png), url(jammer-blind.png);
+}
+.jammer.plus::before {
+	background-image: url(plus.png), url(jammer.png);
+}
+.jammer.blind.plus::before {
+	background-image: url(plus.png), url(jammer-blind.png);
+}
+.jammer.blind-duration.plus::before,.jammer.blind.blind-duration.plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(jammer-blind.png);
+}
+.jammer.lock::before {
+	background-image: url(lock.png), url(jammer.png);
+}
+.jammer.blind.lock::before {
+	background-image: url(lock.png), url(jammer-blind.png);
+}
+.jammer.blind-duration.lock::before,.jammer.blind.blind-duration.lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(jammer-blind.png);
+}
+.jammer.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(jammer.png);
+}
+.jammer.blind.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(jammer-blind.png);
+}
+.jammer.blind-duration.plus.lock::before,.jammer.blind.blind-duration.lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(jammer-blind.png);
+}
+.xbomb::before {
+	background-image: url(bomb.png);
+}
+.xbomb.blind::before {
+	background-image: url(orb-blind.png);
+}
+.xbomb.blind-duration::before,.xbomb.blind.blind-duration::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.xbomb.plus::before {
+	background-image: url(plus.png), url(bomb.png);
+}
+.xbomb.blind.plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.xbomb.blind-duration.plus::before,.xbomb.blind.blind-duration.plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.xbomb.lock::before {
+	background-image: url(lock.png), url(bomb.png);
+}
+.xbomb.blind.lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.xbomb.blind-duration.lock::before,.xbomb.blind.blind-duration.lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.xbomb.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(bomb.png);
+}
+.xbomb.blind.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.xbomb.blind-duration.plus.lock::before,.xbomb.blind.blind-duration.lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.mortalpoison::before {
+	background-image: url(mortalpoison.png);
+}
+.mortalpoison.blind::before {
+	background-image: url(mortalpoison-blind.png);
+}
+.mortalpoison.blind-duration::before,.mortalpoison.blind.blind-duration::before {
+	background-image: url(sunglasses.png), url(mortalpoison-blind.png);
+}
+.mortalpoison.plus::before {
+	background-image: url(plus.png), url(mortalpoison.png);
+}
+.mortalpoison.blind.plus::before {
+	background-image: url(plus.png), url(mortalpoison-blind.png);
+}
+.mortalpoison.blind-duration.plus::before,.mortalpoison.blind.blind-duration.plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(mortalpoison-blind.png);
+}
+.mortalpoison.lock::before {
+	background-image: url(lock.png), url(mortalpoison.png);
+}
+.mortalpoison.blind.lock::before {
+	background-image: url(lock.png), url(mortalpoison-blind.png);
+}
+.mortalpoison.blind-duration.lock::before,.mortalpoison.blind.blind-duration.lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(mortalpoison-blind.png);
+}
+.mortalpoison.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(mortalpoison.png);
+}
+.mortalpoison.blind.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(mortalpoison-blind.png);
+}
+.mortalpoison.blind-duration.plus.lock::before,.mortalpoison.blind.blind-duration.lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(mortalpoison-blind.png);
+}
+.cross::before {
+	filter: brightness(50%);
+}
+.cross::after {
+	background-image: url(cross.png);
+}
+#clouds {
+	pointer-events: none;
+}
+#scrolls {
+	height:450px;
+	width:540px;
+	position: absolute;
+}
+.play {
+	height: 100%;
+	width: 100%;
+}
+#scrolls.vertical>#scroll.left {
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 100%;
+	width: 90px;
+    position: relative;
+}
+#scrolls.vertical>#scroll.right {
+	margin: 0px;
+    display: block;
+    float: right;
+    height: 100%;
+	width: 90px;
+    position: relative;
+}
+#scrolls.vertical>.play {
+	content: "";
+	display: block;
+	float: left;
+	height: 100%;
+	width: calc(100% - 90px);
+	position: relative;
+}
+#scrolls.horizontal>#scroll.top {
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 90px;
+	width: 100%;
+    position: relative;
+}
+#scrolls.horizontal>#scroll.bottom {
+	margin: 0px;
+    display: block;
+    float: right;
+    height: 90px;
+	width: 100%;
+    position: absolute;
+	bottom: 0px;
+}
+#scrolls.horizontal>.play {
+	content: "";
+	display: block;
+	float: left;
+	height: calc(100% - 90px);
+	width: 100%;
+	position: relative;
+}
+#scrolls.vertical>#scroll::after {
+	content: "";
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 100%;
+	width: 100%;
+    z-index: 5;
+    position: relative;
+	background-image: url(scroll-vertical.png);
+	background-size: 53.4375px 180px;
+	background-repeat: repeat-y;
+	background-position: center top;
+}
+#scrolls.horizontal>#scroll::after {
+	content: "";
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 100%;
+	width: 100%;
+    z-index: 5;
+    position: relative;
+	background-image: url(scroll-horizontal.png);
+	background-size: 180px 53.4375px;
+	background-repeat: repeat-x;
+	background-position: left center;
+}
+.input-prompt {
+	width:90px;
+	margin-top:-22px;
+	display:block;
+	position: absolute;
+	font-style: italic;
+	color: #aaa;
+	text-align:center
+}
+#multic .input-prompt {
+	width:270px
+}
+input:disabled {
+	background:#fff
+}
+.test1{
+border:1px solid #616261; -webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;font-size:12px;font-family:arial, helvetica, sans-serif; padding: 10px 10px 10px 10px; text-decoration:none; display:inline-block;text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; color: #FFFFFF;
+ background-color: #7d7e7d; background-image: -webkit-gradient(linear, left top, left bottom, from(#7d7e7d), to(#0e0e0e));
+ background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e);
+ background-image: -moz-linear-gradient(top, #7d7e7d, #0e0e0e);
+ background-image: -ms-linear-gradient(top, #7d7e7d, #0e0e0e);
+ background-image: -o-linear-gradient(top, #7d7e7d, #0e0e0e);
+ background-image: linear-gradient(to bottom, #7d7e7d, #0e0e0e);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#7d7e7d, endColorstr=#0e0e0e);
+}
+.test1 button {
+	background-size:30px 30px;
+	width:30px;
+	height:30px
+}
+#colorchange #convert{
+	width:70px;
+	height:20px;
+	line-height:15px
+}
+.comboInfoBox {
+	height: 36px;
+}
+.comboInfoBox span, .comboInfoBox img {
+	vertical-align: middle;
+}
+
+
+/* This wonderful code is from https://stackoverflow.com/a/17541916/8150086 */
+
+.radioLabel > input{ /* HIDE RADIO */
+  visibility: hidden; /* Makes input not-clickable */
+  position: absolute; /* Remove input from document flow */
+}
+.radioLabel > input + img{ /* IMAGE STYLES */
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+.radioLabel > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
+  border: 2px solid #ffffff;
+  border-radius: 5px;
+}
