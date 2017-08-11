@@ -673,7 +673,8 @@ function calculateOutput(item) {
                 else
                     var convertedOrbTypeName = capitaliseFirstLetter(colors2[i]);
                 if (showComboItems) {
-                    comboText += "<div class='comboInfoBox'>" + "<span>" + scoreTracker[colors2[i]][g] + " x </span> " + "<img width='32px' src='" + capitaliseFirstLetter(colors2[i]) + ".png'>" + "</div>";
+                    //comboText += "<div class='comboInfoBox'>" + "<span>" + scoreTracker[colors2[i]][g] + " x </span> " + "<img width='32px' src='" + capitaliseFirstLetter(colors2[i]) + ".png'>" + "</div>";
+					comboText += "<div class='comboInfoBox'>" + "<span>" + scoreTracker[colors2[i]][g] + " x </span> " + "<img width='32px' src='" + colors2[i] + ".png'>" + "</div>";
                 } else {
                     comboText += scoreTracker[colors2[i]][g] + " x " + convertedOrbTypeName + '<br />';
                 }
