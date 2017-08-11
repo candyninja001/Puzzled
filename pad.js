@@ -239,6 +239,11 @@ function toggle(item, command) {
             colors.push(unCapitaliseFirstLetter(command));
 		// TODO re-enable if important
         //document.getElementById('bc' + command).style.backgroundImage = "url('" + command + temp23 + ".png')";
+		if(temp23 == '1'){
+			document.getElementById('bc' + command).style.filter = "grayscale(100%)";
+		}else{
+			document.getElementById('bc' + command).style.filter = "";
+		}
     }
     if (item == 'replayarrows') {
         if (command == 0) {
@@ -1177,15 +1182,10 @@ function requestAction(action, modifier, modifier2=1) {
             toggle('boardcolor', 'Heart');
         }
     }
-	if (action == 'setup') {
-        //var showHelp = ['<a href="javascript:requestAction(\'legend\')">Legend</a> for the color entry box on the right and damage (sword icon at the top)<br /><br />', 'Icons above the board do things! Gear icon leads to <a href="javascript:requestAction(\'options\')">options</a>', ', stopwatch icon toggles an adjustable 4 second timer', '<br /><br />You can play with different <a href="?height=6&width=7">board</a> <a href="?height=4&width=5">sizes</a>! (change url)', '<br /><br />CtW (change the world) allows you to move and drop orbs freely for 10 seconds (no replay)', '<br /><br />Convert feature on the right will change all orbs of the first color to those of the second (supports 2 colors at once: GR=>RG)', '<br /><br />You can view the source code and add suggestions at <a href="https://github.com/candyninja001/Puzzled">GitHub</a>'].join('');
-        displayOutput('', 0);
-		
-    }
     if (action == 'boardcolor')
         toggle('boardcolor', modifier);
     if (action == 'legend') {
-        var showHelp = ['Legend:<br />R = Red<br />B = Blue<br />G = Green<br />D = Dark (Purple)<br />L = Light (Yellow)<br />H = Heart<br />J = Jammer<br />P = Poison<br />M = Mortal Poison<br />X = Bomb', '<br /><br />Press Enter or hit the apply button to change the board', '<br /><br /><a href="javascript:requestAction(\'help\')">Click here to return to information</a>'].join('');
+        var showHelp = ['Board:<br />R = Red<br />B = Blue<br />G = Green<br />D = Dark (Purple)<br />L = Light (Yellow)<br />H = Heart<br />J = Jammer<br />P = Poison<br />M = Mortal Poison<br />X = Bomb', '<br /><br />Clouds:<br />0 = Clouded<br />. = Clear', '<br /><br />Blind and Duration Blind:<br />0 = Blinded<br />. = Visible', '<br /><br />Press Enter or hit the apply button to change the board', '<br /><br /><a href="javascript:requestAction(\'help\')">Click here to return to information</a>'].join('');
         displayOutput(showHelp, 0);
     }
     if (action == 'replay')

@@ -129,7 +129,7 @@ body {
 #infobooth {
 	width:500px;
 	background:#fff;
-	padding:20px;
+	padding: 45px 20px 20px 20px;
 	margin: 0 auto;
 	border-left: 1px solid #d2d2d2;
 	border-right: 1px solid #d2d2d2;
@@ -145,22 +145,22 @@ body {
 	border-right: 1px solid #d2d2d2;
 }
 .image1 {
-	background:url("http://pad.dawnglare.com/atk.svg")
+	background:url("https://pad.dawnglare.com/atk.svg")
 }
 .image2 {
-	background:url("http://pad.dawnglare.com/clock.svg")
+	background:url("https://pad.dawnglare.com/clock.svg")
 }
 .image3 {
-	background:url("http://pad.dawnglare.com/question.svg")
+	background:url("https://pad.dawnglare.com/question.svg")
 }
 .image4 {
-	background:url("http://pad.dawnglare.com/minus.png")
+	background:url("https://pad.dawnglare.com/minus.png")
 }
 .image5 {
-	background:url("http://pad.dawnglare.com/plus.png")
+	background:url("https://pad.dawnglare.com/plus.png")
 }
 .image6 {
-	background:url("http://pad.dawnglare.com/gear.png")
+	background:url("https://pad.dawnglare.com/gear.png")
 }
 .image7 {
 	background:url("wood.png")
@@ -196,7 +196,7 @@ body {
 #buttons {
 	padding-top:10px;
 	margin:0 auto;
-	width: 540px;
+	width: 542px;
 	background-color: #fff;
 	min-height:20px
 }
