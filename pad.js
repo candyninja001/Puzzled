@@ -3,7 +3,9 @@ var colors = ['blue', 'green', 'red', 'light', 'dark', 'heart']
   , colors2 = ['blue', 'green', 'red', 'light', 'dark', 'heart', 'poison', 'jammer', 'xbomb', 'mortalpoison']
   , colors3 = ['blue', 'green', 'red', 'light', 'dark']
   , divs = []
+  , clouds = []
   , savedBoardState = []
+  , savedCloudState = []
   , changeTheWorldOn = 0
   , timerOn = 0
   , dropSpeed = 400
@@ -85,6 +87,10 @@ jQuery.fn.swap = function(b, trigger) {
     b.parentNode.insertBefore(a, b);
     t.parentNode.insertBefore(b, t);
     t.parentNode.removeChild(t);
+	if (a.classList.contains('blind'))
+		a.classList.remove('blind');
+	if (b.classList.contains('blind'))
+		b.classList.remove('blind');
     if (trigger == 2) {
         if (swapHasHappened == 0)
             replayMoveSet.push(((b.offsetTop - b.parentNode.offsetTop - offsetMargin) / scale) * rows + ((b.offsetLeft - b.parentNode.offsetLeft - offsetMargin) / scale));
@@ -115,6 +121,14 @@ function toColor(letter, colorSet) {
     }
     return 0;
 }
+function cloudToState(letter) {
+    letter = letter.toLowerCase();
+    if(letter == '0')
+		return true;
+	if(letter == '.')
+		return false;
+    return 'f';
+}
 function toLetter(color) {
     for (var g = 0; g < colors2.length; g++) {
         if (color == colors2[g])
@@ -122,8 +136,16 @@ function toLetter(color) {
     }
     return 0;
 }
+function cloudToletter(state) {
+    if(state == true)
+		return '0';
+    return '.';
+}
 function getTiles() {
     divs = document.getElementsByClassName('tile');
+}
+function getClouds() {
+    clouds = document.getElementsByClassName('cloud');
 }
 function trackScore(matches, bombScoreCheck=0) {
     for (var i = 0; i < matches.length; i++) {
@@ -215,7 +237,8 @@ function toggle(item, command) {
         }
         if (temp23 != '1')
             colors.push(unCapitaliseFirstLetter(command));
-        document.getElementById('bc' + command).style.backgroundImage = "url('" + command + temp23 + ".png')";
+		// TODO re-enable if important
+        //document.getElementById('bc' + command).style.backgroundImage = "url('" + command + temp23 + ".png')";
     }
     if (item == 'replayarrows') {
         if (command == 0) {
@@ -273,6 +296,12 @@ function setTileAttribute(i, tileColor, opacity, classless, bombbomb=0) {
         divs[i].setAttribute('style', 'opacity:' + opacity);
     }
 }
+function setCloudStatus(i, visible) {
+    if(visible == true)
+		clouds[i].classList.add('show');
+	else
+		clouds[i].classList.remove('show');
+}
 function randomizeBoard() {
     for (var i = 0; i < rows * cols; i++) {
         setTileAttribute(i, randomColor(), 1);
@@ -287,11 +316,26 @@ function saveBoardState() {
         savedBoardState[i] = divs[i].getAttribute('tileColor');
     }
 }
-function loadBoardState(loadThis) {
+function saveCloudState() {
+    for (var i = 0; i < clouds.length; i++) {
+		if(clouds[i].classList.contains('show')){
+			savedCloudState[i] = true;
+		}else{
+			savedCloudState[i] = false;
+		}
+    }
+}
+function loadBoardState(loadThis) { 
     for (var i = 0; i < divs.length; i++) {
         setTileAttribute(i, loadThis[i], 1);
     }
     getTiles();
+}
+function loadCloudState(loadThis) {
+    for (var i = 0; i < clouds.length; i++) {
+        setCloudStatus(i, loadThis[i]);
+    }
+    getClouds();
 }
 function opacify() {
     for (var i = 0; i < divs.length; i++) {
@@ -315,6 +359,42 @@ function applyPattern() {
     }
     return true;
 }
+function applyClouds() {
+    var input = document.getElementById("cloudEntry").value;
+    input = input.replace(new RegExp('\r?\n','g'), '');
+    if (input.length != rows * cols)
+        return false;
+    var state;
+    for (var i = 0; i < rows * cols; i++) {
+        state = cloudToState(input[i]);
+        if (state == 'f')
+            return false;
+    }
+    for (var i = 0; i < rows * cols; i++) {
+		
+        state = cloudToState(input[i]);
+        setCloudStatus(i, state);
+    }
+    return true;
+}
+function clearClouds() {
+//    var input = document.getElementById("cloudEntry").value;
+//    input = input.replace(new RegExp('\r?\n','g'), '');
+//    if (input.length != rows * cols)
+//        return false;
+//    var state;
+//    for (var i = 0; i < rows * cols; i++) {
+//        state = cloudToState(input[i]);
+//        if (state == 'f')
+//            return false;
+//    }
+    for (var i = 0; i < rows * cols; i++) {
+		
+        //state = cloudToState(input[i]);
+        setCloudStatus(i, false);
+    }
+    return true;
+}
 function copyPattern(modifier, noOutput=1) {
     var tilePattern = '';
     for (var i = 0; i < rows * cols; i++) {
@@ -323,6 +403,13 @@ function copyPattern(modifier, noOutput=1) {
         tilePattern += toLetter(divs[i].getAttribute('tileColor')).toUpperCase();
     }
     document.getElementById("entry").value = tilePattern;
+	var cloudPattern = '';
+    for (var i = 0; i < rows * cols; i++) {
+        if (cloudToletter(clouds[i].classList.contains('show')) == 'f')
+            return false;
+        cloudPattern += cloudToletter(clouds[i].classList.contains('show'));
+    }
+	document.getElementById("cloudEntry").value = cloudPattern;
     if (noOutput) {
 //        var exampleOfStart = 'Example Pattern Link indicating starting orb 1';
 //        if (rows != 6 || cols != 5) {
@@ -350,6 +437,8 @@ function copyPattern(modifier, noOutput=1) {
 			if (minimumMatches>2)
 				params += "&mincombo=" + minimumMatches
 			params += "&patt=" + tilePattern;
+			if (cloudPattern.includes('0'))
+				params += "&clouds=" + cloudPattern;
 			
 			params = params.replace('&','?');
 			exampleOfStart = "<a href='" + params + "&start=1'>" + exampleOfStart + "</a><br />";
@@ -430,6 +519,7 @@ function dropField() {
 }
 function showDrops() {
     $("#showDrops").hide();
+	$("#clouds").addClass('solving');
     timeOut.push(setTimeout(function() {
         swapHasHappened = 1;
         clearMemory('arrows');
@@ -468,6 +558,7 @@ function playReplay(solution) {
                     showDrops();
                 } else {
                     $("#showDrops").show();
+					$("#clouds").addClass('solving');
                 }
             }
         }, replaySpeed));
@@ -956,6 +1047,7 @@ function requestAction(action, modifier, modifier2=1) {
         reset();
         clearMemory('arrows');
         $("#showDrops").hide();
+		$("#clouds").removeClass('solving');
     }
     if (action == 'randomize') {
         if (colors.length < 2)
@@ -972,6 +1064,8 @@ function requestAction(action, modifier, modifier2=1) {
     }
     if (action == 'loadboard')
         loadBoardState(savedBoardState);
+	if (action == 'loadclouds')
+        loadCloudState(savedCloudState);
     if (action == 'timer') {
         if (changeTheWorldOn == 0)
             toggle('timer');
@@ -995,10 +1089,25 @@ function requestAction(action, modifier, modifier2=1) {
             saveBoardState();
             requestAction('copypattern', 0, modifier2);
         } else
-            displayOutput('Failed to Apply<br />', 0);
+            displayOutput('Failed to apply orbs<br />', 0);
+    }
+	if (action == 'applyclouds') {
+        if (applyClouds()) {
+            saveCloudState();
+            requestAction('copypattern', 0, modifier2);
+        } else
+            displayOutput('Failed to apply clouds<br />', 0);
+    }
+	if (action == 'clearclouds') {
+        if (clearClouds()) {
+            saveCloudState();
+            requestAction('copypattern', 0, modifier2);
+        } else
+            displayOutput('Failed to apply clouds<br />', 0);
     }
     if (action == 'copypattern') {
         loadBoardState(savedBoardState);
+		loadCloudState(savedCloudState);
         copyPattern(modifier, modifier2);
     }
     if (action == 'solve') {
@@ -1009,7 +1118,13 @@ function requestAction(action, modifier, modifier2=1) {
         }
         if (changeTheWorldOn == 0 && swapHasHappened) {
             toggle('draggable', 0);
-            solveBoard(1);
+			if(modifier2 > 100){
+				setTimeout(function () {
+					solveBoard(1);
+				}, 750);
+			}else
+				solveBoard(1);
+			
         } else {
             clearMemory('timeout');
         }
@@ -1047,7 +1162,7 @@ function requestAction(action, modifier, modifier2=1) {
     if (action == 'solve2' || action == 'fielddropped')
         solveBoard(2);
     if (action == 'help') {
-        var showHelp = ['<a href="javascript:requestAction(\'legend\')">Legend</a> for the color entry box on the right and damage (sword icon at the top)<br /><br />', 'Icons above the board do things! Gear icon leads to <a href="javascript:requestAction(\'options\')">options</a>', ', stopwatch icon toggles an adjustable 4 second timer', '<br /><br />You can play with different <a href="?height=6&width=7">board</a> <a href="?height=4&width=5">sizes</a>! (change url)', '<br /><br />CtW (change the world) allows you to move and drop orbs freely for 10 seconds (no replay)', '<br /><br />Convert feature on the right will change all orbs of the first color to those of the second (supports 2 colors at once: GR=>RG)', '<br /><br />Contact me with suggestions at contact@dawnglare.com : <a href="https://github.com/dawnGlare/padsim">GitHub link</a>'].join('');
+        var showHelp = ['<a href="javascript:requestAction(\'legend\')">Legend</a> for the color entry box on the right and damage (sword icon at the top)<br /><br />', 'Icons above the board do things! Gear icon leads to <a href="javascript:requestAction(\'options\')">options</a>', ', stopwatch icon toggles an adjustable 4 second timer', '<br /><br />You can play with different <a href="?height=6&width=7">board</a> <a href="?height=4&width=5">sizes</a>! (change url)', '<br /><br />CtW (change the world) allows you to move and drop orbs freely for 10 seconds (no replay)', '<br /><br />Convert feature on the right will change all orbs of the first color to those of the second (supports 2 colors at once: GR=>RG)', '<br /><br />You can view the source code and add suggestions at <a href="https://github.com/candyninja001/Puzzled">GitHub</a>'].join('');
         displayOutput(showHelp, 0);
     }
     if (action == 'options') {
@@ -1061,6 +1176,11 @@ function requestAction(action, modifier, modifier2=1) {
             toggle('boardcolor', 'Dark');
             toggle('boardcolor', 'Heart');
         }
+    }
+	if (action == 'setup') {
+        //var showHelp = ['<a href="javascript:requestAction(\'legend\')">Legend</a> for the color entry box on the right and damage (sword icon at the top)<br /><br />', 'Icons above the board do things! Gear icon leads to <a href="javascript:requestAction(\'options\')">options</a>', ', stopwatch icon toggles an adjustable 4 second timer', '<br /><br />You can play with different <a href="?height=6&width=7">board</a> <a href="?height=4&width=5">sizes</a>! (change url)', '<br /><br />CtW (change the world) allows you to move and drop orbs freely for 10 seconds (no replay)', '<br /><br />Convert feature on the right will change all orbs of the first color to those of the second (supports 2 colors at once: GR=>RG)', '<br /><br />You can view the source code and add suggestions at <a href="https://github.com/candyninja001/Puzzled">GitHub</a>'].join('');
+        displayOutput('', 0);
+		
     }
     if (action == 'boardcolor')
         toggle('boardcolor', modifier);
@@ -1190,29 +1310,19 @@ $(function() {
         document.getElementById("entry").maxLength = cols * rows;
         document.getElementById("entry").style.width = rows * 70 / 6 + "px";
         document.getElementById("entry").style.height = cols * 120 / 5 + "px";
+		document.getElementById("cloudEntry").maxLength = cols * rows;
+        document.getElementById("cloudEntry").style.width = rows * 70 / 6 + "px";
+        document.getElementById("cloudEntry").style.height = cols * 120 / 5 + "px";
     }
     for (var i = 0; i < rows * cols; i++) {
-//        var randColor = randomColor();
-//        divs[i] = document.createElement("div");
-//        setTileAttribute(i, randColor, 1);
-//        $('#tiles').append(divs[i]);
-		
-		var randColor = randomColor();
+        var randColor = randomColor();
         divs[i] = document.createElement("div");
         setTileAttribute(i, randColor, 1);
-		var lock = document.createElement("div");
-		lock.setAttribute("class", "lock");
-		divs[i].append(lock);
-		var plus = document.createElement("div");
-		plus.setAttribute("class", "plus");
-		divs[i].append(plus);
-		var cross = document.createElement("div");
-		cross.setAttribute("class", "cross");
-		divs[i].append(cross);
-		var blind = document.createElement("div");
-		blind.setAttribute("class", "blind");
-		divs[i].append(blind);
         $('#tiles').append(divs[i]);
+		
+		clouds[i] = document.createElement("div");
+		clouds[i].setAttribute("class", "cloud");
+		$('#clouds').append(clouds[i]);
     }
     for (i = 1; i < rows; i++) {
         for (h = 1; h < cols; h++) {
@@ -1253,6 +1363,11 @@ $(function() {
         requestAction('applypattern', 2, 0);
     } else
         requestAction('copypattern', 0, 0);
+	if ($_GET['clouds']) {
+        document.getElementById("cloudEntry").innerHTML = $_GET['clouds'];
+        requestAction('applyclouds', 2, 0);
+    } else
+        requestAction('copypattern', 0, 0);
     if (replayMoveSet.length > 0)
         timeOut.push(setTimeout(function() {
             requestAction('replay');
@@ -1279,10 +1394,12 @@ $(function() {
         containment: "#scrolls>.play", //#board
         helper: "clone",
         opacity: 0.8,
+		zIndex: 3,
         start: function(event, ui) {
             $(this).css({
                 opacity: 0.2
             });
+			$("#revealOrbs").hide();
             clearMemory('arrows');
             replayMoveSet = [];
             if (changeTheWorldOn == 0 && timerOn == 1) {
@@ -1296,7 +1413,16 @@ $(function() {
             $(this).css({
                 opacity: 1
             });
-            requestAction('solve', 1);
+			
+            //requestAction('solve', 1);
+			$("#revealOrbs").show();
+			$("#clouds").addClass('solving');
+			console.log($(".cloud.show").length);
+			if($(".cloud.show").length > 0){
+				requestAction('solve', 1, 750);
+			}else{
+				requestAction('solve', 1);
+			}
         },
         cursorAt: {
             top: scale / 2,
@@ -1341,6 +1467,15 @@ $(function() {
             return false;
         }
     });
+	$("#cloudEntry").bind({
+        keydown: function(e) {
+            if (e.which == 13)
+                requestAction('applyclouds');
+            if (e.which == 96 || e.which == 110 || (!e.shiftKey && (e.which == 48 || e.which == 190)) || e.which == 46 || e.which == 8 || e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40 || (e.ctrlKey && (e.which == 65 || e.which == 86 || e.which == 67)))
+                return true;
+            return false;
+        }
+    });
     $("#colorfrom").bind({
         keydown: function(e) {
             if (e.which == 13)
@@ -1379,6 +1514,16 @@ $(function() {
                 return true;
             return false;
         }
+    });
+	 $("#revealOrbs").hover(function(){ 
+        $(".tile").addClass('reveal');
+		$("#scroll").addClass('reveal');
+		$(".cloud").addClass('reveal');
+        }
+        , function(){
+        $(".tile").removeClass('reveal');
+		$("#scroll").removeClass('reveal');
+		$(".cloud").removeClass('reveal');
     });
 });
 $(document).ready(function() {
