@@ -257,7 +257,7 @@ function toggle(item, command) {
     }
     if (item == 'minimumCombo') {
         minimumMatches = command;
-        displayOutput('Setting changed: Minimum combo is now ' + (parseInt(command) + 1) + '. <br />Sharing the board DOES NOT share this setting');
+        displayOutput('Setting changed: Minimum combo is now ' + (parseInt(command) + 1) + '.');
     }
 }
 function setTileAttribute(i, tileColor, opacity, classless, bombbomb=0) {
@@ -347,6 +347,8 @@ function copyPattern(modifier, noOutput=1) {
 				params += "&height=" + cols + "&width=" + rows;
 			if (getScroll())
 				params += "&scroll=" + getScroll();
+			if (minimumMatches>2)
+				params += "&mincombo=" + minimumMatches
 			params += "&patt=" + tilePattern;
 			
 			params = params.replace('&','?');
@@ -1257,6 +1259,8 @@ $(function() {
         }, 1000));
 	if ($_GET['scroll'])
         requestAction('setScroll', $_GET['scroll']);
+	if ($_GET['mincombo'])
+        requestAction('minimumCombo', $_GET['mincombo']);
     if ($_GET['freetoplay'])
         freeToPlay = 1;
     if ($_GET['timer'])
