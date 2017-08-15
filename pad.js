@@ -5,6 +5,10 @@ var colors = ['blue', 'green', 'red', 'light', 'dark', 'heart']
   , divs = []
   , clouds = []
   , savedBoardState = []
+  , savedPlusState = []
+  , savedLockState = []
+  , savedBlindState = []
+  , savedSwapperState = []
   , savedCloudState = []
   , changeTheWorldOn = 0
   , timerOn = 0
@@ -87,10 +91,8 @@ jQuery.fn.swap = function(b, trigger) {
     b.parentNode.insertBefore(a, b);
     t.parentNode.insertBefore(b, t);
     t.parentNode.removeChild(t);
-	if (a.classList.contains('blind'))
-		a.classList.remove('blind');
-	if (b.classList.contains('blind'))
-		b.classList.remove('blind');
+	a.classList.remove('blind');
+	b.classList.remove('blind');
     if (trigger == 2) {
         if (swapHasHappened == 0)
             replayMoveSet.push(((b.offsetTop - b.parentNode.offsetTop - offsetMargin) / scale) * rows + ((b.offsetLeft - b.parentNode.offsetLeft - offsetMargin) / scale));
@@ -121,13 +123,29 @@ function toColor(letter, colorSet) {
     }
     return 0;
 }
+function propertyToState(property, letter) {
+    letter = letter.toLowerCase();
+	if (property == 'plus' && letter == 'p')
+		return true;
+	if (property == 'lock' && letter == 'l')
+		return true;
+	if (property == 'blind' && letter == 'b')
+		return 'blind';
+	if (property == 'blind' && letter == 'd')
+		return 'blind-duration';
+	if (property == 'swapper' && letter == 's')
+		return true;
+	if (letter == '.')
+		return false;
+    return '?';
+}
 function cloudToState(letter) {
     letter = letter.toLowerCase();
-    if(letter == '0')
+    if (letter == 'c')
 		return true;
-	if(letter == '.')
+	if (letter == '.')
 		return false;
-    return 'f';
+    return '?';
 }
 function toLetter(color) {
     for (var g = 0; g < colors2.length; g++) {
@@ -138,11 +156,33 @@ function toLetter(color) {
 }
 function cloudToletter(state) {
     if(state == true)
-		return '0';
+		return 'c';
+    return '.';
+}
+function propertyToLetter(property, state) {
+	if (state == false)
+		return '.';
+	if (property == 'plus')
+		return 'p';
+	if (property == 'lock')
+		return 'l';
+	if (property == 'blind'){
+		if (state == 'blind')
+			return 'b';
+		else if (state == 'blind-duration')
+			return 'd';
+		else 
+			return '.';
+	}
+	if (property == 'swapper')
+		return 's';
     return '.';
 }
 function getTiles() {
     divs = document.getElementsByClassName('tile');
+}
+function getProperies(property) { // TODO
+    divs = document.getElementsByClassName('tile'); // This should work?
 }
 function getClouds() {
     clouds = document.getElementsByClassName('cloud');
@@ -237,7 +277,7 @@ function toggle(item, command) {
         }
         if (temp23 != '1')
             colors.push(unCapitaliseFirstLetter(command));
-		// TODO re-enable if important
+		//  re-enable if important
         //document.getElementById('bc' + command).style.backgroundImage = "url('" + command + temp23 + ".png')";
 		if(temp23 == '1'){
 			document.getElementById('bc' + command).style.filter = "grayscale(100%)";
@@ -289,23 +329,43 @@ function toggle(item, command) {
     }
 }
 function setTileAttribute(i, tileColor, opacity, classless, bombbomb=0) {
+	var plus = divs[i].classList.contains('plus') ? ' plus' : '';
+	var lock = divs[i].classList.contains('lock') ? ' lock' : '';
+	var blind = divs[i].classList.contains('blind-duration') ? ' blind-duration' : (divs[i].classList.contains('blind') ? ' blind' : '');
     if (bombbomb == 0) {
         if (classless != 1)
-            divs[i].setAttribute('class', 'tile ' + tileColor);
+            divs[i].setAttribute('class', 'tile ' + tileColor + plus + lock + blind);
         divs[i].setAttribute('tileColor', tileColor);
         divs[i].setAttribute('style', 'opacity:' + opacity);
-    } else if (divs[i].getAttribute('tileColor') == 'xbomb') {
+    } else if (divs[i].getAttribute('tileColor') == 'xbomb') { // TODO see why these are separate but the same.
         if (classless != 1)
-            divs[i].setAttribute('class', 'tile ' + tileColor);
+            divs[i].setAttribute('class', 'tile ' + tileColor + plus + lock + blind);
         divs[i].setAttribute('tileColor', tileColor);
         divs[i].setAttribute('style', 'opacity:' + opacity);
     }
 }
 function setCloudStatus(i, visible) {
-    if(visible == true)
+    if (visible == true)
 		clouds[i].classList.add('show');
 	else
 		clouds[i].classList.remove('show');
+}
+function setProperty(i, property, state) {
+	if (property == 'blind'){
+		if (state == 'blind') {
+			divs[i].classList.add('blind');
+			divs[i].classList.remove('blind-duration');
+		} else if (state == 'blind-duration') {
+			divs[i].classList.remove('blind');
+			divs[i].classList.add('blind-duration');
+		} else {
+			divs[i].classList.remove('blind-duration');
+			divs[i].classList.remove('blind');
+		}
+	} else if (state == true)
+		divs[i].classList.add(property);
+	else if (state == false)
+		divs[i].classList.remove(property);
 }
 function randomizeBoard() {
     for (var i = 0; i < rows * cols; i++) {
@@ -319,6 +379,26 @@ function randomizeBoard() {
 function saveBoardState() {
     for (var i = 0; i < divs.length; i++) {
         savedBoardState[i] = divs[i].getAttribute('tileColor');
+    }
+}
+function savePlusState() {
+    for (var i = 0; i < divs.length; i++) {
+        savedPlusState[i] = divs[i].classList.contains('plus');
+    }
+}
+function saveLockState() {
+    for (var i = 0; i < divs.length; i++) {
+        savedLockState[i] = divs[i].classList.contains('lock');
+    }
+}
+function saveBlindState() {
+    for (var i = 0; i < divs.length; i++) {
+        savedBlindState[i] = divs[i].classList.contains('blind-duration') ? 'blind-duration' : (divs[i].classList.contains('blind') ? 'blind' : false);
+    }
+}
+function saveSwapperState() {
+    for (var i = 0; i < divs.length; i++) {
+        savedSwapperState[i] = divs[i].classList.contains('swapper');
     }
 }
 function saveCloudState() {
@@ -335,6 +415,12 @@ function loadBoardState(loadThis) {
         setTileAttribute(i, loadThis[i], 1);
     }
     getTiles();
+}
+function loadProperty(property, loadThis) { 
+    for (var i = 0; i < divs.length; i++) {
+        setProperty(i, property, loadThis[i]);
+    }
+    getProperies(property);
 }
 function loadCloudState(loadThis) {
     for (var i = 0; i < clouds.length; i++) {
@@ -364,6 +450,97 @@ function applyPattern() {
     }
     return true;
 }
+function applyPlusses() {
+    var input = document.getElementById("plusEntry").value;
+    input = input.replace(new RegExp('\r?\n','g'), '');
+    if (input.length != rows * cols)
+        return false;
+    var state;
+    for (var i = 0; i < rows * cols; i++) {
+        state = propertyToState('plus', input[i]);
+        if (state == '?')
+            return false;
+    }
+    for (var i = 0; i < rows * cols; i++) {
+        state = propertyToState('plus', input[i]);
+        setProperty(i, 'plus', state);
+    }
+    return true;
+}
+function clearPlusses() {for (var i = 0; i < rows * cols; i++) {;
+        setProperty(i, 'plus', false);
+    }
+    return true;
+}
+function applyLocks() {
+    var input = document.getElementById("lockEntry").value;
+    input = input.replace(new RegExp('\r?\n','g'), '');
+    if (input.length != rows * cols)
+        return false;
+    var state;
+    for (var i = 0; i < rows * cols; i++) {
+        state = propertyToState('lock', input[i]);
+        if (state == '?')
+            return false;
+    }
+    for (var i = 0; i < rows * cols; i++) {
+		
+        state = propertyToState('lock', input[i]);
+        setProperty(i, 'lock', state);
+    }
+    return true;
+}
+function clearLocks() {for (var i = 0; i < rows * cols; i++) {;
+        setProperty(i, 'lock', false);
+    }
+    return true;
+}
+function applyBlinds() {
+    var input = document.getElementById("blindEntry").value;
+    input = input.replace(new RegExp('\r?\n','g'), '');
+    if (input.length != rows * cols)
+        return false;
+    var state;
+    for (var i = 0; i < rows * cols; i++) {
+        state = propertyToState('blind', input[i]);
+        if (state == '?')
+            return false;
+    }
+    for (var i = 0; i < rows * cols; i++) {
+		
+        state = propertyToState('blind', input[i]);
+        setProperty(i, 'blind', state);
+    }
+    return true;
+}
+function clearBlinds() {for (var i = 0; i < rows * cols; i++) {;
+        setProperty(i, 'blind', false);
+    }
+    return true;
+}
+function applySwappers() {
+    var input = document.getElementById("swapperEntry").value;
+    input = input.replace(new RegExp('\r?\n','g'), '');
+    if (input.length != rows * cols)
+        return false;
+    var state;
+    for (var i = 0; i < rows * cols; i++) {
+        state = propertyToState('swapper', input[i]);
+        if (state == '?')
+            return false;
+    }
+    for (var i = 0; i < rows * cols; i++) {
+		
+        state = propertyToState('swapper', input[i]);
+        setProperty(i, 'swapper', state);
+    }
+    return true;
+}
+function clearSwappers() {for (var i = 0; i < rows * cols; i++) {;
+        setProperty(i, 'swapper', false);
+    }
+    return true;
+}
 function applyClouds() {
     var input = document.getElementById("cloudEntry").value;
     input = input.replace(new RegExp('\r?\n','g'), '');
@@ -372,7 +549,7 @@ function applyClouds() {
     var state;
     for (var i = 0; i < rows * cols; i++) {
         state = cloudToState(input[i]);
-        if (state == 'f')
+        if (state == '?')
             return false;
     }
     for (var i = 0; i < rows * cols; i++) {
@@ -382,39 +559,40 @@ function applyClouds() {
     }
     return true;
 }
-function clearClouds() {
-//    var input = document.getElementById("cloudEntry").value;
-//    input = input.replace(new RegExp('\r?\n','g'), '');
-//    if (input.length != rows * cols)
-//        return false;
-//    var state;
-//    for (var i = 0; i < rows * cols; i++) {
-//        state = cloudToState(input[i]);
-//        if (state == 'f')
-//            return false;
-//    }
-    for (var i = 0; i < rows * cols; i++) {
-		
-        //state = cloudToState(input[i]);
+function clearClouds() {for (var i = 0; i < rows * cols; i++) {;
         setCloudStatus(i, false);
     }
     return true;
 }
-function copyPattern(modifier, noOutput=1) {
+function copyPattern(modifier, noOutput=1, record) {
     var tilePattern = '';
-    for (var i = 0; i < rows * cols; i++) {
-        if (toLetter(divs[i].getAttribute('tileColor')) == 0)
-            return false;
-        tilePattern += toLetter(divs[i].getAttribute('tileColor')).toUpperCase();
-    }
-    document.getElementById("entry").value = tilePattern;
+	var plusPattern = '';
+	var lockPattern = '';
+	var blindPattern = '';
+	var swapperPattern = '';
 	var cloudPattern = '';
     for (var i = 0; i < rows * cols; i++) {
-        if (cloudToletter(clouds[i].classList.contains('show')) == 'f')
+        if (toLetter(divs[i].getAttribute('tileColor')) == 0 || propertyToLetter('plus', divs[i].classList.contains('plus')) == 0 || propertyToLetter('lock', divs[i].classList.contains('lock')) == 0 || propertyToLetter('blind', divs[i].classList.contains('blind')) == 0 || propertyToLetter('swapper', divs[i].classList.contains('swapper')) == 0 || cloudToletter(clouds[i].classList.contains('show')) == 0)
             return false;
-        cloudPattern += cloudToletter(clouds[i].classList.contains('show'));
+        tilePattern += toLetter(divs[i].getAttribute('tileColor')).toUpperCase();
+		plusPattern += propertyToLetter('plus', divs[i].classList.contains('plus')).toUpperCase();
+		lockPattern += propertyToLetter('lock', divs[i].classList.contains('lock')).toUpperCase();
+		blindPattern += propertyToLetter('blind', divs[i].classList.contains('blind-duration') ? 'blind-duration' : (divs[i].classList.contains('blind') ? 'blind' : false)).toUpperCase();
+		swapperPattern += propertyToLetter('swapper', divs[i].classList.contains('swapper')).toUpperCase();
+		cloudPattern += cloudToletter(clouds[i].classList.contains('show')).toUpperCase();
     }
-	document.getElementById("cloudEntry").value = cloudPattern;
+	if (record == 'tiles' || record == 'all')
+		document.getElementById("entry").value = tilePattern;
+	if (record == 'plusses' || record == 'all')
+		document.getElementById("plusEntry").value = plusPattern;
+	if (record == 'locks' || record == 'all')
+		document.getElementById("lockEntry").value = lockPattern;
+	if (record == 'blinds' || record == 'all')
+		document.getElementById("blindEntry").value = blindPattern;
+	if (record == 'swappers' || record == 'all')
+		document.getElementById("swapperEntry").value = swapperPattern;
+	if (record == 'clouds' || record == 'all')
+		document.getElementById("cloudEntry").value = cloudPattern;
     if (noOutput) {
 //        var exampleOfStart = 'Example Pattern Link indicating starting orb 1';
 //        if (rows != 6 || cols != 5) {
@@ -442,12 +620,23 @@ function copyPattern(modifier, noOutput=1) {
 			if (minimumMatches>2)
 				params += "&mincombo=" + minimumMatches
 			params += "&patt=" + tilePattern;
-			if (cloudPattern.includes('0'))
+			if (plusPattern.includes('P'))
+				params += "&plusses=" + plusPattern;
+			if (lockPattern.includes('L'))
+				params += "&locks=" + lockPattern;
+			if (blindPattern.includes('B') || blindPattern.includes('D'))
+				params += "&blinds=" + blindPattern;
+			if (cloudPattern.includes('C'))
 				params += "&clouds=" + cloudPattern;
 			
 			params = params.replace('&','?');
 			exampleOfStart = "<a href='" + params + "&start=1'>" + exampleOfStart + "</a><br />";
-			displayOutput("<a href='" + params + "'>Pattern Link</a><br />", modifier);
+			if (document.getElementById("entry").value != tilePattern || document.getElementById("plusEntry").value != plusPattern || document.getElementById("lockEntry").value != lockPattern || document.getElementById("blindEntry").value != blindPattern || document.getElementById("swapperEntry").value != swapperPattern || document.getElementById("cloudEntry").value != cloudPattern) {
+				displayOutput("One or more of the board settings has not been applied yet.<br />", modifier);
+				displayOutput("<a href='" + params + "'>Pattern Link</a><br />", 1);
+			} else {
+				displayOutput("<a href='" + params + "'>Pattern Link</a><br />", modifier);
+			}
 			if (replayMoveSet.length > 0) {
 			    displayOutput("<a href='" + params + "&replay=" + replayMoveSet.join('|') + "'>Pattern with Replay Link</a><br />", 1);
                 displayOutput("<a href='" + params + "&replay=" + replayMoveSet.join('|') + "&drops=1'>Pattern with Replay with Drops Link</a><br />", 1);
@@ -525,6 +714,7 @@ function dropField() {
 function showDrops() {
     $("#showDrops").hide();
 	$("#clouds").addClass('solving');
+	$(".tile").addClass('solving');
     timeOut.push(setTimeout(function() {
         swapHasHappened = 1;
         clearMemory('arrows');
@@ -564,6 +754,7 @@ function playReplay(solution) {
                 } else {
                     $("#showDrops").show();
 					$("#clouds").addClass('solving');
+					$(".tile").addClass('solving');
                 }
             }
         }, replaySpeed));
@@ -941,7 +1132,6 @@ function startOnThisOrb(xThisistheone) {
 }
 function getScroll(position) {
 	var position = $("#scroll").attr('class');
-	console.log('Found scroll: '+position);
 	switch(position) {
 		case "top": return 1;
 		case "right": return 2;
@@ -1028,7 +1218,7 @@ String.prototype.shuffle = function() {
     for (var i = n - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
         var tmp = a[i];
-        a[i] = a[j];
+        a[i] = a[j];	
         a[j] = tmp;
     }
     return a.join("");
@@ -1053,6 +1243,7 @@ function requestAction(action, modifier, modifier2=1) {
         clearMemory('arrows');
         $("#showDrops").hide();
 		$("#clouds").removeClass('solving');
+		$(".tile").removeClass('solving');
     }
     if (action == 'randomize') {
         if (colors.length < 2)
@@ -1064,13 +1255,27 @@ function requestAction(action, modifier, modifier2=1) {
                 randomizeBoard();
             }
             saveBoardState();
-            requestAction('copypattern');
+            requestAction('copypattern', 0, 0, 'tiles'); // TODO see if 0, 0 is correct
         }
     }
-    if (action == 'loadboard')
+    if (action == 'loadboard'){
         loadBoardState(savedBoardState);
-	if (action == 'loadclouds')
-        loadCloudState(savedCloudState);
+		loadProperty('plus', savedPlusState);
+		loadProperty('lock', savedLockState);
+		loadProperty('blind', savedBlindState);
+		loadProperty('swapper', savedSwapperState);
+		loadCloudState(savedCloudState);
+	}
+//	if (action == 'loadplusses')
+//        loadProperty('plus', savedPlusState);
+//	if (action == 'loadlocks')
+//        loadProperty('lock', savedLockState);
+//	if (action == 'loadblinds')
+//        loadProperty('blind', savedBlindState);
+//	if (action == 'loadsunglasses')
+//        loadProperty('blind-duration', savedSunglassesState);
+//	if (action == 'loadclouds')
+//        loadCloudState(savedCloudState);
     if (action == 'timer') {
         if (changeTheWorldOn == 0)
             toggle('timer');
@@ -1092,28 +1297,112 @@ function requestAction(action, modifier, modifier2=1) {
         if (applyPattern()) {
             toggle('draggable', 1);
             saveBoardState();
-            requestAction('copypattern', 0, modifier2);
+            requestAction('copytiles', 0, modifier2);
         } else
             displayOutput('Failed to apply orbs<br />', 0);
+    }
+	if (action == 'applyplusses') {
+        if (applyPlusses()) {
+            savePlusState();
+            requestAction('copyplusses', 0, modifier2);
+        } else
+            displayOutput('Failed to apply plusses<br />', 0);
+    }
+	if (action == 'clearplusses') {
+        if (clearPlusses()) {
+            savePlusState();
+            requestAction('copyplusses', 0, modifier2);
+        } else
+            displayOutput('Failed to apply plusses<br />', 0);
+    }
+	if (action == 'applylocks') {
+        if (applyLocks()) {
+            saveLockState();
+            requestAction('copylocks', 0, modifier2);
+        } else
+            displayOutput('Failed to apply locks<br />', 0);
+    }
+	if (action == 'clearlocks') {
+        if (clearLocks()) {
+            saveLockState();
+            requestAction('copylocks', 0, modifier2);
+        } else
+            displayOutput('Failed to apply locks<br />', 0);
+    }
+	if (action == 'applyblinds') {
+        if (applyBlinds()) {
+            saveBlindState();
+            requestAction('copyblinds', 0, modifier2);
+        } else
+            displayOutput('Failed to apply blinds<br />', 0);
+    }
+	if (action == 'clearblinds') {
+        if (clearBlinds()) {
+            saveBlindState();
+            requestAction('copyblinds', 0, modifier2);
+        } else
+            displayOutput('Failed to apply blinds<br />', 0);
+    }
+	if (action == 'applyswappers') {
+        if (applySwappers()) {
+            saveSwapperState();
+            requestAction('copyswappers', 0, modifier2);
+        } else
+            displayOutput('Failed to apply duration blinds<br />', 0);
+    }
+	if (action == 'clearswappers') {
+        if (clearSwappers()) {
+            saveSwapperState();
+            requestAction('copyswappers', 0, modifier2);
+        } else
+            displayOutput('Failed to apply duration blinds<br />', 0);
     }
 	if (action == 'applyclouds') {
         if (applyClouds()) {
             saveCloudState();
-            requestAction('copypattern', 0, modifier2);
+            requestAction('copyclouds', 0, modifier);
         } else
             displayOutput('Failed to apply clouds<br />', 0);
     }
 	if (action == 'clearclouds') {
         if (clearClouds()) {
             saveCloudState();
-            requestAction('copypattern', 0, modifier2);
+            requestAction('copyclouds', 0, modifier2);
         } else
             displayOutput('Failed to apply clouds<br />', 0);
     }
-    if (action == 'copypattern') {
+	if (action == 'copypattern') {
         loadBoardState(savedBoardState);
+		loadProperty('plus', savedPlusState);
+		loadProperty('lock', savedLockState);
+		loadProperty('blind', savedBlindState);
+		loadProperty('swapper', savedSwapperState);
 		loadCloudState(savedCloudState);
-        copyPattern(modifier, modifier2);
+        copyPattern(modifier, modifier2, 'all');
+    }
+	if (action == 'copytile') {
+        loadBoardState(savedBoardState);
+        copyPattern(modifier, modifier2, 'tiles');
+    }
+	if (action == 'copyplusses') {
+		loadProperty('plus', savedPlusState);
+        copyPattern(modifier, modifier2, 'plusses');
+    }
+	if (action == 'copylocks') {
+		loadProperty('lock', savedLockState);
+        copyPattern(modifier, modifier2, 'locks');
+    }
+	if (action == 'copyblinds') {
+		loadProperty('blind', savedBlindState);
+        copyPattern(modifier, modifier2, 'blinds');
+    }
+	if (action == 'copyswappers') {
+		loadProperty('swapper', savedSwapperState);
+        copyPattern(modifier, modifier2, 'swappers');
+    }
+	if (action == 'copyclouds') {
+		loadCloudState(savedCloudState);
+        copyPattern(modifier, modifier2, 'clouds');
     }
     if (action == 'solve') {
         if (changeTheWorldOn == 0)
@@ -1146,7 +1435,7 @@ function requestAction(action, modifier, modifier2=1) {
             if (colorfrom.length < 1 || colorto.length < 1 || colorfrom.length != colorto.length)
                 return;
             saveBoardState();
-            requestAction('copypattern');
+            requestAction('copypattern', 0, 0, board);// TODO see if 0, 0 is correct
             var inputtemp = document.getElementById("entry").value;
             inputtemp = inputtemp.replace(new RegExp('\r?\n','g'), '');
             var temp3 = inputtemp.split("");
@@ -1167,7 +1456,7 @@ function requestAction(action, modifier, modifier2=1) {
     if (action == 'solve2' || action == 'fielddropped')
         solveBoard(2);
     if (action == 'help') {
-        var showHelp = ['<a href="javascript:requestAction(\'legend\')">Legend</a> for the color entry box on the right and damage (sword icon at the top)<br /><br />', 'Icons above the board do things! Gear icon leads to <a href="javascript:requestAction(\'options\')">options</a>', ', stopwatch icon toggles an adjustable 4 second timer', '<br /><br />You can play with different <a href="?height=6&width=7">board</a> <a href="?height=4&width=5">sizes</a>! (change url)', '<br /><br />CtW (change the world) allows you to move and drop orbs freely for 10 seconds (no replay)', '<br /><br />Convert feature on the right will change all orbs of the first color to those of the second (supports 2 colors at once: GR=>RG)', '<br /><br />You can view the source code and add suggestions at <a href="https://github.com/candyninja001/Puzzled">GitHub</a>'].join('');
+        var showHelp = ['<a href="javascript:requestAction(\'legend\')">Legend</a> for the color entry box on the right and damage (sword icon at the top)<br /><br />', 'Icons above the board do things! Gear icon leads to <a href="javascript:requestAction(\'options\')">options</a>', ', stopwatch icon toggles an adjustable 4 second timer', '<br /><br />You can play with different <a href="?height=6&width=7">board</a> <a href="?height=4&width=5">sizes</a>! (change url)', '<br /><br />CtW (change the world) allows you to move and drop orbs freely for 10 seconds (no replay)', '<br /><br />Convert feature on the right will change all orbs of the first color to those of the second (supports 2 colors at once: GR=>RG)', '<br /><br />Puzzled is a modification to dawnGlare\'s PAD Simulator. You can view the source code and add suggestions on <a href="https://github.com/candyninja001/Puzzled">GitHub</a>'].join('');
         displayOutput(showHelp, 0);
     }
     if (action == 'options') {
@@ -1184,8 +1473,14 @@ function requestAction(action, modifier, modifier2=1) {
     }
     if (action == 'boardcolor')
         toggle('boardcolor', modifier);
+	if (action == 'togglechanges') {
+		if ($("#changes").is(':visible'))
+			$("#changes").hide();
+		else
+			$("#changes").show();
+	}
     if (action == 'legend') {
-        var showHelp = ['Board:<br />R = Red<br />B = Blue<br />G = Green<br />D = Dark (Purple)<br />L = Light (Yellow)<br />H = Heart<br />J = Jammer<br />P = Poison<br />M = Mortal Poison<br />X = Bomb', '<br /><br />Clouds:<br />0 = Clouded<br />. = Clear', '<br /><br />Blind and Duration Blind:<br />0 = Blinded<br />. = Visible', '<br /><br />Press Enter or hit the apply button to change the board', '<br /><br /><a href="javascript:requestAction(\'help\')">Click here to return to information</a>'].join('');
+        var showHelp = ['Board:<br />R = Red<br />B = Blue<br />G = Green<br />D = Dark (Purple)<br />L = Light (Yellow)<br />H = Heart<br />J = Jammer<br />P = Poison<br />M = Mortal Poison<br />X = Bomb', '<br /><br />Plusses:<br />P = Plussed<br />. = Not plussed', '<br /><br />Locks:<br />L = Locked<br />. = Unlocked', '<br /><br />Blinds:<br />B = Blinded<br />B = Duration Blinded<br />. = Visible', '<br /><br />Clouds:<br />C = Clouded<br />. = Visible', '<br /><br />Press Enter or hit the apply button to change the board', '<br /><br /><a href="javascript:requestAction(\'help\')">Click here to return to information</a>'].join('');
         displayOutput(showHelp, 0);
     }
     if (action == 'replay')
@@ -1310,6 +1605,18 @@ $(function() {
         document.getElementById("entry").maxLength = cols * rows;
         document.getElementById("entry").style.width = rows * 70 / 6 + "px";
         document.getElementById("entry").style.height = cols * 120 / 5 + "px";
+		document.getElementById("plusEntry").maxLength = cols * rows;
+        document.getElementById("plusEntry").style.width = rows * 70 / 6 + "px";
+        document.getElementById("plusEntry").style.height = cols * 120 / 5 + "px";
+		document.getElementById("lockEntry").maxLength = cols * rows;
+        document.getElementById("lockEntry").style.width = rows * 70 / 6 + "px";
+        document.getElementById("lockEntry").style.height = cols * 120 / 5 + "px";
+		document.getElementById("blindEntry").maxLength = cols * rows;
+        document.getElementById("blindEntry").style.width = rows * 70 / 6 + "px";
+        document.getElementById("blindEntry").style.height = cols * 120 / 5 + "px";
+		document.getElementById("swapperEntry").maxLength = cols * rows;
+        document.getElementById("swapperEntry").style.width = rows * 70 / 6 + "px";
+        document.getElementById("swapperEntry").style.height = cols * 120 / 5 + "px";
 		document.getElementById("cloudEntry").maxLength = cols * rows;
         document.getElementById("cloudEntry").style.width = rows * 70 / 6 + "px";
         document.getElementById("cloudEntry").style.height = cols * 120 / 5 + "px";
@@ -1362,12 +1669,32 @@ $(function() {
         }
         requestAction('applypattern', 2, 0);
     } else
-        requestAction('copypattern', 0, 0);
+        requestAction('copypattern', 0, 0, 'tiles');
+	if ($_GET['plusses']) {
+        document.getElementById("plusEntry").value = $_GET['plusses'];
+        requestAction('applyplusses', 2, 0);
+    }// else
+    //    requestAction('copypattern', 0, 0);
+	if ($_GET['locks']) {
+        document.getElementById("lockEntry").value = $_GET['locks'];
+        requestAction('applylocks', 2, 0);
+    }// else
+    //    requestAction('copypattern', 0, 0);
+	if ($_GET['blinds']) {
+        document.getElementById("blindEntry").value = $_GET['blinds'];
+        requestAction('applyblinds', 2, 0);
+    }// else
+    //    requestAction('copypattern', 0, 0);
+	if ($_GET['swappers']) {
+        document.getElementById("swapperEntry").value = $_GET['swappers'];
+        requestAction('applyswappers', 2, 0);
+    }// else
+    //    requestAction('copypattern', 0, 0);
 	if ($_GET['clouds']) {
-        document.getElementById("cloudEntry").innerHTML = $_GET['clouds'];
+        document.getElementById("cloudEntry").value = $_GET['clouds'];
         requestAction('applyclouds', 2, 0);
-    } else
-        requestAction('copypattern', 0, 0);
+    }// else
+     //   requestAction('copypattern', 0, 0);
     if (replayMoveSet.length > 0)
         timeOut.push(setTimeout(function() {
             requestAction('replay');
@@ -1416,9 +1743,11 @@ $(function() {
 			
             //requestAction('solve', 1);
 			$("#revealOrbs").show();
-			$("#clouds").addClass('solving');
-			console.log($(".cloud.show").length);
-			if($(".cloud.show").length > 0){
+			if(swapHasHappened){
+				$("#clouds").addClass('solving');
+				$(".tile").addClass('solving');
+			}
+			if($(".cloud.show").length > 0 || $(".tile.blind").length > 0 || $(".tile.blind-duration").length > 0){
 				requestAction('solve', 1, 750);
 			}else{
 				requestAction('solve', 1);
@@ -1467,11 +1796,47 @@ $(function() {
             return false;
         }
     });
+	$("#plusEntry").bind({
+        keydown: function(e) {
+            if (e.which == 13)
+                requestAction('applyplusses');
+            if (e.which == 80 || e.which == 110 || (!e.shiftKey && e.which == 190) || e.which == 46 || e.which == 8 || e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40 || (e.ctrlKey && (e.which == 65 || e.which == 86 || e.which == 67)))
+                return true;
+            return false;
+        }
+    });
+	$("#lockEntry").bind({
+        keydown: function(e) {
+            if (e.which == 13)
+                requestAction('applylocks');
+            if (e.which == 76 || e.which == 110 || (!e.shiftKey && e.which == 190) || e.which == 46 || e.which == 8 || e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40 || (e.ctrlKey && (e.which == 65 || e.which == 86 || e.which == 67)))
+                return true;
+            return false;
+        }
+    });
+	$("#blindEntry").bind({
+        keydown: function(e) {
+            if (e.which == 13)
+                requestAction('applyblinds');
+            if (e.which == 66 ||e.which == 68 || e.which == 110 || (!e.shiftKey && e.which == 190) || e.which == 46 || e.which == 8 || e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40 || (e.ctrlKey && (e.which == 65 || e.which == 86 || e.which == 67)))
+                return true;
+            return false;
+        }
+    });
+	$("#swapperEntry").bind({
+        keydown: function(e) {
+            if (e.which == 13)
+                requestAction('applyswappers');
+            if (e.which == 83 || e.which == 110 || (!e.shiftKey && e.which == 190) || e.which == 46 || e.which == 8 || e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40 || (e.ctrlKey && (e.which == 65 || e.which == 86 || e.which == 67)))
+                return true;
+            return false;
+        }
+    });
 	$("#cloudEntry").bind({
         keydown: function(e) {
             if (e.which == 13)
                 requestAction('applyclouds');
-            if (e.which == 96 || e.which == 110 || (!e.shiftKey && (e.which == 48 || e.which == 190)) || e.which == 46 || e.which == 8 || e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40 || (e.ctrlKey && (e.which == 65 || e.which == 86 || e.which == 67)))
+            if (e.which == 67 || e.which == 110 || (!e.shiftKey && e.which == 190) || e.which == 46 || e.which == 8 || e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40 || (e.ctrlKey && (e.which == 65 || e.which == 86 || e.which == 67)))
                 return true;
             return false;
         }
