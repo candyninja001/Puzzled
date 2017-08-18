@@ -755,6 +755,10 @@ svg {
     z-index: -4;
     position: relative;
 	visibility: hidden;
+	background-image: url(spinnerborder.png);
+	background-size: 90px;
+	background-position: center;
+	background-repeat: no-repeat;
 }
 .cloud {
 	margin: 0px;
