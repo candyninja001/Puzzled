@@ -658,7 +658,7 @@ function copyPattern(modifier, noOutput=1, record) {
 			params = params.replace('&','?');
 			exampleOfStart = "<a href='" + params + "&start=1'>" + exampleOfStart + "</a><br />";
 			if (document.getElementById("entry").value != tilePattern || document.getElementById("plusEntry").value != plusPattern || document.getElementById("lockEntry").value != lockPattern || document.getElementById("blindEntry").value != blindPattern || document.getElementById("swapperEntry").value != swapperPattern || document.getElementById("cloudEntry").value != cloudPattern) {
-				displayOutput("One or more of the board settings has not been applied yet.<br />", modifier);
+				displayOutput("One or more of the board settings has not been applied yet.<br />(This message might be bugged if there are spinners)<br /><br />", modifier);
 				displayOutput("<a href='" + params + "'>Pattern Link</a><br />", 1);
 			} else {
 				displayOutput("<a href='" + params + "'>Pattern Link</a><br />", modifier);
