@@ -1,6 +1,7 @@
 var colors = ['blue', 'green', 'red', 'light', 'dark', 'heart']
   , colorsbak = ['blue', 'green', 'red', 'light', 'dark', 'heart']
   , colors2 = ['blue', 'green', 'red', 'light', 'dark', 'heart', 'poison', 'jammer', 'xbomb', 'mortalpoison']
+  , colorsSpin = ['green', 'light', 'blue', 'dark', 'heart', 'red', 'red', 'red', 'red', 'red']
   , colors3 = ['blue', 'green', 'red', 'light', 'dark']
   , divs = []
   , clouds = []
@@ -36,7 +37,8 @@ var colors = ['blue', 'green', 'red', 'light', 'dark', 'heart']
   , randomizeMatchedOrbs = false
   , shuffleInstead = false
   , minimumMatched = 2
-  , minimumMatches = 2;
+  , minimumMatches = 2
+  , spinnerTimer = 1000;
 function hideUnit(obj) {
     var link = document.getElementById(obj);
     link.style.display = 'none';
@@ -91,6 +93,14 @@ jQuery.fn.swap = function(b, trigger) {
     b.parentNode.insertBefore(a, b);
     t.parentNode.insertBefore(b, t);
     t.parentNode.removeChild(t);
+	var flagA = a.classList.contains('swapper');
+	var flagB = b.classList.contains('swapper');
+	a.classList.remove('swapper');
+	b.classList.remove('swapper');
+	if(flagA)
+		b.classList.add('swapper');
+	if(flagB)
+		a.classList.add('swapper');
 	a.classList.remove('blind');
 	b.classList.remove('blind');
     if (trigger == 2) {
@@ -259,7 +269,7 @@ function toggle(item, command) {
     if (item == 'skyfall') {
         if (skyFall == 0) {
             skyFall = 1;
-            displayOutput('Skyfall enabled.<br /><br />You will now be able to extra turns. Press SkyFall again to disable this. Replays will not save which orbs fall');
+            displayOutput('!!WARNING!! Skyfall is currently untested. !!WARNING!!<br /><br />Skyfall enabled.<br /><br />You will now be able to extra turns. Press SkyFall again to disable this. Replays will not save which orbs fall');
         } else {
             skyFall = 0;
             displayOutput('Skyfall has been disabled');
@@ -328,21 +338,34 @@ function toggle(item, command) {
         displayOutput('Setting changed: Minimum combo is now ' + (parseInt(command) + 1) + '.');
     }
 }
-function setTileAttribute(i, tileColor, opacity, classless, bombbomb=0) {
+function setTileAttribute(i, tileColor, opacity, classless, bombbomb=0, convert=1) {
 	var plus = divs[i].classList.contains('plus') ? ' plus' : '';
 	var lock = divs[i].classList.contains('lock') ? ' lock' : '';
 	var blind = divs[i].classList.contains('blind-duration') ? ' blind-duration' : (divs[i].classList.contains('blind') ? ' blind' : '');
-    if (bombbomb == 0) {
+	var swap = divs[i].classList.contains('swapper') ? ' swapper' : '';
+	var reveal = divs[i].classList.contains('reveal') ? ' reveal' : '';
+	if (convert == 0){
         if (classless != 1)
-            divs[i].setAttribute('class', 'tile ' + tileColor + plus + lock + blind);
+            divs[i].setAttribute('class', 'tile ' + tileColor + swap);
         divs[i].setAttribute('tileColor', tileColor);
-        divs[i].setAttribute('style', 'opacity:' + opacity);
-    } else if (divs[i].getAttribute('tileColor') == 'xbomb') { // TODO see why these are separate but the same.
-        if (classless != 1)
-            divs[i].setAttribute('class', 'tile ' + tileColor + plus + lock + blind);
+        divs[i].setAttribute('tileopacity', opacity);
+	} else {
+		if (classless != 1)
+            divs[i].setAttribute('class', 'tile ' + tileColor + plus + lock + blind + swap + reveal);
         divs[i].setAttribute('tileColor', tileColor);
-        divs[i].setAttribute('style', 'opacity:' + opacity);
-    }
+        divs[i].setAttribute('tileopacity', opacity);
+	}
+//    if (bombbomb == 0) {
+//        if (classless != 1)
+//            divs[i].setAttribute('class', 'tile ' + tileColor + plus + lock + blind);
+//        divs[i].setAttribute('tileColor', tileColor);
+//        divs[i].setAttribute('style', 'opacity:' + opacity);
+//    } else if (divs[i].getAttribute('tileColor') == 'xbomb') { // NOTE there used to be two categories of functions here, one for bombs the other for non-bombs. I removed them since they were identical.
+//        if (classless != 1)
+//            divs[i].setAttribute('class', 'tile ' + tileColor + plus + lock + blind);
+//        divs[i].setAttribute('tileColor', tileColor);
+//        divs[i].setAttribute('style', 'opacity:' + opacity);
+//    }
 }
 function setCloudStatus(i, visible) {
     if (visible == true)
@@ -430,7 +453,7 @@ function loadCloudState(loadThis) {
 }
 function opacify() {
     for (var i = 0; i < divs.length; i++) {
-        divs[i].setAttribute('style', 'opacity:1');
+        divs[i].setAttribute('tileopacity', 1);
     }
 }
 function applyPattern() {
@@ -626,8 +649,11 @@ function copyPattern(modifier, noOutput=1, record) {
 				params += "&locks=" + lockPattern;
 			if (blindPattern.includes('B') || blindPattern.includes('D'))
 				params += "&blinds=" + blindPattern;
+			if (swapperPattern.includes('S'))
+				params += "&spinners=" + swapperPattern;
 			if (cloudPattern.includes('C'))
 				params += "&clouds=" + cloudPattern;
+			
 			
 			params = params.replace('&','?');
 			exampleOfStart = "<a href='" + params + "&start=1'>" + exampleOfStart + "</a><br />";
@@ -637,9 +663,11 @@ function copyPattern(modifier, noOutput=1, record) {
 			} else {
 				displayOutput("<a href='" + params + "'>Pattern Link</a><br />", modifier);
 			}
-			if (replayMoveSet.length > 0) {
+			if (replayMoveSet.length > 0 && $(".swapper").length < 1) {
 			    displayOutput("<a href='" + params + "&replay=" + replayMoveSet.join('|') + "'>Pattern with Replay Link</a><br />", 1);
                 displayOutput("<a href='" + params + "&replay=" + replayMoveSet.join('|') + "&drops=1'>Pattern with Replay with Drops Link</a><br />", 1);
+			} else if ($(".swapper").length > 0) {
+				displayOutput("Replays are unavailable when there are spinners on the board.<br />", 1);
 			}
 			displayOutput("<br>*" + exampleOfStart, 1);
     }
@@ -699,7 +727,7 @@ function dropField() {
             } else {
                 if (divs[rows * cols - 1 - i].getAttribute("tileColor") == 'black') {
                     if (skyFall == 1)
-                        setTileAttribute(rows * cols - 1 - i, randomColor(), 1);
+                        setTileAttribute(rows * cols - 1 - i, randomColor(), 1, 0, 0, 0);
                 }
             }
         }
@@ -731,8 +759,8 @@ function playReplay(solution) {
     requestAction('loadboard');
     toggle('draggable', 0);
     var ctx = document.getElementById("arrowSurface").getContext("2d");
-    ($(divs[replayMoveSet[0]])).css({
-        opacity: 0.4
+    ($(divs[replayMoveSet[0]])).attr({
+        tileopacity: 0.4 // TODO fix this
     });
     var i = 1;
     function playReplayLoopF() {
@@ -1167,8 +1195,12 @@ function solveBoard(solvePortion) {
             calculateOutput('damage');
             swapHasHappened = 0;
             clearMemory('timeout');
-            if (skyFall == 1)
+            if (skyFall == 1){
                 toggle('draggable', 1);
+				spinnerResume();
+				$("#clouds").removeClass('solving');
+				$(".tile").removeClass('solving');
+			}
         }
 /*        getTiles();
 		var matchedOrbs = getMatches();
@@ -1244,6 +1276,7 @@ function requestAction(action, modifier, modifier2=1) {
         $("#showDrops").hide();
 		$("#clouds").removeClass('solving');
 		$(".tile").removeClass('solving');
+		spinnerStart();
     }
     if (action == 'randomize') {
         if (colors.length < 2)
@@ -1288,6 +1321,7 @@ function requestAction(action, modifier, modifier2=1) {
         toggle('skyfall');
     if (action == 'changetheworld') {
         if (!toggle('draggable', 2)) {
+			spinnerStop();
             changeTheWorld();
             displayOutput('I want to change the world... <br />', 0);
         } else
@@ -1357,6 +1391,8 @@ function requestAction(action, modifier, modifier2=1) {
         } else
             displayOutput('Failed to apply duration blinds<br />', 0);
     }
+	if (action == 'toggleswappers')
+		toggleSwappers();
 	if (action == 'applyclouds') {
         if (applyClouds()) {
             saveCloudState();
@@ -1412,6 +1448,7 @@ function requestAction(action, modifier, modifier2=1) {
         }
         if (changeTheWorldOn == 0 && swapHasHappened) {
             toggle('draggable', 0);
+			spinnerStop();
 			if(modifier2 > 100){
 				setTimeout(function () {
 					solveBoard(1);
@@ -1480,11 +1517,21 @@ function requestAction(action, modifier, modifier2=1) {
 			$("#changes").show();
 	}
     if (action == 'legend') {
-        var showHelp = ['Board:<br />R = Red<br />B = Blue<br />G = Green<br />D = Dark (Purple)<br />L = Light (Yellow)<br />H = Heart<br />J = Jammer<br />P = Poison<br />M = Mortal Poison<br />X = Bomb', '<br /><br />Plusses:<br />P = Plussed<br />. = Not plussed', '<br /><br />Locks:<br />L = Locked<br />. = Unlocked', '<br /><br />Blinds:<br />B = Blinded<br />B = Duration Blinded<br />. = Visible', '<br /><br />Clouds:<br />C = Clouded<br />. = Visible', '<br /><br />Press Enter or hit the apply button to change the board', '<br /><br /><a href="javascript:requestAction(\'help\')">Click here to return to information</a>'].join('');
+        var showHelp = ['Board:<br />R = Red<br />B = Blue<br />G = Green<br />D = Dark (Purple)<br />L = Light (Yellow)<br />H = Heart<br />J = Jammer<br />P = Poison<br />M = Mortal Poison<br />X = Bomb', '<br /><br />Plusses:<br />P = Plussed<br />. = Not plussed', '<br /><br />Locks:<br />L = Locked<br />. = Unlocked', '<br /><br />Blinds:<br />B = Blinded<br />D = Duration Blinded<br />. = Visible', '<br /><br />Spinners:<br />S = Spinner<br />. = Normal', '<br /><br />Clouds:<br />C = Clouded<br />. = Visible', '<br /><br />Press Enter or hit the apply button to change the board', '<br /><br /><a href="javascript:requestAction(\'help\')">Click here to return to information</a>'].join('');
         displayOutput(showHelp, 0);
     }
-    if (action == 'replay')
-        playReplay(toDrop);
+	if (action == 'na') {
+        var showHelp = ['This feature is not ready yet as there is a lot to be done. Here is a list of things that need to be done.<br /><br />Features:<br /> - Allow for replays with spinners and change the world<br /> - Allow user to specify a team<br /> - Allow user to specify a foe(s)<br /> - Allow user to specify status buffs/debuffs<br /><br />Bugs:<br /> - Make locked orb + spinner interaction more obvious<br /> - Make bombs explode properly'].join('');
+        displayOutput(showHelp, 0);
+    }
+    if (action == 'replay'){
+		if ($(".swapper").length > 0){
+			var showHelp = ['Replays are unavailable when there are spinners on the board'].join('');
+			displayOutput(showHelp, 0);
+		} else { 
+			playReplay(toDrop);
+		}
+	}
     if (action == 'showdrops')
         showDrops();
     if (action == 'ctimer' && changeTheWorldOn == 0) {
@@ -1532,6 +1579,12 @@ var clsStopwatch = function() {
         startAt = startAt ? startAt : now();
     }
     ;
+	this.stop = function() {
+		// If running, update elapsed time otherwise keep it
+		lapTime	= startAt ? lapTime + now() - startAt : lapTime;
+		startAt	= 0; // Paused
+	}
+	;
     this.reset = function() {
         lapTime = startAt = 0;
     }
@@ -1543,6 +1596,8 @@ var clsStopwatch = function() {
 };
 var x = new clsStopwatch();
 var clocktimer;
+var spinx = new clsStopwatch();
+var spintimer;
 function pad(num, size) {
     var s = "0000" + num;
     return s.substr(s.length - size);
@@ -1578,6 +1633,91 @@ function reset() {
     x.reset();
     update();
     document.getElementById('time').innerHTML = formatTime(x.time(), 1);
+}
+var previousSpinnerTime;
+function spinnerUpdate() {
+    var c = document.getElementsByTagNameNS("http://www.w3.org/2000/svg", 'path');
+	for (var i = 0; i < c.length; i++){
+		c[i].setAttribute('d', getSpinnerPath());
+	}
+	var spinnerTime = spinx.time() % 1000;
+	if (previousSpinnerTime > spinnerTime){
+		spinOrbs();
+	}
+	previousSpinnerTime = spinnerTime;
+}
+function spinnerStart() {
+	spintimer = setInterval("spinnerUpdate()", 1);
+	spinx.reset();
+    spinx.start();
+}
+function spinnerResume() {
+	spintimer = setInterval("spinnerUpdate()", 1);
+    spinx.start();
+}
+function spinnerIsRunning() {
+    return spinx.time() > 0;
+}
+function spinnerReset() {
+	clearInterval(spintimer);
+    spinx.reset();
+    spinnerUpdate();
+    //document.getElementById('time').innerHTML = formatTime(x.time(), 1);
+}
+function spinnerStop() {
+	clearInterval(spintimer);
+	spinx.stop();
+	spinnerUpdate();
+}
+function toggleSwappers() {
+	if (spinnerIsRunning()) {
+		spinnerReset();
+	} else {
+		spinnerStart();
+	}
+}
+function getSpinnerPath() {
+	var d = [];
+	var height = 100;
+	var width = 100;
+	var rX = 47;
+	var rY = 47;
+	var rotation = 0; // This is not set up for change
+	var arc = 1; // Do not change
+	var sweep = 1; // Do not change
+	var percent = 1 - spinx.time() % 1000 / 1000;
+	d[0] = width / 2;
+	d[1] = height / 2;
+	d[2] = width / 2;
+	d[3] = height / 2 - rX;
+	d[4] = rX;
+	d[5] = rY;
+	d[6] = rotation;
+	d[7] = percent > 0.5 ? 0 : 1;
+	d[8] = sweep;
+	d[9] = width / 2 - rX * Math.sin(2 * Math.PI * percent);
+	d[10] = height / 2 - rY * Math.cos(2 * Math.PI * percent);
+	return "M "+d[0]+" "+d[1]+" L "+d[2]+" "+d[3]+" A "+d[4]+" "+d[5]+" "+d[6]+" "+d[7]+" "+d[8]+" "+d[9]+" "+d[10]+" Z"
+}
+function spinOrbs() {
+	for (var i = 0; i < divs.length; i++){
+		if(divs[i].classList.contains('swapper') && divs[i].getAttribute("tileColor") != "black" && !divs[i].classList.contains('moving') && !divs[i].classList.contains('ui-draggable-dragging')){
+			if (!divs[i].classList.contains('lock')) {
+				var color = divs[i].getAttribute("tileColor");
+				var newColor = "red";
+				for (var ii = 0; ii < colors2.length; ii++){
+					if (colors2[ii] == color){
+						newColor = colorsSpin[ii];
+					}
+				}
+				setTileAttribute(i, newColor);
+			} else {
+				// TODO perform some lock effect
+			}
+		}
+		//setTileAttribute(i, 'thngs');
+	}
+	//$('.swapper:not()')
 }
 function removeChild(id) {
     var elem = document.getElementById(id);
@@ -1625,7 +1765,21 @@ $(function() {
         var randColor = randomColor();
         divs[i] = document.createElement("div");
         setTileAttribute(i, randColor, 1);
-        $('#tiles').append(divs[i]);
+		
+		var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+		svg.setAttribute("class", "spinner");
+		svg.setAttribute("viewbox", "0 0 100 100");
+		//svg.setAttribute("style", "z-index: -4;");
+		
+		var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+		path.setAttribute("class", "spinnerpath");
+		path.setAttribute("fill", "rgba(255, 255, 255, 0.5)");
+		//path.setAttribute("d", "M 50 50 L 50 3 A 47 47 0 1 1 3 50 Z");
+		
+		svg.append(path);
+		divs[i].append(svg);
+		$('#tiles').append(divs[i]);
+		
 		
 		clouds[i] = document.createElement("div");
 		clouds[i].setAttribute("class", "cloud");
@@ -1673,28 +1827,28 @@ $(function() {
 	if ($_GET['plusses']) {
         document.getElementById("plusEntry").value = $_GET['plusses'];
         requestAction('applyplusses', 2, 0);
-    }// else
-    //    requestAction('copypattern', 0, 0);
+    } else
+        requestAction('copypattern', 0, 0, 'plusses');
 	if ($_GET['locks']) {
         document.getElementById("lockEntry").value = $_GET['locks'];
         requestAction('applylocks', 2, 0);
-    }// else
-    //    requestAction('copypattern', 0, 0);
+    } else
+        requestAction('copypattern', 0, 0, 'locks');
 	if ($_GET['blinds']) {
         document.getElementById("blindEntry").value = $_GET['blinds'];
         requestAction('applyblinds', 2, 0);
-    }// else
-    //    requestAction('copypattern', 0, 0);
-	if ($_GET['swappers']) {
-        document.getElementById("swapperEntry").value = $_GET['swappers'];
+    } else
+        requestAction('copypattern', 0, 0, 'blinds');
+	if ($_GET['spinners']) {
+        document.getElementById("swapperEntry").value = $_GET['spinners'];
         requestAction('applyswappers', 2, 0);
-    }// else
-    //    requestAction('copypattern', 0, 0);
+    } else
+        requestAction('copypattern', 0, 0, 'swappers');
 	if ($_GET['clouds']) {
         document.getElementById("cloudEntry").value = $_GET['clouds'];
         requestAction('applyclouds', 2, 0);
-    }// else
-     //   requestAction('copypattern', 0, 0);
+    } else
+        requestAction('copypattern', 0, 0, 'clouds');
     if (replayMoveSet.length > 0)
         timeOut.push(setTimeout(function() {
             requestAction('replay');
@@ -1720,12 +1874,13 @@ $(function() {
         refreshPositions: "true",
         containment: "#scrolls>.play", //#board
         helper: "clone",
-        opacity: 0.8,
+        opacity: 0.8, // TODO see if this is fine instead of tileopacity because of its nature
 		zIndex: 3,
         start: function(event, ui) {
-            $(this).css({
-                opacity: 0.2
+            $(this).attr({
+                tileopacity: 0.2
             });
+			$(this).addClass('moving');
 			$("#revealOrbs").hide();
             clearMemory('arrows');
             replayMoveSet = [];
@@ -1737,10 +1892,10 @@ $(function() {
             }
         },
         stop: function(event, ui) {
-            $(this).css({
-                opacity: 1
+            $(this).attr({
+                tileopacity: 1
             });
-			
+			$(this).removeClass('moving');
             //requestAction('solve', 1);
 			$("#revealOrbs").show();
 			if(swapHasHappened){

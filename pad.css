@@ -122,7 +122,7 @@ body {
 	margin: 0 auto;
 	border-left: 1px solid #d2d2d2;
 	border-right: 1px solid #d2d2d2;
-	min-height:200px;
+	min-height:500px;
 }
 #adunit {
 	width:500px;
@@ -212,6 +212,13 @@ body {
 	-o-transition: opacity .4s ease-in-out;
 	transition: opacity .4s ease-in-out
 }
+.tile::before, .tile::after {
+	-webkit-transition: opacity .4s ease-in-out;
+	-moz-transition: opacity .4s ease-in-out;
+	-ms-transition: opacity .4s ease-in-out;
+	-o-transition: opacity .4s ease-in-out;
+	transition: opacity .4s ease-in-out
+}
 .cornerblock{
 width:20px;height:20px;position:absolute;top:-1px;
 }
@@ -222,6 +229,8 @@ width:20px;height:20px;position:absolute;top:-1px;
     height: 90px;
     width: 90px;
     background-size: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
     z-index: 1;
     position: relative;
 }
@@ -232,9 +241,29 @@ width:20px;height:20px;position:absolute;top:-1px;
     float: left;
     height: 90px;
     width: 90px;
-    background-size: 100%;
+    background-size: 89px;
+	background-position: center;
+	background-repeat: no-repeat;
     z-index: 1;
     position: absolute;
+}
+.tile[tileopacity="1"]::before {
+	opacity: 1;
+}
+.tile[tileopacity="0.8"]::before {
+	opacity: 0.8;
+}
+.tile[tileopacity="0.6"]::before {
+	opacity: 0.6;
+}
+.tile[tileopacity="0.4"]::before {
+	opacity: 0.4;
+}
+.tile[tileopacity="0.2"]::before {
+	opacity: 0.2;
+}
+.tile[tileopacity="0"]::before {
+	opacity: 0;
 }
 .tile::after {
 	content: "";
@@ -243,9 +272,12 @@ width:20px;height:20px;position:absolute;top:-1px;
     float: left;
     height: 90px;
     width: 90px;
-    background-size: 100%;
+    background-size: 89px;
+	background-position: center;
+	background-repeat: no-repeat;
     z-index: 1;
     position: absolute;
+	opacity: attr(tileopacity, 0.5);
 }
 .red::before {
 	background-image: url(fire.png);
@@ -618,8 +650,8 @@ width:20px;height:20px;position:absolute;top:-1px;
 	overflow: hidden;
 }
 #scrolls,#clouds {
-	height:450px;
-	width:540px;
+	height: 100%;
+	width: 100%;
 	position: absolute;
 }
 .play {
@@ -706,6 +738,24 @@ width:20px;height:20px;position:absolute;top:-1px;
 #scroll.reveal::after {
 	opacity: 0.4;
 }
+@namespace svg url(http://www.w3.org/2000/svg);
+.swapper:not(.ui-draggable-dragging)>svg {
+	visibility: visible;
+}
+svg {
+	pointer-events: none;
+	margin: 0px;
+	display: block;
+    float: left;
+	margin: 0px;
+    height: 100px;
+    width: 100px;
+	left: -5px;
+	top: -5px;
+    z-index: -4;
+    position: relative;
+	visibility: hidden;
+}
 .cloud {
 	margin: 0px;
     display: block;
@@ -774,21 +824,4 @@ border:1px solid #616261; -webkit-border-radius: 3px; -moz-border-radius: 3px;bo
 }
 .comboInfoBox span, .comboInfoBox img {
 	vertical-align: middle;
-}
-
-
-/* This wonderful code is from https://stackoverflow.com/a/17541916/8150086 */
-
-.radioLabel > input{ /* HIDE RADIO */
-  visibility: hidden; /* Makes input not-clickable */
-  position: absolute; /* Remove input from document flow */
-}
-.radioLabel > input + img{ /* IMAGE STYLES */
-  cursor: pointer;
-  border: 2px solid transparent;
-  border-radius: 5px;
-}
-.radioLabel > input:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
-  border: 2px solid #ffffff;
-  border-radius: 5px;
 }
