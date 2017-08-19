@@ -638,8 +638,6 @@ function copyPattern(modifier, noOutput=1, record) {
 			var params = '';
 			if (rows != 6 || cols != 5)
 				params += "&height=" + cols + "&width=" + rows;
-			if (getScroll())
-				params += "&scroll=" + getScroll();
 			if (minimumMatches>2)
 				params += "&mincombo=" + minimumMatches
 			params += "&patt=" + tilePattern;
@@ -653,6 +651,8 @@ function copyPattern(modifier, noOutput=1, record) {
 				params += "&spinners=" + swapperPattern;
 			if (cloudPattern.includes('C'))
 				params += "&clouds=" + cloudPattern;
+			if (getScroll())
+				params += "&scroll=" + getScroll();
 			
 			
 			params = params.replace('&','?');
@@ -686,7 +686,7 @@ function darkenOrbs(matchedOrbs, matchedOrbsAreBombs=0) {
         if (Object.size(matchedOrbs) > 0)
             darkenOrbs(matchedOrbs, matchedOrbsAreBombs);
         else
-            requestAction('boardmatched');
+			requestAction('boardmatched');
     }, darkDrop));
 }
 function changeTheWorld() {
