@@ -224,6 +224,9 @@ function clearMemory(item) {
         document.getElementById("arrowSurface").width = document.getElementById("arrowSurface").width - 1;
     }
     if (item == 'ctw') {
+		for (i = 0; i < ctwTimeOut.length; i++) {
+            clearTimeout(ctwTimeOut[i]);
+        }
         ctwTimeOut = new Array();
     }
 }
@@ -714,7 +717,7 @@ function darkenOrbs(matchedOrbs, matchedOrbsAreBombs=0) {
         if (Object.size(matchedOrbs) > 0)
             darkenOrbs(matchedOrbs, matchedOrbsAreBombs);
         else
-			requestAction('boardmatched');
+            requestAction('boardmatched');
     }, darkDrop));
 }
 function changeTheWorld() {
@@ -2083,7 +2086,6 @@ $(function() {
     });
 	$("#speed").change(function() {
 		dropSpeed = parseInt($(this).val());
-		console.log(dropSpeed);
 	});
 	//defaultDropSpeed = parseInt($("#speed").val());
 	//dropSpeed = defaultDropSpeed;
