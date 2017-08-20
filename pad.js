@@ -1,7 +1,7 @@
 var colors = ['blue', 'green', 'red', 'light', 'dark', 'heart']
   , colorsbak = ['blue', 'green', 'red', 'light', 'dark', 'heart']
-  , colors2 = ['blue', 'green', 'red', 'light', 'dark', 'heart', 'poison', 'jammer', 'xbomb', 'mortalpoison']
-  , colorsSpin = ['green', 'light', 'blue', 'dark', 'heart', 'red', 'red', 'red', 'red', 'red']
+  , colors2 = ['blue', 'green', 'red', 'light', 'dark', 'heart', 'poison', 'jammer', 'xbomb', 'mortalpoison', 'unknown']
+  , colorsSpin = ['green', 'light', 'blue', 'dark', 'heart', 'red', 'red', 'red', 'red', 'red', 'unknown']
   , colors3 = ['blue', 'green', 'red', 'light', 'dark']
   , divs = []
   , clouds = []
@@ -1416,7 +1416,7 @@ function requestAction(action, modifier, modifier2=1) {
 		loadCloudState(savedCloudState);
         copyPattern(modifier, modifier2, 'all');
     }
-	if (action == 'copytile') {
+	if (action == 'copytiles') {
         loadBoardState(savedBoardState);
         copyPattern(modifier, modifier2, 'tiles');
     }
@@ -1946,7 +1946,7 @@ $(function() {
         keydown: function(e) {
             if (e.which == 13)
                 requestAction('applypattern');
-            if (e.which == 82 || e.which == 71 || e.which == 66 || e.which == 76 || e.which == 68 || e.which == 72 || e.which == 80 || e.which == 74 || e.which == 46 || e.which == 8 || e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40 || e.which == 88 || e.which == 77 || (e.ctrlKey && (e.which == 65 || e.which == 86 || e.which == 67)))
+            if (e.which == 82 || e.which == 71 || e.which == 66 || e.which == 76 || e.which == 68 || e.which == 72 || e.which == 80 || e.which == 74 || e.which == 85 || e.which == 46 || e.which == 8 || e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40 || e.which == 88 || e.which == 77 || (e.ctrlKey && (e.which == 65 || e.which == 86 || e.which == 67)))
                 return true;
             return false;
         }

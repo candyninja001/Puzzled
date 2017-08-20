@@ -639,6 +639,42 @@ width:20px;height:20px;position:absolute;top:-1px;
 .mortalpoison.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.mortalpoison.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
 	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(mortalpoison-blind.png);
 }
+.unknown::before {
+	background-image: url(orb-unknown.png);
+}
+.unknown.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(orb-blind.png);
+}
+.unknown.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before ,.unknown.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.unknown.plus::before {
+	background-image: url(plus.png), url(orb-unknown.png);
+}
+.unknown.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.unknown.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before,.unknown.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.unknown.lock::before {
+	background-image: url(lock.png), url(orb-unknown.png);
+}
+.unknown.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.unknown.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before,.unknown.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.unknown.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-unknown.png);
+}
+.unknown.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.unknown.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.unknown.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
 .cross::before {
 	filter: brightness(50%);
 }
