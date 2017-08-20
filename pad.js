@@ -622,15 +622,15 @@ function copyPattern(modifier, noOutput=1, record) {
 //            exampleOfStart = "<a href='?height=" + cols + "&width=" + rows + "&patt=" + tilePattern + "&start=1'>" + exampleOfStart + "</a><br />";
 //            displayOutput("<a href='?height=" + cols + "&width=" + rows + "&patt=" + tilePattern + "'>Pattern Link</a><br />", modifier);
 //            if (replayMoveSet.length > 0) {
-//                displayOutput("<a href='?height=" + cols + "&width=" + rows + "&patt=" + tilePattern + "&replay=" + replayMoveSet.join('|') + "'>Pattern with Replay Link</a>", 1);
-//                displayOutput("<br /><a href='?height=" + cols + "&width=" + rows + "&patt=" + tilePattern + "&replay=" + replayMoveSet.join('|') + "&drops=1'>Pattern with Replay with Drops Link</a>", 1);
+//                displayOutput("<a href='?height=" + cols + "&width=" + rows + "&patt=" + tilePattern + "&replay=" + replayMoveSet.join('.') + "'>Pattern with Replay Link</a>", 1);
+//                displayOutput("<br /><a href='?height=" + cols + "&width=" + rows + "&patt=" + tilePattern + "&replay=" + replayMoveSet.join('.') + "&drops=1'>Pattern with Replay with Drops Link</a>", 1);
 //            }
 //        } else {
 //            exampleOfStart = "<a href='?patt=" + tilePattern + "&start=1'>" + exampleOfStart + "</a><br />";
 //            displayOutput("<a href='?patt=" + tilePattern + "'>Pattern Link</a><br />", modifier);
 //            if (replayMoveSet.length > 0) {
-//                displayOutput("<a href='?patt=" + tilePattern + "&replay=" + replayMoveSet.join('|') + "'>Pattern with Replay Link</a><br />", 1);
-//                displayOutput("<a href='?patt=" + tilePattern + "&replay=" + replayMoveSet.join('|') + "&drops=1'>Pattern with Replay with Drops Link</a><br />", 1);
+//                displayOutput("<a href='?patt=" + tilePattern + "&replay=" + replayMoveSet.join('.') + "'>Pattern with Replay Link</a><br />", 1);
+//                displayOutput("<a href='?patt=" + tilePattern + "&replay=" + replayMoveSet.join('.') + "&drops=1'>Pattern with Replay with Drops Link</a><br />", 1);
 //            }
 //        }
 //        displayOutput("<br>*" + exampleOfStart, 1);
@@ -664,8 +664,8 @@ function copyPattern(modifier, noOutput=1, record) {
 				displayOutput("<a href='" + params + "'>Pattern Link</a><br />", modifier);
 			}
 			if (replayMoveSet.length > 0 && $(".swapper").length < 1) {
-			    displayOutput("<a href='" + params + "&replay=" + replayMoveSet.join('|') + "'>Pattern with Replay Link</a><br />", 1);
-                displayOutput("<a href='" + params + "&replay=" + replayMoveSet.join('|') + "&drops=1'>Pattern with Replay with Drops Link</a><br />", 1);
+			    displayOutput("<a href='" + params + "&replay=" + replayMoveSet.join('.') + "'>Pattern with Replay Link</a><br />", 1);
+                displayOutput("<a href='" + params + "&replay=" + replayMoveSet.join('.') + "&drops=1'>Pattern with Replay with Drops Link</a><br />", 1);
 			} else if ($(".swapper").length > 0) {
 				displayOutput("Replays are unavailable when there are spinners on the board.<br />", 1);
 			}
@@ -1813,7 +1813,7 @@ $(function() {
     if ($_GET['patt']) {
         document.getElementById("entry").innerHTML = $_GET['patt'];
         if ($_GET['replay']) {
-            replayMoveSet = $_GET['replay'].split('|');
+            replayMoveSet = $_GET['replay'].split('.');
             for (i = 0; i < replayMoveSet.length; i++) {
                 if (replayMoveSet[i] > rows * cols - 1 || replayMoveSet[i] < 0) {
                     replayMoveSet = [];
