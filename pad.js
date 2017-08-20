@@ -38,6 +38,7 @@ var colors = ['blue', 'green', 'red', 'light', 'dark', 'heart']
   , shuffleInstead = false
   , minimumMatched = 2
   , minimumMatches = 2
+  , startPosition = false
   , spinnerTimer = 1000;
 function hideUnit(obj) {
     var link = document.getElementById(obj);
@@ -255,12 +256,34 @@ function toggle(item, command) {
             document.getElementById("damage").style.display = 'none';
     }
     if (item == 'draggable') {
-        if (command == 2)
-            return $(".tile").draggable("option", "disabled");
+        if (command == 2) //return true if an orb is movable;
+            return !$(".tile").draggable("option", "disabled") || !$(".tile.fixed-start").draggable("option", "disabled");
+		if (!startPosition) {
+			$(".tile").removeClass('fixed-start');
+			$(".tile").removeClass('no-start');
+		}
         if (command == 1)
-            setTimeout(function() {
-                $(".tile").draggable("option", "disabled", false);
-            }, 5);
+			if (changeTheWorldOn) {
+				setTimeout(function() {
+					$(".tile").draggable("option", "disabled", false);
+				}, 5);
+			} else if (startPosition) {
+				setTimeout(function() {
+					$(".tile").each(function() {
+						if ($(".tile").index($(this)) == startPosition) {
+							$(this).draggable("option", "disabled", false);
+							$(this).addClass('fixed-start')
+						} else {
+							$(this).draggable("option", "disabled", true);
+							$(this).addClass('no-start')
+						}
+					});
+				}, 5);
+			} else {
+				setTimeout(function() {
+					$(".tile").draggable("option", "disabled", false);
+				}, 5);
+			}
         else
             setTimeout(function() {
                 $(".tile").draggable("option", "disabled", true);
@@ -634,7 +657,7 @@ function copyPattern(modifier, noOutput=1, record) {
 //            }
 //        }
 //        displayOutput("<br>*" + exampleOfStart, 1);
-            var exampleOfStart = 'Example Pattern Link indicating starting orb 1';
+            //var exampleOfStart = 'Example Pattern Link indicating starting orb 1';
 			var params = '';
 			if (rows != 6 || cols != 5)
 				params += "&height=" + cols + "&width=" + rows;
@@ -656,7 +679,7 @@ function copyPattern(modifier, noOutput=1, record) {
 			
 			
 			params = params.replace('&','?');
-			exampleOfStart = "<a href='" + params + "&start=1'>" + exampleOfStart + "</a><br />";
+			//exampleOfStart = "<a href='" + params + "&start=1'>" + exampleOfStart + "</a><br />";
 			if (document.getElementById("entry").value != tilePattern || document.getElementById("plusEntry").value != plusPattern || document.getElementById("lockEntry").value != lockPattern || document.getElementById("blindEntry").value != blindPattern || document.getElementById("swapperEntry").value != swapperPattern || document.getElementById("cloudEntry").value != cloudPattern) {
 				displayOutput("One or more of the board settings has not been applied yet.<br />(This message might be bugged if there are spinners)<br /><br />", modifier);
 				displayOutput("<a href='" + params + "'>Pattern Link</a><br />", 1);
@@ -669,7 +692,12 @@ function copyPattern(modifier, noOutput=1, record) {
 			} else if ($(".swapper").length > 0) {
 				displayOutput("Replays are unavailable when there are spinners on the board.<br />", 1);
 			}
-			displayOutput("<br>*" + exampleOfStart, 1);
+			if (startPosition) {
+			    displayOutput("<a href='" + params + "&start=" + startPosition + "'>Pattern with Fixed Start</a><br />", 1);
+			} else if (replayMoveSet.length > 0) {
+				displayOutput("<a href='" + params + "&start=" + replayMoveSet[0] + "'>Pattern with Fixed Start at first move</a><br />", 1);
+			}
+			//displayOutput("<br>*" + exampleOfStart, 1);
     }
 }
 function darkenOrbs(matchedOrbs, matchedOrbsAreBombs=0) {
@@ -1140,24 +1168,6 @@ function bombsExplode(unmatchedBombs) {
     else
         return false;
 }
-function startOnThisOrb(xThisistheone) {
-    xThisistheone--;
-    var xCanvas = (xThisistheone % rows);
-    var yCanvas = Math.floor(xThisistheone / rows);
-    var canvas = document.getElementById("arrowSurface");
-    var ctx = document.getElementById("arrowSurface").getContext("2d");
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = "12";
-    ctx.beginPath();
-    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(scale * xCanvas + scale / 2, scale * yCanvas + scale / 2, 45, 0, 2 * Math.PI);
-    ctx.closePath();
-    ctx.clip();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
 function getScroll(position) {
 	var position = $("#scroll").attr('class');
 	switch(position) {
@@ -1266,9 +1276,9 @@ function requestAction(action, modifier, modifier2=1) {
     if (action == 'randomize' || (action == 'applypattern' && modifier != 2))
         replayMoveSet = [];
     if (action == 'randomize' || action == 'loadboard' || action == 'clearstate' || action == 'copypattern') {
-        toggle('draggable', 1);
         changeTheWorldOn = 0;
         swapHasHappened = 0;
+		toggle('draggable', 1);
         clearMemory('timeout');
         clearMemory('ctw');
         reset();
@@ -1320,7 +1330,7 @@ function requestAction(action, modifier, modifier2=1) {
     if (action == 'skyfall')
         toggle('skyfall');
     if (action == 'changetheworld') {
-        if (!toggle('draggable', 2)) {
+        if (toggle('draggable', 2)) {
 			spinnerStop();
             changeTheWorld();
             displayOutput('I want to change the world... <br />', 0);
@@ -1337,6 +1347,7 @@ function requestAction(action, modifier, modifier2=1) {
     }
 	if (action == 'applyplusses') {
         if (applyPlusses()) {
+			toggle('draggable', 1);
             savePlusState();
             requestAction('copyplusses', 0, modifier2);
         } else
@@ -1344,6 +1355,7 @@ function requestAction(action, modifier, modifier2=1) {
     }
 	if (action == 'clearplusses') {
         if (clearPlusses()) {
+			toggle('draggable', 1);
             savePlusState();
             requestAction('copyplusses', 0, modifier2);
         } else
@@ -1351,6 +1363,7 @@ function requestAction(action, modifier, modifier2=1) {
     }
 	if (action == 'applylocks') {
         if (applyLocks()) {
+			toggle('draggable', 1);
             saveLockState();
             requestAction('copylocks', 0, modifier2);
         } else
@@ -1358,6 +1371,7 @@ function requestAction(action, modifier, modifier2=1) {
     }
 	if (action == 'clearlocks') {
         if (clearLocks()) {
+			toggle('draggable', 1);
             saveLockState();
             requestAction('copylocks', 0, modifier2);
         } else
@@ -1365,6 +1379,7 @@ function requestAction(action, modifier, modifier2=1) {
     }
 	if (action == 'applyblinds') {
         if (applyBlinds()) {
+			toggle('draggable', 1);
             saveBlindState();
             requestAction('copyblinds', 0, modifier2);
         } else
@@ -1372,6 +1387,7 @@ function requestAction(action, modifier, modifier2=1) {
     }
 	if (action == 'clearblinds') {
         if (clearBlinds()) {
+			toggle('draggable', 1);
             saveBlindState();
             requestAction('copyblinds', 0, modifier2);
         } else
@@ -1379,6 +1395,7 @@ function requestAction(action, modifier, modifier2=1) {
     }
 	if (action == 'applyswappers') {
         if (applySwappers()) {
+			toggle('draggable', 1);
             saveSwapperState();
             requestAction('copyswappers', 0, modifier2);
         } else
@@ -1386,6 +1403,7 @@ function requestAction(action, modifier, modifier2=1) {
     }
 	if (action == 'clearswappers') {
         if (clearSwappers()) {
+			toggle('draggable', 1);
             saveSwapperState();
             requestAction('copyswappers', 0, modifier2);
         } else
@@ -1395,6 +1413,7 @@ function requestAction(action, modifier, modifier2=1) {
 		toggleSwappers();
 	if (action == 'applyclouds') {
         if (applyClouds()) {
+			toggle('draggable', 1);
             saveCloudState();
             requestAction('copyclouds', 0, modifier);
         } else
@@ -1402,6 +1421,7 @@ function requestAction(action, modifier, modifier2=1) {
     }
 	if (action == 'clearclouds') {
         if (clearClouds()) {
+			toggle('draggable', 1);
             saveCloudState();
             requestAction('copyclouds', 0, modifier2);
         } else
@@ -1865,8 +1885,10 @@ $(function() {
         toDrop = 2;
     if ($_GET['speed'] && $.isNumeric($_GET['speed']))
         dropSpeed = $_GET['speed'];
-    if ($_GET['start'] && $.isNumeric($_GET['start']))
-        startOnThisOrb($_GET['start']);
+	if ($_GET['start'] && $.isNumeric($_GET['start'])){
+		startPosition = $_GET['start'];
+		toggle('draggable', 1);
+	}
     $(function() {
         document.getElementById('time').innerHTML = formatTime(x.time());
     });
@@ -1882,6 +1904,7 @@ $(function() {
             });
 			$(this).addClass('moving');
 			$("#revealOrbs").hide();
+			$("#tiles").addClass('picked-up');
             clearMemory('arrows');
             replayMoveSet = [];
             if (changeTheWorldOn == 0 && timerOn == 1) {
@@ -1895,13 +1918,26 @@ $(function() {
             $(this).attr({
                 tileopacity: 1
             });
-			$(this).removeClass('moving');
             //requestAction('solve', 1);
 			$("#revealOrbs").show();
 			if(swapHasHappened){
-				$("#clouds").addClass('solving');
-				$(".tile").addClass('solving');
+				$(".tile").removeClass('fixed-start');
+				$(".tile").removeClass('no-start');
+				if (changeTheWorldOn) {
+					/*$(".tile:not(.moving)").each(function() {
+						console.log( $(".tile").index($(this)) + " " + $(".tile").index($(".tile.moving")) + " "  )
+						$(".tile").draggable("option", "disabled", false);
+					});*/
+					//$(".tile").index($(this))
+					//$(".tile").draggable("option", "disabled", false);
+					toggle('draggable', 1);
+				} else {
+					$("#clouds").addClass('solving');
+					$(".tile").addClass('solving');
+				}
 			}
+			$(this).removeClass('moving');
+			$("#tiles").removeClass('picked-up');
 			if($(".cloud.show").length > 0 || $(".tile.blind").length > 0 || $(".tile.blind-duration").length > 0){
 				requestAction('solve', 1, 750);
 			}else{

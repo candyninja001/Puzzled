@@ -247,22 +247,40 @@ width:20px;height:20px;position:absolute;top:-1px;
     z-index: 1;
     position: absolute;
 }
-.tile[tileopacity="1"]::before {
+.tile[tileopacity="1"]:not(.no-start)::before,.picked-up>.tile[tileopacity="1"].no-start::before {
 	opacity: 1;
 }
-.tile[tileopacity="0.8"]::before {
+.tile[tileopacity="0.8"]:not(.no-start)::before,.picked-up>.tile[tileopacity="0.8"].no-start::before {
 	opacity: 0.8;
 }
-.tile[tileopacity="0.6"]::before {
+.tile[tileopacity="0.6"]:not(.no-start)::before,.picked-up>.tile[tileopacity="0.6"].no-start::before {
 	opacity: 0.6;
 }
-.tile[tileopacity="0.4"]::before {
+.tile[tileopacity="0.4"]:not(.no-start)::before,.picked-up>.tile[tileopacity="0.4"].no-start::before {
 	opacity: 0.4;
 }
-.tile[tileopacity="0.2"]::before {
+.tile[tileopacity="0.2"]:not(.no-start)::before,.picked-up>.tile[tileopacity="0.2"].no-start::before {
 	opacity: 0.2;
 }
-.tile[tileopacity="0"]::before {
+.tile[tileopacity="0"]:not(.no-start)::before,.picked-up>.tile[tileopacity="0"].no-start::before {
+	opacity: 0;
+}
+.tile[tileopacity="1"].no-start::before {
+	opacity: 0.5;
+}
+.tile[tileopacity="0.8"].no-start::before {
+	opacity: 0.4;
+}
+.tile[tileopacity="0.6"].no-start::before {
+	opacity: 0.3;
+}
+.tile[tileopacity="0.4"].no-start::before {
+	opacity: 0.2;
+}
+.tile[tileopacity="0.2"].no-start::before {
+	opacity: 0.1;
+}
+.tile[tileopacity="0"].no-start::before {
 	opacity: 0;
 }
 .tile::after {
