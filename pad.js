@@ -13,8 +13,8 @@ var colors = ['blue', 'green', 'red', 'light', 'dark', 'heart']
   , savedCloudState = []
   , changeTheWorldOn = 0
   , timerOn = 0
-  , dropSpeed = 400
-  , replaySpeed = 350
+  , defaultDropSpeed = 400
+  , dropSpeed = defaultDropSpeed
   , fieldDropTimer = 100
   , scale = 90
   , offsetMargin = 0
@@ -785,7 +785,7 @@ function playReplay(solution) {
 					$(".tile").addClass('solving');
                 }
             }
-        }, replaySpeed));
+        }, dropSpeed));
     }
     playReplayLoopF();
 }
@@ -1452,7 +1452,7 @@ function requestAction(action, modifier, modifier2=1) {
 			if(modifier2 > 100){
 				setTimeout(function () {
 					solveBoard(1);
-				}, 750);
+				}, modifier2);
 			}else
 				solveBoard(1);
 			
@@ -2035,7 +2035,7 @@ $(function() {
             return false;
         }
     });
-	 $("#revealOrbs").hover(function(){ 
+	$("#revealOrbs").hover(function(){ 
         $(".tile").addClass('reveal');
 		$("#scroll").addClass('reveal');
 		$(".cloud").addClass('reveal');
@@ -2045,6 +2045,12 @@ $(function() {
 		$("#scroll").removeClass('reveal');
 		$(".cloud").removeClass('reveal');
     });
+	$("#speed").change(function() {
+		dropSpeed = parseInt($(this).val());
+		console.log(dropSpeed);
+	});
+	//defaultDropSpeed = parseInt($("#speed").val());
+	//dropSpeed = defaultDropSpeed;
 });
 $(document).ready(function() {
     $('input[type=text][title],input[type=password][title],textarea[title]').each(function(i) {

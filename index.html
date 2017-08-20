@@ -40,7 +40,15 @@
         <div style="float:left;line-height:25px;">Time: <span id="time"></span>&nbsp;</div>
         <button onclick="requestAction('ctimer', 0)" id="image4" style="display:none" class="topbutton image4">Minus</button>
         <button onclick="requestAction('ctimer', 1)" id="image5" style="display:none" class="topbutton image5">Plus</button>
-        <div style="float:right;line-height:25px">Puzzled Board Simulator</div>
+        <!--div style="float:right;line-height:25px">Puzzled Board Simulator</div-->
+		<span style="float:right;line-height:25px;margin-right:10px">
+			Speed
+			<select id="speed">
+				<option value="500">Slow</option>
+				<option value="400" selected="selected">Medium</option>
+				<option value="300">Fast</option>
+			</select>
+		</span>
       </div>
 	  <div id="damage">
 		<input id='total' value='Total Damage Dealt' disabled>
