@@ -40,7 +40,12 @@ var colors = ['blue', 'green', 'red', 'light', 'dark', 'heart']
   , minimumMatched = 2
   , minimumMatches = 2
   , startPosition = false
-  , spinnerTimer = 1000;
+  , spinnerTimer = 1000
+  , isMobile = false;
+function setUpMobile() {
+    scale = ($(window).width() - 40) / 6 ;
+	document.getElementById("sizesheet").innerHTML = "#game { position: fixed; width: 100%;	bottom: 0px; left: 0px; margin:25px auto 0px auto; } .tile { height: "+scale+"px; width: "+scale+"px; } #board { background-image:url('boardbackground.png'); background-size:"+scale*2+"px "+scale*2+"px; height: "+scale*cols+"px; width: "+scale*rows+"px; } #scrolls.vertical>#scroll.left { width: "+scale+"px; } #scrolls.vertical>#scroll.right { width: "+scale+"px; } #scrolls.vertical>.play { width: calc(100% - "+scale+"px); } #scrolls.horizontal>#scroll.top { height: "+scale+"px; } #scrolls.horizontal>#scroll.bottom { height: "+scale+"px; } #scrolls.horizontal>.play { height: calc(100% - "+scale+"px); } #scrolls.vertical>#scroll::after { background-size: "+scale*0.59375+"px "+scale*2+"px; } #scrolls.horizontal>#scroll::after { background-size: "+scale*2+"px "+scale*0.59375+"px; }";
+}
 function hideUnit(obj) {
     var link = document.getElementById(obj);
     link.style.display = 'none';
@@ -1809,12 +1814,20 @@ $(function() {
     }
     if ($_GET['width'] && $.isNumeric($_GET['width']) && 2 < $_GET['width'] && $_GET['width'] < 10) {
         rows = parseInt($_GET['width']);
-        document.getElementById("board").style.width = rows * scale + "px";
+        //document.getElementById("board").style.width = rows * scale + "px";
     }
     if ($_GET['height'] && $.isNumeric($_GET['height']) && 2 < $_GET['height'] && $_GET['height'] < 10) {
         cols = parseInt($_GET['height']);
-        document.getElementById("board").style.height = cols * scale + "px";
+        //document.getElementById("board").style.height = cols * scale + "px";
     }
+	if ($_GET['mobile']){
+		setUpMobile();
+	} else {
+		scale = 90;
+		document.getElementById("sizesheet").innerHTML = ".tile { height: "+scale+"px; width: "+scale+"px; } #board { background-image:url('boardbackground.png'); background-size:"+scale*2+"px "+scale*2+"px; height: "+scale*cols+"px; width: "+scale*rows+"px; }";
+	}
+	//document.getElementById("board").style.width = rows * scale + "px";
+	//document.getElementById("board").style.height = cols * scale + "px";
     document.getElementById('arrowSurfaceC').innerHTML = '<canvas id="arrowSurface" width="' + rows * scale + 'px" height="' + cols * scale + 'px"></canvas>';
     if (rows != 6 || cols != 5) {
         document.getElementById("entry").maxLength = cols * rows;
