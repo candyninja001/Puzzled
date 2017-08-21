@@ -1127,7 +1127,8 @@ function getUnmatchedBombs(bombOrbs, matchedOrbs) { //returns array or unmatched
     }
     /*if (bombsHaveBeenChecked > 0)
         return false;
-    else*/ if (Object.size(bombOrbs) > 0)
+    else*/ 
+	if (Object.size(bombOrbs) > 0)
         return bombOrbs;
     else
         return false;
@@ -1216,7 +1217,7 @@ function solveBoard(solvePortion) {
 		if (matchedBombs != false) {
 			trackScore(matchedBombs);
             darkenOrbs(matchedBombs, 0, 0);
-		} else if (unmatchedBombs != false) {
+		} else if (unmatchedBombs !== false) {
             tempArray = bombsExplode(unmatchedBombs);
 			matchedOrbs = new Array();
 			matchedOrbs.unshift(tempArray);
