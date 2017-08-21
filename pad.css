@@ -169,6 +169,18 @@ body {
 .image12 {
 	background:url("heart.png")
 }
+.image13 {
+	background:url("jammer.png")
+}
+.image14 {
+	background:url("poison.png")
+}
+.image15 {
+	background:url("mortalpoison.png")
+}
+.image16 {
+	background:url("bomb.png")
+}
 .topbutton {
 	float:left;
 	margin:2px;

@@ -2,6 +2,7 @@ var colors = ['blue', 'green', 'red', 'light', 'dark', 'heart']
   , colorsbak = ['blue', 'green', 'red', 'light', 'dark', 'heart']
   , colors2 = ['blue', 'green', 'red', 'light', 'dark', 'heart', 'poison', 'jammer', 'xbomb', 'mortalpoison', 'unknown']
   , colorsSpin = ['green', 'light', 'blue', 'dark', 'heart', 'red', 'red', 'red', 'red', 'red', 'unknown']
+  , colorsCross = ['blue', 'green', 'red', 'light', 'dark', 'heart', 'poison', 'jammer', 'xbomb', 'mortalpoison', 'unknown']
   , colors3 = ['blue', 'green', 'red', 'light', 'dark']
   , divs = []
   , clouds = []
@@ -321,6 +322,28 @@ function toggle(item, command) {
 			document.getElementById('bc' + command).style.filter = "";
 		}
     }
+	if (item == 'cross') {
+        temp23 = '';
+        var index;
+        for (index = 0; index < colorsCross.length; ++index) {
+            if (capitaliseFirstLetter(colorsCross[index]) == command) {
+                temp23 = '1';
+                colorsCross.splice(index, 1);
+                break;
+            }
+        }
+        if (temp23 != '1')
+            colorsCross.push(unCapitaliseFirstLetter(command));
+		//  re-enable if important
+        //document.getElementById('cross' + command).style.backgroundImage = "url('" + command + temp23 + ".png')";
+		if(temp23 == '1'){
+			document.getElementById('cross' + command).style.filter = "grayscale(100%)";
+			$('.tile.' + unCapitaliseFirstLetter(command)).addClass('cross');
+		}else{
+			document.getElementById('cross' + command).style.filter = "";
+			$('.tile.' + unCapitaliseFirstLetter(command)).removeClass('cross');
+		}
+    }
     if (item == 'replayarrows') {
         if (command == 0) {
             showReplayArrows = 0;
@@ -370,14 +393,21 @@ function setTileAttribute(i, tileColor, opacity, classless, bombbomb=0, convert=
 	var blind = divs[i].classList.contains('blind-duration') ? ' blind-duration' : (divs[i].classList.contains('blind') ? ' blind' : '');
 	var swap = divs[i].classList.contains('swapper') ? ' swapper' : '';
 	var reveal = divs[i].classList.contains('reveal') ? ' reveal' : '';
+	var cross = ' cross';
+	//console.log('l: ' + );
+	for (index = 0; index < colorsCross.length; ++index) {
+        if (unCapitaliseFirstLetter(colorsCross[index]) == tileColor) {
+            cross = '';
+        }
+    }
 	if (convert == 0){
         if (classless != 1)
-            divs[i].setAttribute('class', 'tile ' + tileColor + swap);
+            divs[i].setAttribute('class', 'tile ' + tileColor + cross + swap); //TODO see if cross belongs here
         divs[i].setAttribute('tileColor', tileColor);
         divs[i].setAttribute('tileopacity', opacity);
 	} else {
 		if (classless != 1)
-            divs[i].setAttribute('class', 'tile ' + tileColor + plus + lock + blind + swap + reveal);
+            divs[i].setAttribute('class', 'tile ' + tileColor + cross + plus + lock + blind + swap + reveal);
         divs[i].setAttribute('tileColor', tileColor);
         divs[i].setAttribute('tileopacity', opacity);
 	}
@@ -865,9 +895,17 @@ function canvas_arrow(ctx, fromx, fromy, tox, toy, special) {
 function getMatches(bombs=0) {
     var comboPositionList = [];
     var comboColor = ''
+	  , comboPluses = 0
+	  , comboCross = false
+	  , comboRow = false
+	  , comboColumn = false //TODO see if this is where pluses are added
       , comboPosition = [];
     for (var f = 0; f < cols; f++) {
         comboColor = '';
+		comboPluses = 0;
+		comboCross = false;
+		comboRow = false;
+		comboColumn = false;
         comboPosition = [];
         for (var i = f * rows; i < f * rows + rows; i++) {
             if (bombs.isArray && divs[i].getAttribute("tileColor") != 'xbomb') {
@@ -879,11 +917,11 @@ function getMatches(bombs=0) {
                     }
                 }
             }
-            if (divs[i].getAttribute("tileColor") != comboColor) {
+            if (divs[i].getAttribute("tileColor") != comboColor || divs[i].classList.contains('cross')) {
                 if (comboPosition.length > minimumMatched) {
                     comboPositionList = comboPositionList.concat(comboPosition);
                 }
-                comboColor = divs[i].getAttribute("tileColor");
+                comboColor = divs[i].getAttribute("tileColor") == 'unknown' ? '' : (divs[i].classList.contains('cross') ? '' : divs[i].getAttribute("tileColor"));
                 comboPosition.length = 0;
             }
             comboPosition.push(i);
@@ -905,11 +943,11 @@ function getMatches(bombs=0) {
                     }
                 }
             }
-            if (divs[i].getAttribute("tileColor") != comboColor) {
+            if (divs[i].getAttribute("tileColor") != comboColor || divs[i].classList.contains('cross')) {
                 if (comboPosition.length > minimumMatched) {
                     comboPositionList = comboPositionList.concat(comboPosition);
                 }
-                comboColor = divs[i].getAttribute("tileColor");
+                comboColor = divs[i].getAttribute("tileColor") == 'unknown' ? '' : (divs[i].classList.contains('cross') ? '' : divs[i].getAttribute("tileColor"));
                 comboPosition.length = 0;
             }
             comboPosition.push(i);
@@ -1538,6 +1576,25 @@ function requestAction(action, modifier, modifier2=1) {
         var showHelp = ['Board:<br />R = Red<br />B = Blue<br />G = Green<br />D = Dark (Purple)<br />L = Light (Yellow)<br />H = Heart<br />J = Jammer<br />P = Poison<br />M = Mortal Poison<br />X = Bomb', '<br /><br />Plusses:<br />P = Plussed<br />. = Not plussed', '<br /><br />Locks:<br />L = Locked<br />. = Unlocked', '<br /><br />Blinds:<br />B = Blinded<br />D = Duration Blinded<br />. = Visible', '<br /><br />Spinners:<br />S = Spinner<br />. = Normal', '<br /><br />Clouds:<br />C = Clouded<br />. = Visible', '<br /><br />Press Enter or hit the apply button to change the board', '<br /><br /><a href="javascript:requestAction(\'help\')">Click here to return to information</a>'].join('');
         displayOutput(showHelp, 0);
     }
+	if (action == 'statuses') {
+		var showHelp = ['<br /><div class="test1"><div style="float:left;vertical-align:bottom;line-height:30px">Matchable: </div>', '<button onclick="requestAction(\'togglecross\', \'Red\')" id="crossRed" class="topbutton image8">Options</button>', '<button onclick="requestAction(\'togglecross\', \'Blue\')" id="crossBlue" class="topbutton image9">Options</button>', '<button onclick="requestAction(\'togglecross\', \'Green\')" id="crossGreen" class="topbutton image7">Options</button>', '<button onclick="requestAction(\'togglecross\', \'Light\')" id="crossLight" class="topbutton image10">Options</button>', '<button onclick="requestAction(\'togglecross\', \'Dark\')" id="crossDark" class="topbutton image11">Options</button>', '<button onclick="requestAction(\'togglecross\', \'Heart\')" id="crossHeart" class="topbutton image12">Options</button>', '<button onclick="requestAction(\'togglecross\', \'Jammer\')" id="crossJammer" class="topbutton image13">Options</button>', '<button onclick="requestAction(\'togglecross\', \'Poison\')" id="crossPoison" class="topbutton image14">Options</button>', '<button onclick="requestAction(\'togglecross\', \'Mortalpoison\')" id="crossMortalpoison" class="topbutton image15">Options</button>', '<button onclick="requestAction(\'togglecross\', \'Xbomb\')" id="crossXbomb" class="topbutton image16">Options</button></div>'].join('');
+        displayOutput(showHelp, 0);
+        for (index1 = 0; index1 < 2; ++index1) {
+			toggle('cross', 'Red');
+            toggle('cross', 'Blue');
+            toggle('cross', 'Green');
+            toggle('cross', 'Light');
+            toggle('cross', 'Dark');
+            toggle('cross', 'Heart');
+			toggle('cross', 'Jammer');
+			toggle('cross', 'Poison');
+			toggle('cross', 'Mortalpoison');
+			toggle('cross', 'Xbomb');
+        }
+	}
+	if (action == 'togglecross') { 
+		toggle('cross', modifier);
+	}
 	if (action == 'na') {
         var showHelp = ['This feature is not ready yet as there is a lot to be done. Here is a list of things that need to be done.<br /><br />Features:<br /> - Allow for replays with spinners and change the world<br /> - Allow user to specify a team<br /> - Allow user to specify a foe(s)<br /> - Allow user to specify status buffs/debuffs<br /><br />Bugs:<br /> - Make locked orb + spinner interaction more obvious<br /> - Make bombs explode properly'].join('');
         displayOutput(showHelp, 0);
