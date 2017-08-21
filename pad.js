@@ -43,8 +43,19 @@ var colors = ['blue', 'green', 'red', 'light', 'dark', 'heart']
   , spinnerTimer = 1000
   , isMobile = false;
 function setUpMobile() {
-    scale = ($(window).width() - 40) / 6 ;
-	document.getElementById("sizesheet").innerHTML = "#game { position: fixed; width: 100%;	bottom: 0px; left: 0px; margin:25px auto 0px auto; } .tile { height: "+scale+"px; width: "+scale+"px; } #board { background-image:url('boardbackground.png'); background-size:"+scale*2+"px "+scale*2+"px; height: "+scale*cols+"px; width: "+scale*rows+"px; } #scrolls.vertical>#scroll.left { width: "+scale+"px; } #scrolls.vertical>#scroll.right { width: "+scale+"px; } #scrolls.vertical>.play { width: calc(100% - "+scale+"px); } #scrolls.horizontal>#scroll.top { height: "+scale+"px; } #scrolls.horizontal>#scroll.bottom { height: "+scale+"px; } #scrolls.horizontal>.play { height: calc(100% - "+scale+"px); } #scrolls.vertical>#scroll::after { background-size: "+scale*0.59375+"px "+scale*2+"px; } #scrolls.horizontal>#scroll::after { background-size: "+scale*2+"px "+scale*0.59375+"px; }";
+    //scale = ($(window).width() - 40) / 6 ;
+	var windowX = $(window).width(); 	
+	var windowY = $(window).width()*616/750;
+	var scaleX = Math.floor(windowX / rows);
+	var scaleY = Math.floor(windowY / cols);
+	scale = Math.min(scaleX, scaleY);
+	var diffX = windowX - (scaleX * rows)
+	var diffY = windowY - (scaleY * cols)
+	var ghostX = Math.floor(windowX / 5); // size of the ghost orb when moving orbs on the board
+	var ghostY = Math.floor(windowY / 4);
+	var ghost = Math.min(ghostX, ghostY);
+	//scale = Math.floor($(window).width() / rows);
+	document.getElementById("sizesheet").innerHTML = "#central { position: absolute; width: 100vw; height: calc(100vh - calc(100vw * 616 / 750)); background: rgba(0, 0, 0, 0.7); overflow: scroll; } #left { position: fixed; width: 100vw; height: calc(100vw * 616 / 750); left: 0px; bottom: 0px; background-color: #000000; //background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 1%, rgb(0, 0, 0) 77%, rgb(0, 0, 0) 100%); } #right { width: auto; margin: 0px auto 0xp auto; } svg { height: "+scale*1.2+"px; width: "+scale*1.2+"px; left: -"+scale*0.1+"px; top: -"+scale*0.1+"px; background-size: "+scale+"px; } .cloud { height: "+scale+"px; width: "+scale+"px; } .cloud.show::after { height: "+scale*2+"px; width: "+scale*2+"px; left: -"+scale/2+"px; top: -"+scale/2+"px; } #revealOrbs { position: absolute; height: "+scale+"px; width: "+scale+"px; top: -"+(scale+20)+"px; right: 0px; background-image:url('https://discordapp.com/assets/53ef346458017da2062aca5c7955946b.svg'); background-size:100%; } #game { position: relative; top: "+diffY/2+"px; margin: auto auto auto auto; } .tile { height: "+scale+"px; width: "+scale+"px; } #board { background-image:url('boardbackground.png'); background-size:"+scale*2+"px "+scale*2+"px; height: "+scale*cols+"px; width: "+scale*rows+"px; border:0px; } #scrolls.vertical>#scroll.left { width: "+scale+"px; } #scrolls.vertical>#scroll.right { width: "+scale+"px; } #scrolls.vertical>.play { width: calc(100% - "+scale+"px); } #scrolls.horizontal>#scroll.top { height: "+scale+"px; } #scrolls.horizontal>#scroll.bottom { height: "+scale+"px; } #scrolls.horizontal>.play { height: calc(100% - "+scale+"px); } #scrolls.vertical>#scroll::after { background-size: "+scale*0.59375+"px "+scale*2+"px; } #scrolls.horizontal>#scroll::after { background-size: "+scale*2+"px "+scale*0.59375+"px; }";
 }
 function hideUnit(obj) {
     var link = document.getElementById(obj);
@@ -697,6 +708,8 @@ function copyPattern(modifier, noOutput=1, record) {
 //        displayOutput("<br>*" + exampleOfStart, 1);
             //var exampleOfStart = 'Example Pattern Link indicating starting orb 1';
 			var params = '';
+			if (isMobile)
+				params += "&mobile=true";
 			if (rows != 6 || cols != 5)
 				params += "&height=" + cols + "&width=" + rows;
 			if (minimumMatches>2)
@@ -1554,7 +1567,7 @@ function requestAction(action, modifier, modifier2=1) {
     if (action == 'solve2' || action == 'fielddropped')
         solveBoard(2);
     if (action == 'help') {
-        var showHelp = ['<a href="javascript:requestAction(\'legend\')">Legend</a> for the color entry box on the right and damage (sword icon at the top)<br /><br />', 'Icons above the board do things! Gear icon leads to <a href="javascript:requestAction(\'options\')">options</a>', ', stopwatch icon toggles an adjustable 4 second timer', '<br /><br />You can play with different <a href="?height=6&width=7">board</a> <a href="?height=4&width=5">sizes</a>! (change url)', '<br /><br />CtW (change the world) allows you to move and drop orbs freely for 10 seconds (no replay)', '<br /><br />Convert feature on the right will change all orbs of the first color to those of the second (supports 2 colors at once: GR=>RG)', '<br /><br />Puzzled is a modification to dawnGlare\'s PAD Simulator. You can view the source code and add suggestions on <a href="https://github.com/candyninja001/Puzzled">GitHub</a>'].join('');
+        var showHelp = ['<a href="javascript:requestAction(\'legend\')">Legend</a> for the entry boxes above<br /><br />', 'On mobile? <a href="?mobile=true">Here is a link to the mobile verson of the site.</a><br /><br />', 'Icons above the board do things! Gear icon leads to <a href="javascript:requestAction(\'options\')">options</a>', ', stopwatch icon toggles an adjustable 4 second timer', '<br /><br />You can play with different <a href="?' + isMobile ? 'mobile=true&' : '' + 'height=6&width=7">board</a> <a href="?' + isMobile ? 'mobile=true&' : '' + 'height=4&width=5">sizes</a>! (change url)', '<br /><br />CtW (change the world) allows you to move and drop orbs freely for 10 seconds (no replay)', '<br /><br />Convert feature on the right will change all orbs of the first color to those of the second (supports 2 colors at once: GR=>RG)', '<br /><br />Puzzled is a modification to dawnGlare\'s PAD Simulator. You can view the source code and add suggestions on <a href="https://github.com/candyninja001/Puzzled">GitHub</a>'].join('');
         displayOutput(showHelp, 0);
     }
     if (action == 'options') {
@@ -1972,6 +1985,9 @@ $(function() {
             });
 			$(this).addClass('moving');
 			$("#revealOrbs").hide();
+			$(".tile").removeClass('reveal');
+			$("#scroll").removeClass('reveal');
+			$(".cloud").removeClass('reveal');
 			$("#tiles").addClass('picked-up');
             clearMemory('arrows');
             replayMoveSet = [];
@@ -2143,6 +2159,17 @@ $(function() {
 		$("#scroll").removeClass('reveal');
 		$(".cloud").removeClass('reveal');
     });
+	/*$("#revealOrbs").click(function(){ 
+		if ($("#scroll").hasClass('reveal')) {
+			$(".tile").removeClass('reveal');
+			$("#scroll").removeClass('reveal');
+			$(".cloud").removeClass('reveal');
+		} else {
+			$(".tile").addClass('reveal');
+			$("#scroll").addClass('reveal');
+			$(".cloud").addClass('reveal');
+		}
+    });*/
 	$("#speed").change(function() {
 		dropSpeed = parseInt($(this).val());
 	});
