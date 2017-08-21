@@ -728,6 +728,8 @@ function copyPattern(modifier, noOutput=1, record) {
 			if (getScroll())
 				params += "&scroll=" + getScroll();
 			
+			if (colorsCross.length != ['blue', 'green', 'red', 'light', 'dark', 'heart', 'poison', 'jammer', 'xbomb', 'mortalpoison', 'unknown'].length)
+				params += "&crossed=" + colorsCross.join('.');
 			
 			params = params.replace('&','?');
 			//exampleOfStart = "<a href='" + params + "&start=1'>" + exampleOfStart + "</a><br />";
@@ -1950,6 +1952,9 @@ $(function() {
         requestAction('applyclouds', 2, 0);
     } else
         requestAction('copypattern', 0, 0, 'clouds');
+	if ($_GET['crossed']) {
+		colorsCross = $_GET['crossed'].split('.');
+	}
     if (replayMoveSet.length > 0)
         timeOut.push(setTimeout(function() {
             requestAction('replay');
