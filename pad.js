@@ -703,21 +703,22 @@ function copyPattern(modifier, noOutput=1, record) {
 			//displayOutput("<br>*" + exampleOfStart, 1);
     }
 }
-function darkenOrbs(matchedOrbs, matchedOrbsAreBombs=0) {
-    if (matchedOrbsAreBombs)
+function darkenOrbs(matchedOrbs, matchedOrbsAreBombExplosion=0, cascade=1) {
+    if (matchedOrbsAreBombExplosion)
         darkDrop = dropSpeed / 2;
     else
         darkDrop = dropSpeed;
     var comboPositionSplit = matchedOrbs[Object.size(matchedOrbs) - 1];
     for (var i = 0; i < comboPositionSplit.length; i++) {
-        setTileAttribute(comboPositionSplit[i], 'black', 0, 1, matchedOrbsAreBombs);
+        setTileAttribute(comboPositionSplit[i], 'black', 0, 1, matchedOrbsAreBombExplosion);
     }
     delete matchedOrbs[Object.size(matchedOrbs) - 1];
     timeOut.push(setTimeout(function() {
         if (Object.size(matchedOrbs) > 0)
-            darkenOrbs(matchedOrbs, matchedOrbsAreBombs);
-        else
-            requestAction('boardmatched');
+            darkenOrbs(matchedOrbs, matchedOrbsAreBombExplosion, cascade);
+        else {
+            requestAction('boardmatched', cascade);
+		}
     }, darkDrop));
 }
 function changeTheWorld() {
@@ -748,27 +749,30 @@ function checkField() {
     }
     return false;
 }
-function dropField() {
-    for (var f = 0; f < rows; f++) {
-        for (var i = 0 + f; i < rows * cols; i = i + rows) {
-            if (i < rows * (cols - 1)) {
-                if (divs[rows * cols - 1 - i].getAttribute("tileColor") == 'black') {
-                    ($(divs[rows * cols - 1 - i])).swap($(divs[rows * cols - 1 - i - rows]));
-                }
-            } else {
-                if (divs[rows * cols - 1 - i].getAttribute("tileColor") == 'black') {
-                    if (skyFall == 1)
-                        setTileAttribute(rows * cols - 1 - i, randomColor(), 1, 0, 0, 0);
-                }
-            }
-        }
-    }
-    if (checkField())
-        timeOut.push(setTimeout(function() {
-            dropField();
-        }, fieldDropTimer));
-    else
-        requestAction('fielddropped');
+function dropField(cascade=1) {
+	if(cascade == 1){
+		for (var f = 0; f < rows; f++) {
+			for (var i = 0 + f; i < rows * cols; i = i + rows) {
+				if (i < rows * (cols - 1)) {
+					if (divs[rows * cols - 1 - i].getAttribute("tileColor") == 'black') {
+						($(divs[rows * cols - 1 - i])).swap($(divs[rows * cols - 1 - i - rows]));
+					}
+				} else {
+					if (divs[rows * cols - 1 - i].getAttribute("tileColor") == 'black') {
+						if (skyFall == 1)
+							setTileAttribute(rows * cols - 1 - i, randomColor(), 1, 0, 0, 0);
+					}
+				}
+			}
+		}
+		if (checkField())
+			timeOut.push(setTimeout(function() {
+				dropField();
+			}, fieldDropTimer));
+		else
+			requestAction('fielddropped');
+	} else
+		requestAction('fielddropped');
 }
 function showDrops() {
     $("#showDrops").hide();
@@ -1102,29 +1106,49 @@ function calculateOutput(item) {
         document.getElementById("total").value = 'Total Damage Dealt: ' + damageTotal;
     }
 }
-function somethingSomethingBombs() {
-    arrayOfBombs = new Array();
+function getArrayOfBombs() {
+	arrayOfBombs = new Array();
     for (var i = 0; i < divs.length; i++) {
         if (divs[i].getAttribute("tileColor") == 'xbomb')
             arrayOfBombs.push(i);
     }
     return arrayOfBombs;
 }
-function checkForUnmatchedBombs(matches, matchesb) {
-    for (var i = 0; i < matchesb.length; i++) {
-        for (var j = 0; j < matchesb[i].length; j++) {
-            for (var k = 0; k < matches.length; k++) {
-                if (matchesb[i][j] == matches[k]) {
-                    delete matches[k];
+function getUnmatchedBombs(bombOrbs, matchedOrbs) { //returns array or unmatched bombs
+    for (var i = 0; i < matchedOrbs.length; i++) {
+        for (var j = 0; j < matchedOrbs[i].length; j++) {
+            for (var k = 0; k < bombOrbs.length; k++) {
+                if (matchedOrbs[i][j] == bombOrbs[k]) {
+                    delete bombOrbs[k];
                     continue;
+                }
+            }
+        }
+    }
+    /*if (bombsHaveBeenChecked > 0)
+        return false;
+    else*/ if (Object.size(bombOrbs) > 0)
+        return bombOrbs;
+    else
+        return false;
+}
+function getMatchedBombs(bombOrbs, matchedOrbs) { //returns array or unmatched bombs
+	arrayOfMatchedBombs = new Array();
+    ii: for (var i = 0; i < matchedOrbs.length; i++) {
+        for (var j = 0; j < matchedOrbs[i].length; j++) {
+            for (var k = 0; k < bombOrbs.length; k++) {
+                if (matchedOrbs[i][j] == bombOrbs[k]) {
+                    //delete bombOrbs[k];
+					arrayOfMatchedBombs.push(matchedOrbs[i]);
+                    continue ii;
                 }
             }
         }
     }
     if (bombsHaveBeenChecked > 0)
         return false;
-    else if (Object.size(matches) > 0)
-        return matches;
+    else if (Object.size(arrayOfMatchedBombs) > 0)
+        return arrayOfMatchedBombs;
     else
         return false;
 }
@@ -1185,62 +1209,32 @@ var bombsHaveBeenChecked = 0;
 function solveBoard(solvePortion) {
     var tempArray = new Array();
     if (solvePortion == 1) {
-        getTiles();
-        var matchedOrbs = getMatches();
-        var unmatchedBombs = checkForUnmatchedBombs(somethingSomethingBombs(), matchedOrbs);// returns array of unmatched bombs
-        console.log('a');
-        if (unmatchedBombs != false) {
-            trackScore(matchedOrbs, 1);
-            tempArray = bombsExplode(unmatchedBombs); // returns array of exploded orbs
-            matchedOrbs = getMatches(tempArray); // says to "match" the exploded orbs
-            matchedOrbs.unshift(tempArray);
+		getTiles();
+		var matchedOrbs = getMatches();
+		var matchedBombs = getMatchedBombs(getArrayOfBombs(), matchedOrbs);
+		var unmatchedBombs = getUnmatchedBombs(getArrayOfBombs(), matchedOrbs);
+		if (matchedBombs != false) {
+			trackScore(matchedBombs);
+            darkenOrbs(matchedBombs, 0, 0);
+		} else if (unmatchedBombs != false) {
+            tempArray = bombsExplode(unmatchedBombs);
+			matchedOrbs = new Array();
+			matchedOrbs.unshift(tempArray);
             bombsHaveBeenChecked = 2;
-			matchedOrbs = getMatches();
-			if (matchedOrbs != false) {
-				trackScore(matchedOrbs);
-			}
-            darkenOrbs(matchedOrbs, 1);
+            darkenOrbs(matchedOrbs, 1, 0);
         } else if (matchedOrbs != false) {
             trackScore(matchedOrbs);
             darkenOrbs(matchedOrbs);
-        } else {
-            calculateOutput('score');
-            calculateOutput('damage');
-            swapHasHappened = 0;
-            clearMemory('timeout');
-            if (skyFall == 1){
-                toggle('draggable', 1);
-				spinnerResume();
-				$("#clouds").removeClass('solving');
-				$(".tile").removeClass('solving');
-			}
-        }
-/*        getTiles();
-		var matchedOrbs = getMatches();
-        var unmatchedBombs = checkForUnmatchedBombs(somethingSomethingBombs(), matchedOrbs);
-        console.log('a');
-        if (unmatchedBombs != false) {
-            trackScore(matchedOrbs, 1);
-            tempArray = bombsExplode(unmatchedBombs);
-            matchedOrbs = getMatches(tempArray);
-            matchedOrbs.unshift(tempArray);
-            bombsHaveBeenChecked = 2;
-            darkenOrbs(matchedOrbs, 1);
-        } 
-		getTiles();
-		var matchedOrbs = getMatches();
-		console.log('aaa');
-		if (matchedOrbs != false) {
-            trackScore(matchedOrbs);
-            darkenOrbs(matchedOrbs);
-        } else {
+        } else if (checkField()) { // Added in, check for cascade after bomb matches have occured
+			dropField(1);
+		} else {
             calculateOutput('score');
             calculateOutput('damage');
             swapHasHappened = 0;
             clearMemory('timeout');
             if (skyFall == 1)
                 toggle('draggable', 1);
-        }*/
+        }
     }
     if (solvePortion == 2) {
         bombsHaveBeenChecked = 1;
@@ -1473,9 +1467,9 @@ function requestAction(action, modifier, modifier2=1) {
             toggle('draggable', 0);
 			spinnerStop();
 			if(modifier2 > 100){
-				setTimeout(function () {
+				timeOut.push(setTimeout(function () {
 					solveBoard(1);
-				}, modifier2);
+				}, modifier2));
 			}else
 				solveBoard(1);
 			
@@ -1512,7 +1506,7 @@ function requestAction(action, modifier, modifier2=1) {
         }
     }
     if (action == 'boardmatched')
-        dropField();
+        dropField(modifier);
     if (action == 'solve2' || action == 'fielddropped')
         solveBoard(2);
     if (action == 'help') {
@@ -1927,12 +1921,6 @@ $(function() {
 				$(".tile").removeClass('fixed-start');
 				$(".tile").removeClass('no-start');
 				if (changeTheWorldOn) {
-					/*$(".tile:not(.moving)").each(function() {
-						console.log( $(".tile").index($(this)) + " " + $(".tile").index($(".tile.moving")) + " "  )
-						$(".tile").draggable("option", "disabled", false);
-					});*/
-					//$(".tile").index($(this))
-					//$(".tile").draggable("option", "disabled", false);
 					toggle('draggable', 1);
 				} else {
 					$("#clouds").addClass('solving');
