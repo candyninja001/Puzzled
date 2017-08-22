@@ -1,0 +1,910 @@
+* {
+	border:0;
+	padding:0;
+	margin:0;
+	font: calc(100vw * 14 / 630)/1.2 Verdana;
+	line-height:140%
+}
+a, a:visited {
+	color:#318dbe
+}
+body {
+	background:#f8f8f8
+}
+#central {
+	position: absolute;
+	width: 100vw;
+	height: calc(100vh - calc(100vw * 616 / 750));
+	background: rgba(0, 0, 0, 0.7);
+	overflow: scroll;
+}
+#left {
+	position: fixed;
+	width: 100vw;
+	height: calc(100vw * 616 / 750);
+	left: 0px;
+	bottom: 0px;
+	background-color: #000000;
+	//background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 1%, rgb(0, 0, 0) 77%, rgb(0, 0, 0) 100%);
+}
+#right {
+	//display: ;
+	width: auto;
+	margin: 0px auto 0px auto;
+	float: none;
+}
+#lineback {
+	border-left: calc(100vw / 630) solid #d2d2d2;
+	border-right: calc(100vw / 630) solid #d2d2d2;
+	z-index:-1;
+	position:static;
+	width:calc(100vw * 540 / 630);
+	background:#fff;
+	margin-left: auto;
+	margin-right: auto;
+	height: calc(100vw * 25 / 630);
+	text-align:right;
+}
+#game {
+	position: relative;
+	top: 20px;
+	margin: auto auto auto auto;
+}
+#board {
+	background-image:url('boardbackground.png');
+	background-size:180px 180px;
+	height:450px;
+	clear:both;
+	width:540px;
+	margin: 0 auto;
+	position:relative;
+}
+#arrowSurfaceC, #arrowSurface {
+	position:absolute;
+	pointer-events:none;
+	z-index:2;
+}
+#showDrops,#revealOrbs {
+	background-color:rgba(255,255,255,0.15);
+	color:#fff;
+}
+#revealOrbs {
+	float: right;
+}
+#total, #multic {
+	float:left;
+	width:calc(100vw * 270 / 630);
+	height:calc(100vw * 25 / 630);
+	text-align:center;
+}
+#multic #multi {
+	width:calc(100vw * 270 / 630);
+	height:calc(100vw * 25 / 630);
+	text-align:center;
+}
+#damage:before {
+	position:absolute;
+	content:"\a Type: \a Attack: \a Damage Dealt: ";
+	width:calc(100vw * 200 / 630);
+	margin-left: calc(-100vw * 200 / 630);
+	text-align:right;
+	display:block;
+	white-space: pre;
+	line-height:calc(100vw * 25 / 630);
+} 
+#entry,#plusEntry,#lockEntry,#blindEntry,#swapperEntry,#cloudEntry {
+	border:calc(100vw / 630) solid #eee;  // FLAG
+	width: 70px;
+    resize: none;
+	font: calc(100vw * 18 / 630)/1.2 Courier New;
+	height:120px;
+	z-index:1;
+	overflow:hidden;
+}
+#changes {
+	width: calc(100vw * 542 / 630);
+	height: calc(100vw * 250 / 630);
+	background:#fff;
+	margin: 0px auto 0px auto;
+	position: relative;
+}
+#colorchange,#pluschange,#lockchange,#blindchange,#swapperchange,#cloudchange {
+	width:calc(100vw * 70 / 630);
+    resize: none;
+	display: block;
+	position: relative;
+	float:left;
+	font: calc(100vw * 18 / 630)/1.2 Courier New;
+	height:calc(100vw * 200 / 630);
+	z-index:1;
+	margin:calc(100vw * 20 / 630) calc(100vw * 10 / 630);
+}
+#colorto, #colorfrom {
+	border:calc(100vw / 630) solid #eee;
+	float:left;
+	width:calc(100vw * 30 / 630);
+    resize: none;
+	font: calc(100vw * 18 / 630)/1.2 Courier New;
+	height:calc(100vw * 20 / 630);
+	text-align:center;
+}
+#infobooth {
+	width:calc(100vw * 500 / 630);
+	background:#fff;
+	padding: calc(100vw * 20 / 630) calc(100vw * 20 / 630) calc(100vw * 20 / 630) calc(100vw * 20 / 630);
+	margin: 0 auto;
+	border-left: calc(100vw / 630) solid #d2d2d2;
+	border-right: calc(100vw / 630) solid #d2d2d2;
+	min-height:calc(100vw * 500 / 630);
+}
+#adunit {
+	width:calc(100vw * 500 / 630);
+	background:#fff;
+	padding:calc(100vw * 20 / 630);
+	margin: 0 auto;
+	text-align:center;
+	border-left: calc(100vw / 630) solid #d2d2d2;
+	border-right: calc(100vw / 630) solid #d2d2d2;
+}
+.image1 {
+	background:url("https://pad.dawnglare.com/atk.svg")
+}
+.image2 {
+	background:url("https://pad.dawnglare.com/clock.svg")
+}
+.image3 {
+	background:url("https://pad.dawnglare.com/question.svg")
+}
+.image4 {
+	background:url("https://pad.dawnglare.com/minus.png")
+}
+.image5 {
+	background:url("https://pad.dawnglare.com/plus.png")
+}
+.image6 {
+	background:url("https://pad.dawnglare.com/gear.png")
+}
+.image7 {
+	background:url("wood.png")
+}
+.image8 {
+	background:url("fire.png")
+}
+.image9 {
+	background:url("blue.png")
+}
+.image10 {
+	background:url("light.png")
+}
+.image11 {
+	background:url("dark.png")
+}
+.image12 {
+	background:url("heart.png")
+}
+.image13 {
+	background:url("jammer.png")
+}
+.image14 {
+	background:url("poison.png")
+}
+.image15 {
+	background:url("mortalpoison.png")
+}
+.image16 {
+	background:url("bomb.png")
+}
+.topbutton {
+	float:left;
+	margin:calc(100vw / 315);
+	background-repeat: no-repeat;
+	background-size:calc(100vw / 31.5) calc(100vw / 31.5);
+	text-indent:-9999px;
+	width:calc(100vw / 31.5);
+	height:calc(100vw / 31.5)
+}
+.tophelp {
+	float:left;
+	margin:calc(100vw / 315);
+}
+#buttons {
+	padding-top:calc(100vw / 63);
+	margin:0 auto;
+	width: calc(100vw * 542 / 630);
+	background-color: #fff;
+	min-height:calc(100vw * 42 / 630)
+}
+#buttons>button {
+	width: calc(100vw / 7);
+	background: #f8f8f8;
+	float:left;
+	border: calc(100vw / 630) solid #d2d2d2;
+	border-right: none;
+}
+#buttons>button:first-child {
+	border-left: none;
+}
+#colorchange>button,#pluschange>button,#lockchange>button,#blindchange>button,#swapperchange>button,#cloudchange>button {
+	border: button1 solid #d2d2d2;
+}
+#buttons>button:hover {
+	background: #eee
+}
+.tile, button {
+	-webkit-transition: opacity .4s ease-in-out;
+	-moz-transition: opacity .4s ease-in-out;
+	-ms-transition: opacity .4s ease-in-out;
+	-o-transition: opacity .4s ease-in-out;
+	transition: opacity .4s ease-in-out
+}
+.tile::before, .tile::after {
+	-webkit-transition: opacity .4s ease-in-out;
+	-moz-transition: opacity .4s ease-in-out;
+	-ms-transition: opacity .4s ease-in-out;
+	-o-transition: opacity .4s ease-in-out;
+	transition: opacity .4s ease-in-out
+}
+.cornerblock{
+width:20px;height:20px;position:absolute;top:-1px; //FLAG
+}
+.tile {
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 90px;
+    width: 90px;
+    background-size: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+    z-index: 1;
+    position: relative;
+}
+.tile::before {
+	content: "";
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 100%;
+    width: 100%;
+    background-size: 98.88888889%;
+	background-position: center;
+	background-repeat: no-repeat;
+    z-index: 1;
+    position: absolute;
+}
+.tile[tileopacity="1"]:not(.no-start)::before,.picked-up>.tile[tileopacity="1"].no-start::before {
+	opacity: 1;
+}
+.tile[tileopacity="0.8"]:not(.no-start)::before,.picked-up>.tile[tileopacity="0.8"].no-start::before {
+	opacity: 0.8;
+}
+.tile[tileopacity="0.6"]:not(.no-start)::before,.picked-up>.tile[tileopacity="0.6"].no-start::before {
+	opacity: 0.6;
+}
+.tile[tileopacity="0.4"]:not(.no-start)::before,.picked-up>.tile[tileopacity="0.4"].no-start::before {
+	opacity: 0.4;
+}
+.tile[tileopacity="0.2"]:not(.no-start)::before,.picked-up>.tile[tileopacity="0.2"].no-start::before {
+	opacity: 0.2;
+}
+.tile[tileopacity="0"]:not(.no-start)::before,.picked-up>.tile[tileopacity="0"].no-start::before {
+	opacity: 0;
+}
+.tile[tileopacity="1"].no-start::before {
+	opacity: 0.5;
+}
+.tile[tileopacity="0.8"].no-start::before {
+	opacity: 0.4;
+}
+.tile[tileopacity="0.6"].no-start::before {
+	opacity: 0.3;
+}
+.tile[tileopacity="0.4"].no-start::before {
+	opacity: 0.2;
+}
+.tile[tileopacity="0.2"].no-start::before {
+	opacity: 0.1;
+}
+.tile[tileopacity="0"].no-start::before {
+	opacity: 0;
+}
+.tile::after {
+	content: "";
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 100%;
+    width: 100%;
+    background-size: 98.88888889%;
+	background-position: center;
+	background-repeat: no-repeat;
+    z-index: 1;
+    position: absolute;
+	opacity: attr(tileopacity, 0.5);
+}
+.red::before {
+	background-image: url(fire.png);
+}
+.red.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(orb-blind.png);
+}
+.red.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before ,.red.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.red.plus::before {
+	background-image: url(plus.png), url(fire.png);
+}
+.red.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.red.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before,.red.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.red.lock::before {
+	background-image: url(lock.png), url(fire.png);
+}
+.red.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.red.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before,.red.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.red.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(fire.png);
+}
+.red.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.red.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.red.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.blue::before {
+	background-image: url(water.png);
+}
+.blue.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(orb-blind.png);
+}
+.blue.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before,.blue.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.blue.plus::before {
+	background-image: url(plus.png), url(water.png);
+}
+.blue.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.blue.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before,.blue.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.blue.lock::before {
+	background-image: url(lock.png), url(water.png);
+}
+.blue.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.blue.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before,.blue.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.blue.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(water.png);
+}
+.blue.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.blue.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.blue.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.green::before {
+	background-image: url(wood.png);
+}
+.green.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(orb-blind.png);
+}
+.green.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before,.green.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.green.plus::before {
+	background-image: url(plus.png), url(wood.png);
+}
+.green.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.green.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before,.green.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.green.lock::before {
+	background-image: url(lock.png), url(wood.png);
+}
+.green.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.green.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before,.green.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.green.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(wood.png);
+}
+.green.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.green.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.green.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.light::before {
+	background-image: url(light.png);
+}
+.light.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(orb-blind.png);
+}
+.light.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before,.light.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.light.plus::before {
+	background-image: url(plus.png), url(light.png);
+}
+.light.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.light.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before,.light.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.light.lock::before {
+	background-image: url(lock.png), url(light.png);
+}
+.light.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.light.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before,.light.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.light.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(light.png);
+}
+.light.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.light.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.light.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.dark::before {
+	background-image: url(dark.png);
+}
+.dark.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(orb-blind.png);
+}
+.dark.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before,.dark.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.dark.plus::before {
+	background-image: url(plus.png), url(dark.png);
+}
+.dark.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.dark.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before,.dark.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.dark.lock::before {
+	background-image: url(lock.png), url(dark.png);
+}
+.dark.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.dark.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before,.dark.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.dark.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(dark.png);
+}
+.dark.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.dark.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.dark.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.heart::before {
+	background-image: url(heart.png);
+}
+.heart.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(heart-blind.png);
+}
+.heart.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before,.heart.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(sunglasses.png), url(heart-blind.png);
+}
+.heart.plus::before {
+	background-image: url(plus.png), url(heart.png);
+}
+.heart.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(heart-blind.png);
+}
+.heart.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before,.heart.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(heart-blind.png);
+}
+.heart.lock::before {
+	background-image: url(lock.png), url(heart.png);
+}
+.heart.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(heart-blind.png);
+}
+.heart.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before,.heart.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(heart-blind.png);
+}
+.heart.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(heart.png);
+}
+.heart.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(heart-blind.png);
+}
+.heart.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.heart.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(heart-blind.png);
+}
+.poison::before {
+	background-image: url(poison.png);
+}
+.poison.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(poison-blind.png);
+}
+.poison.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before,.poison.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(sunglasses.png), url(poison-blind.png);
+}
+.poison.plus::before {
+	background-image: url(plus.png), url(poison.png);
+}
+.poison.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(poison-blind.png);
+}
+.poison.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before,.poison.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(poison-blind.png);
+}
+.poison.lock::before {
+	background-image: url(lock.png), url(poison.png);
+}
+.poison.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(poison-blind.png);
+}
+.poison.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before,.poison.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(poison-blind.png);
+}
+.poison.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(poison.png);
+}
+.poison.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(poison-blind.png);
+}
+.poison.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.poison.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(poison-blind.png);
+}
+.jammer::before {
+	background-image: url(jammer.png);
+}
+.jammer.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(jammer-blind.png);
+}
+.jammer.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before,.jammer.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(sunglasses.png), url(jammer-blind.png);
+}
+.jammer.plus::before {
+	background-image: url(plus.png), url(jammer.png);
+}
+.jammer.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(jammer-blind.png);
+}
+.jammer.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before,.jammer.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(jammer-blind.png);
+}
+.jammer.lock::before {
+	background-image: url(lock.png), url(jammer.png);
+}
+.jammer.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(jammer-blind.png);
+}
+.jammer.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before,.jammer.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(jammer-blind.png);
+}
+.jammer.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(jammer.png);
+}
+.jammer.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(jammer-blind.png);
+}
+.jammer.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.jammer.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(jammer-blind.png);
+}
+.xbomb::before {
+	background-image: url(bomb.png);
+}
+.xbomb.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(orb-blind.png);
+}
+.xbomb.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before,.xbomb.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.xbomb.plus::before {
+	background-image: url(plus.png), url(bomb.png);
+}
+.xbomb.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.xbomb.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before,.xbomb.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.xbomb.lock::before {
+	background-image: url(lock.png), url(bomb.png);
+}
+.xbomb.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.xbomb.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before,.xbomb.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.xbomb.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(bomb.png);
+}
+.xbomb.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.xbomb.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.xbomb.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.mortalpoison::before {
+	background-image: url(mortalpoison.png);
+}
+.mortalpoison.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(mortalpoison-blind.png);
+}
+.mortalpoison.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before,.mortalpoison.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(sunglasses.png), url(mortalpoison-blind.png);
+}
+.mortalpoison.plus::before {
+	background-image: url(plus.png), url(mortalpoison.png);
+}
+.mortalpoison.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(mortalpoison-blind.png);
+}
+.mortalpoison.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before,.mortalpoison.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(mortalpoison-blind.png);
+}
+.mortalpoison.lock::before {
+	background-image: url(lock.png), url(mortalpoison.png);
+}
+.mortalpoison.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(mortalpoison-blind.png);
+}
+.mortalpoison.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before,.mortalpoison.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(mortalpoison-blind.png);
+}
+.mortalpoison.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(mortalpoison.png);
+}
+.mortalpoison.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(mortalpoison-blind.png);
+}
+.mortalpoison.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.mortalpoison.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(mortalpoison-blind.png);
+}
+.unknown::before {
+	background-image: url(orb-unknown.png);
+}
+.unknown.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(orb-blind.png);
+}
+.unknown.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before ,.unknown.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging)::before {
+	background-image: url(sunglasses.png), url(orb-blind.png);
+}
+.unknown.plus::before {
+	background-image: url(plus.png), url(orb-unknown.png);
+}
+.unknown.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(orb-blind.png);
+}
+.unknown.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before,.unknown.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus::before {
+	background-image: url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.unknown.lock::before {
+	background-image: url(lock.png), url(orb-unknown.png);
+}
+.unknown.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(orb-blind.png);
+}
+.unknown.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before,.unknown.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock::before {
+	background-image: url(lock.png), url(sunglasses.png), url(orb-blind.png);
+}
+.unknown.plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-unknown.png);
+}
+.unknown.blind:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before {
+	background-image: url(lock.png), url(plus.png), url(orb-blind.png);
+}
+.unknown.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).plus.lock::before,.unknown.blind.blind-duration:not(.reveal):not(.solving):not(.ui-draggable-dragging).lock.plus::before {
+	background-image: url(lock.png), url(plus.png), url(sunglasses.png),  url(orb-blind.png);
+}
+.cross::before {
+	filter: brightness(50%);
+}
+.cross::after {
+	background-image: url(cross.png);
+}
+#clouds {
+	pointer-events: none;
+	overflow: hidden;
+}
+#scrolls,#clouds {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+}
+.play {
+	height: 100%;
+	width: 100%;
+}
+#scrolls.vertical>#scroll.left {
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 100%;
+	width: 90px;
+    position: relative;
+}
+#scrolls.vertical>#scroll.right {
+	margin: 0px;
+    display: block;
+    float: right;
+    height: 100%;
+	width: 90px;
+    position: relative;
+}
+#scrolls.vertical>.play {
+	content: "";
+	display: block;
+	float: left;
+	height: 100%;
+	width: calc(100% - 90px);
+	position: relative;
+}
+#scrolls.horizontal>#scroll.top {
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 90px;
+	width: 100%;
+    position: relative;
+}
+#scrolls.horizontal>#scroll.bottom {
+	margin: 0px;
+    display: block;
+    float: right;
+    height: 90px;
+	width: 100%;
+    position: absolute;
+	bottom: 0px;
+}
+#scrolls.horizontal>.play {
+	content: "";
+	display: block;
+	float: left;
+	height: calc(100% - 90px);
+	width: 100%;
+	position: relative;
+}
+#scrolls.vertical>#scroll::after {
+	content: "";
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 100%;
+	width: 100%;
+    z-index: 5;
+    position: relative;
+	background-image: url(scroll-vertical.png);
+	background-size: 53.4375px 180px;
+	background-repeat: repeat-y;
+	background-position: center top;
+}
+#scrolls.horizontal>#scroll::after {
+	content: "";
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 100%;
+	width: 100%;
+    z-index: 5;
+    position: relative;
+	background-image: url(scroll-horizontal.png);
+	background-size: 180px 53.4375px;
+	background-repeat: repeat-x;
+	background-position: left center;
+}
+#scroll.reveal::after {
+	opacity: 0.4;
+}
+@namespace svg url(http://www.w3.org/2000/svg);
+.swapper:not(.ui-draggable-dragging)>svg {
+	visibility: visible;
+}
+svg {
+	pointer-events: none;
+	margin: 0px;
+	display: block;
+    float: left;
+	margin: 0px;
+    height: 100px;
+    width: 100px;
+	left: -5px;
+	top: -5px;
+    z-index: -4;
+    position: relative;
+	visibility: hidden;
+	background-image: url(spinnerborder.png);
+	background-size: 90px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.cloud {
+	margin: 0px;
+    display: block;
+    float: left;
+    height: 90px;
+    width: 90px;
+    background-size: 100%;
+    z-index: 1;
+    position: relative;
+}
+.cloud.show::after {
+	content: "";
+	margin: 0px;
+	display: block;
+    float: left;
+	margin: 0px;
+    height: 180px;
+    width: 180px;
+	left: -45px;
+	top: -45px;
+	background-image: url(cloud.png);
+    background-size: 100%;
+	background-position: center;
+    z-index: 1;
+    position: relative;
+}
+.cloud.reveal::after,#clouds.solving>.cloud::after {
+	opacity: 0.4;
+}
+.input-prompt {
+	width:calc(100vw / 7);
+	margin-top:calc(-100vw * 22 / 630);
+	display:block;
+	position: absolute;
+	font-style: italic;
+	color: #aaa;
+	text-align:center;
+}
+#multic .input-prompt {
+	width:calc(100vw * 270 / 630);
+}
+input:disabled {
+	background:#fff
+}
+.test1{
+border:calc(100vw / 630); solid #616261; -webkit-border-radius: calc(100vw * 3 / 630); -moz-border-radius: calc(100vw * 3 / 630);border-radius: calc(100vw * 3 / 630);font-size:calc(100vw * 12 / 630);font-family:arial, helvetica, sans-serif; padding: calc(100vw * 10 / 630) calc(100vw * 10 / 630) calc(100vw * 10 / 630) calc(100vw * 10 / 630); text-decoration:none; display:inline-block;text-shadow: calc(-100vw / 630) calc(-100vw / 630) 0 rgba(0,0,0,0.3);font-weight:bold; color: #FFFFFF;
+ background-color: #7d7e7d; background-image: -webkit-gradient(linear, left top, left bottom, from(#7d7e7d), to(#0e0e0e));
+ background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e);
+ background-image: -moz-linear-gradient(top, #7d7e7d, #0e0e0e);
+ background-image: -ms-linear-gradient(top, #7d7e7d, #0e0e0e);
+ background-image: -o-linear-gradient(top, #7d7e7d, #0e0e0e);
+ background-image: linear-gradient(to bottom, #7d7e7d, #0e0e0e);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#7d7e7d, endColorstr=#0e0e0e);
+}
+.test1>button {
+	background-size:calc(100vw / 21) calc(100vw / 21);
+	width:calc(100vw / 21);
+	height:calc(100vw / 21);
+}
+#colorchange>#convert,#pluschange>#convert,#lockchange>#convert,#blindchange>#convert,#swapperchange>#convert,#cloudchange>#convert{
+	width:calc(100vw / 9);
+	height:calc(100vw / 31.5);
+	line-height:calc(100vw / 42);
+}
+.comboInfoBox {
+	height: calc(100vw / 17.5);
+}
+.comboInfoBox span, .comboInfoBox img {
+	vertical-align: middle;
+}
