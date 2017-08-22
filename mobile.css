@@ -11,12 +11,23 @@ a, a:visited {
 body {
 	background:#f8f8f8
 }
+#background {
+	width: 110%;
+	height: 110%;
+	background-color:#000000;
+	background-image: none;
+	position: fixed;
+	filter: none;
+	z-index: -10;
+}
 #central {
 	position: absolute;
 	width: 100vw;
 	height: calc(100vh - calc(100vw * 616 / 750));
+	border: none;
 	background: rgba(0, 0, 0, 0.7);
-	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 #left {
 	position: fixed;

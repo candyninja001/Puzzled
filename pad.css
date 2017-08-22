@@ -11,6 +11,18 @@ a, a:visited {
 body {
 	background:#f8f8f8
 }
+#background {
+	width: 110%;
+	height: 110%;
+	background-color:#000000;
+	background-image: url(cardbg.png);
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: center;
+	position: fixed;
+	filter: blur(10px);
+	z-index: -10;
+}
 #central {
 	width: 1280px;
 	height: auto;
