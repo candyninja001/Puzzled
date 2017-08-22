@@ -57,6 +57,7 @@ function setUpMobile() {
 	//scale = Math.floor($(window).width() / rows);
 	document.getElementById("mobilesizesheet").innerHTML = "svg { height: "+scale*1.2+"px; width: "+scale*1.2+"px; left: -"+scale*0.1+"px; top: -"+scale*0.1+"px; background-size: "+scale+"px; } .cloud { height: "+scale+"px; width: "+scale+"px; } .cloud.show::after { height: "+scale*2+"px; width: "+scale*2+"px; left: -"+scale/2+"px; top: -"+scale/2+"px; } #revealOrbs { position: absolute; height: "+scale+"px; width: "+scale+"px; top: -"+(scale+20)+"px; right: 0px; background-image:url('https://discordapp.com/assets/53ef346458017da2062aca5c7955946b.svg'); background-size:100%; } #game { position: relative; top: "+diffY/2+"px; margin: auto auto auto auto; } .tile { height: "+scale+"px; width: "+scale+"px; } #board { background-image:url('boardbackground.png'); background-size:"+scale*2+"px "+scale*2+"px; height: "+scale*cols+"px; width: "+scale*rows+"px; border:0px; } #scrolls.vertical>#scroll.left { width: "+scale+"px; } #scrolls.vertical>#scroll.right { width: "+scale+"px; } #scrolls.vertical>.play { width: calc(100% - "+scale+"px); } #scrolls.horizontal>#scroll.top { height: "+scale+"px; } #scrolls.horizontal>#scroll.bottom { height: "+scale+"px; } #scrolls.horizontal>.play { height: calc(100% - "+scale+"px); } #scrolls.vertical>#scroll::after { background-size: "+scale*0.59375+"px "+scale*2+"px; } #scrolls.horizontal>#scroll::after { background-size: "+scale*2+"px "+scale*0.59375+"px; } .cornerblock{ width: "+scale*2/9+"px; height: "+scale*2/9+"px; position: absolute; top: -"+scale/90+"px; }";
 	document.getElementById("mobilesheet").href = "mobile.css";
+	document.getElementById("mobileentrysheet").innerHTML = "#entry,#plusEntry,#lockEntry,#blindEntry,#swapperEntry,#cloudEntry { width: calc(100vw * "+rows*70/6+" / 630); height: calc(100vw * "+cols*120/5+" / 630); }";
 }
 function hideUnit(obj) {
     var link = document.getElementById(obj);
@@ -1847,25 +1848,26 @@ $(function() {
     document.getElementById('arrowSurfaceC').innerHTML = '<canvas id="arrowSurface" width="' + rows * scale + 'px" height="' + cols * scale + 'px"></canvas>';
     if (rows != 6 || cols != 5) {
         document.getElementById("entry").maxLength = cols * rows;
-        //document.getElementById("entry").style.width = rows * 70 / 6 + "px";
-        //document.getElementById("entry").style.height = cols * 120 / 5 + "px";
 		document.getElementById("plusEntry").maxLength = cols * rows;
-        //document.getElementById("plusEntry").style.width = rows * 70 / 6 + "px";
-        //document.getElementById("plusEntry").style.height = cols * 120 / 5 + "px";
 		document.getElementById("lockEntry").maxLength = cols * rows;
-        //document.getElementById("lockEntry").style.width = rows * 70 / 6 + "px";
-        //document.getElementById("lockEntry").style.height = cols * 120 / 5 + "px";
 		document.getElementById("blindEntry").maxLength = cols * rows;
-        //document.getElementById("blindEntry").style.width = rows * 70 / 6 + "px";
-        //document.getElementById("blindEntry").style.height = cols * 120 / 5 + "px";
 		document.getElementById("swapperEntry").maxLength = cols * rows;
-        //document.getElementById("swapperEntry").style.width = rows * 70 / 6 + "px";
-        //document.getElementById("swapperEntry").style.height = cols * 120 / 5 + "px";
 		document.getElementById("cloudEntry").maxLength = cols * rows;
-        //document.getElementById("cloudEntry").style.width = rows * 70 / 6 + "px";
-        //document.getElementById("cloudEntry").style.height = cols * 120 / 5 + "px";
+		if(!isMobile){
+			document.getElementById("entry").style.width = rows * 70 / 6 + "px";
+			document.getElementById("entry").style.height = cols * 120 / 5 + "px";
+			document.getElementById("plusEntry").style.width = rows * 70 / 6 + "px";
+			document.getElementById("plusEntry").style.height = cols * 120 / 5 + "px";
+			document.getElementById("lockEntry").style.width = rows * 70 / 6 + "px";
+			document.getElementById("lockEntry").style.height = cols * 120 / 5 + "px";
+			document.getElementById("blindEntry").style.width = rows * 70 / 6 + "px";
+			document.getElementById("blindEntry").style.height = cols * 120 / 5 + "px";
+			document.getElementById("swapperEntry").style.width = rows * 70 / 6 + "px";
+			document.getElementById("swapperEntry").style.height = cols * 120 / 5 + "px";
+			document.getElementById("cloudEntry").style.width = rows * 70 / 6 + "px";
+			document.getElementById("cloudEntry").style.height = cols * 120 / 5 + "px";
+		}
     }
-	document.getElementById("mobileentrysheet").innerHTML = "#entry,#plusEntry,#lockEntry,#blindEntry,#swapperEntry,#cloudEntry { width: calc(100vw * "+rows*70/6+" / 630); height: calc(100vw * "+cols*120/5+" / 630); }";
     for (var i = 0; i < rows * cols; i++) {
         var randColor = randomColor();
         divs[i] = document.createElement("div");
