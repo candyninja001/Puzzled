@@ -1,0 +1,66 @@
+[  
+   {  
+      "id":0,
+      "name":"Evo Material"
+   },
+   {  
+      "id":1,
+      "name":"Balanced"
+   },
+   {  
+      "id":2,
+      "name":"Physical"
+   },
+   {  
+      "id":3,
+      "name":"Healer"
+   },
+   {  
+      "id":4,
+      "name":"Dragon"
+   },
+   {  
+      "id":5,
+      "name":"God"
+   },
+   {  
+      "id":6,
+      "name":"Attacker"
+   },
+   {  
+      "id":7,
+      "name":"Devil"
+   },
+   {  
+      "id":8,
+      "name":"Machine"
+   },
+   {  
+      "id":9,
+      "name":"?Unknown Type?"
+   },
+   {  
+      "id":10,
+      "name":"?Unknown Type?"
+   },
+   {  
+      "id":11,
+      "name":"?Unknown Type?"
+   },
+   {  
+      "id":12,
+      "name":"Awoken Material"
+   },
+   {  
+      "id":13,
+      "name":"?Unknown Type?"
+   },
+   {  
+      "id":14,
+      "name":"Enhance Material"
+   },
+   {  
+      "id":15,
+      "name":"Vendor"
+   }
+]

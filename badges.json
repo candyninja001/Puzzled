@@ -1,0 +1,116 @@
+[  
+   {  
+      "desc":"Increases Max Team Cost by 100",
+      "pad_desc":"Increases Max Team Cost by 100",
+      "id":1,
+	  "name":"+100 Cost"
+   },
+   {  
+      "desc":"Extends Orb move time by 1 second",
+      "pad_desc":"Extends Orb move time by 1 second",
+      "id":2,
+	  "name":"+1 Second Move Time"
+   },
+   {  
+      "desc":"Attacks become Mass Attacks",
+      "pad_desc":"Attacks become Mass Attacks",
+      "id":3,
+	  "name":"Mass Attack"
+   },
+   {  
+      "desc":"Increase Team RCV by 25%",
+      "pad_desc":"Increase Team RCV 25%",
+      "id":4,
+	  "name":"+25% RCV"
+   },
+   {  
+      "desc":"Increase Team HP by 5%",
+      "pad_desc":"Increases Team HP by 5%",
+      "id":5,
+	  "name":"+5% HP"
+   },
+   {  
+      "desc":"Increase Team ATK by 5%",
+      "pad_desc":"Increase Team ATK by 5%",
+      "id":6,
+	  "name":"+5% ATK"
+   },
+   {  
+      "desc":"The entire team starts with skills requiring 1 less turn to charge",
+      "pad_desc":"Team's skills charged by 1 turn",
+      "id":7,
+	  "name":"Skill Boost"
+   },
+   {  
+      "desc":"Your Team Leader is immune to binds",
+      "pad_desc":"Team Leaders become Bind immune",
+      "id":8,
+	  "name":"Unbindable"
+   },
+   {  
+      "desc":"50% chance to resist Skill Bind attacks",
+      "pad_desc":"Increase Skill Bind Resist by 50%",
+      "id":9,
+	  "name":"Skill Bind Resistance"
+   },
+   {  
+      "desc":"Increase Team HP by 15% but lose 300 Max Cost",
+      "pad_desc":"Increase Team HP by 15%, but decrease Max Team Cost by 300",
+      "id":10,
+	  "name":"+15% HP"
+   },
+   {  
+      "desc":"Extends Orb move time by 2 second",
+      "pad_desc":"Extends Orb move time by 2 second, but decrease Max Team Cost by 300",
+      "id":11,
+	  "name":"+2 Seconds Move Time"
+   },
+   {  
+      "desc":"Increase Team RCV by 35%",
+      "pad_desc":"Increase Team RCV 35%, but decrease Max Team Cost by 300",
+      "id":12,
+	  "name":"+35% RCV"
+   },
+   {  
+      "desc":"No Skyfall Combos",
+      "pad_desc":"No Skyfall Combos, but decrease Max Team Cost by 300",
+      "id":13,
+	  "name":"No Skyfall"
+   },
+   {  
+      "desc":"Increase Team ATK by 15%",
+      "pad_desc":"Increase Team ATK by 15%, but decrease Max Team Cost by 300",
+      "id":14,
+	  "name":"+5% ATK"
+   },
+   {  
+      "desc":"Increase Team ATK by 15%",
+      "pad_desc":"Increase Team ATK by 15%",
+      "id":15,
+	  "name":"+5% ATK"
+   },
+   {  
+      "desc":"Increase Team ATK by 15%",
+      "pad_desc":"Increase Team ATK by 15%",
+      "id":16,
+	  "name":"+5% ATK"
+   },
+   {  
+      "desc":"Increase Team ATK by 15%",
+      "pad_desc":"Increase Team ATK by 15%",
+      "id":17,
+	  "name":"+5% ATK"
+   },
+   {  
+      "desc":"Increase Team ATK by 15%",
+      "pad_desc":"Increase Team ATK by 15%",
+      "id":18,
+	  "name":"+5% ATK"
+   },
+   {  
+      "desc":"Increase Team ATK by 15%",
+      "pad_desc":"Increase Team ATK by 15%",
+      "id":19,
+	  "name":"+5% ATK"
+   }
+]

@@ -1,0 +1,254 @@
+[
+   {
+      "desc":"Increases HP by 1.5%",
+      "pad_desc":"Slightly improves HP",
+      "id":1,
+	  "slots":1,
+      "pad_name":"Improved HP",
+	  "abr":"Imp. HP",
+	  "name":"Improved HP"
+   },
+   {
+      "desc":"Increases ATK by 1%",
+      "pad_desc":"Slightly improves ATK",
+      "id":2,
+	  "slots":1,
+      "pad_name":"Improved Attack",
+	  "abr":"Imp. ATK",
+	  "name":"Improved Attack"
+   },
+   {
+      "desc":"Increases RCV by 5%",
+      "pad_desc":"Slightly improves RCV",
+      "id":3,
+	  "slots":1,
+      "pad_name":"Improved Healing",
+	  "abr":"Imp. RCV",
+	  "name":"Improved RCV"
+   },
+   {
+      "desc":"Extra 0.05s to move orbs",
+      "pad_desc":"Slightly extends time to move Orbs",
+      "id":4,
+	  "slots":1,
+      "pad_name":"Extended Move Time",
+	  "abr":"Slightly extends time to move Orbs",
+	  "name":"Autoheal"
+   },
+   {
+      "desc":"Heals 15% of RCV after matching Orbs",
+      "pad_desc":"Recovers a little HP when matching Orbs (No effect when RCV is 0 or lower)",
+      "id":5,
+	  "slots":1,
+      "pad_name":"Auto-Heal",
+	  "abr":"Autoheal",
+	  "name":"Autoheal"
+   },
+   {
+      "desc":"Reduces Fire damage by 1%",
+      "pad_desc":"Slightly reduces damage received from Fire Att. enemies",
+      "id":6,
+	  "slots":1,
+      "pad_name":"Fire Damage Reduction",
+	  "abr":"Fire Resist",
+	  "name":"Fire Resistance"
+   },
+   {
+      "desc":"Reduces Water damage by 1%",
+      "pad_desc":"Slightly reduces damage received from Water Att. enemies",
+      "id":7,
+	  "slots":1,
+      "pad_name":"Water Damage Reduction",
+	  "abr":"Water Resist",
+	  "name":"Water Resistance"
+   },
+   {
+      "desc":"Reduces Wood damage by 1%",
+      "pad_desc":"Slightly reduces damage received from Wood Att. enemies",
+      "id":8,
+	  "slots":1,
+      "pad_name":"Wood Damage Reduction",
+	  "abr":"Wood Resist",
+	  "name":"Wood Resistance"
+   },
+   {
+      "desc":"Reduces Light damage by 1%",
+      "pad_desc":"Slightly reduces damage received from Light Att. enemies",
+      "id":9,
+	  "slots":1,
+      "pad_name":"Light Damage Reduction",
+	  "abr":"Light Resist",
+	  "name":"Light Resistance"
+   },
+   {
+      "desc":"Reduces Dark damage by 1%",
+      "pad_desc":"Slightly reduces damage received from Dark Att. enemies",
+      "id":10,
+	  "slots":1,
+      "pad_name":"Dark Damage Reduction",
+	  "abr":"Dark Resist",
+	  "name":"Dark Resistance"
+   },
+   {
+      "desc":"Reduces skill delay by 1 turn",
+      "pad_desc":"Reduces skill delay by 1 turn for each Awoken Latent Skill added",
+      "id":11,
+	  "slots":1,
+      "pad_name":"Skill Delay Resistance",
+	  "abr":"SDR",
+	  "name":"Skill Delay Resist"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":12,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":13,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":14,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":15,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":16,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":17,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":18,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":19,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":20,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":21,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"ATK x1.5 against Devil type enemies",
+      "pad_desc":"Increases ATK against Devil Types",
+      "id":22,
+	  "slots":2,
+      "pad_name":"Devil Killer",
+	  "abr":"Devil Killer",
+	  "name":"Devil Killer"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":23,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":24,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":25,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":26,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":27,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   },
+   {
+      "desc":"?Unknown Latent Awakening?",
+      "pad_desc":"?Unknown Latent Awakening?",
+      "id":28,
+	  "slots":2,
+      "pad_name":"?Unknown Latent Awakening?",
+	  "abr":"?Unknown Latent Awakening?",
+	  "name":"?Unknown Latent Awakening?"
+   }
+]

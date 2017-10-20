@@ -1,0 +1,474 @@
+[  
+   {  
+      "desc":"Increases HP by 500",
+      "pad_desc":"Increases HP by 500",
+      "id":1,
+      "pad_name":"Enhanced HP",
+	  "abr":"HP Boost",
+	  "name":"Enhanced HP"
+   },
+   {  
+      "desc":"Increases ATK by 100",
+      "pad_desc":"Increases ATK by 100",
+      "id":2,
+      "pad_name":"Enhanced Attack",
+	  "abr":"Attack Boost",
+	  "name":"Enhanced Attack"
+   },
+   {  
+      "desc":"Increases RCV by 200",
+      "pad_desc":"Increases RCV by 200",
+      "id":3,
+      "pad_name":"Enhanced Heal",
+	  "abr":"RCV Boost",
+	  "name":"Enhanced RCV"
+   },
+   {  
+      "desc":"Reduces Fire damage by 5%",
+      "pad_desc":"Reduces damage from Fire Monsters",
+      "id":4,
+      "pad_name":"Reduce Fire Damage",
+	  "abr":"Fire Resist",
+	  "name":"Fire Resistance"
+   },
+   {  
+      "desc":"Reduces Water damage by 5%",
+      "pad_desc":"Reduces damage from Water Monsters",
+      "id":5,
+      "pad_name":"Reduce Water Damage",
+	  "abr":"Water Resist",
+	  "name":"Water Resistance"
+   },
+   {  
+      "desc":"Reduces Wood damage by 5%",
+      "pad_desc":"Reduces damage from Wood Monsters",
+      "id":6,
+      "pad_name":"Reduce Wood Damage",
+	  "abr":"Wood Resist",
+	  "name":"Wood Resistance"
+   },
+   {  
+      "desc":"Reduces Light damage by 5%",
+      "pad_desc":"Reduces damage from Light Monsters",
+      "id":7,
+      "pad_name":"Reduce Light Damage",
+	  "abr":"Light Resist",
+	  "name":"Light Resistance"
+   },
+   {  
+      "desc":"Reduces Dark damage by 5%",
+      "pad_desc":"Reduces damage from Dark Monsters",
+      "id":8,
+      "pad_name":"Reduce Dark Damage",
+	  "abr":"Dark Resist",
+	  "name":"Dark Resistance"
+   },
+   {  
+      "desc":"Heals for 1000 whenever you match 3 or more orbs of any type",
+      "pad_desc":"Recovers HP each turn Orbs are erased",
+      "id":9,
+      "pad_name":"Auto-Recover",
+	  "abr":"Autoheal",
+	  "name":"Autoheal"
+   },
+   {  
+      "desc":"50% chance for this monster to resist bind attacks",
+      "pad_desc":"May block Bind attacks directed at itself",
+      "id":10,
+      "pad_name":"Resistance-Bind",
+	  "abr":"Bind Resist",
+	  "name":"Bind Resistance"
+   },
+   {  
+      "desc":"20% chance to resist blind attacks",
+      "pad_desc":"May block Blinding attacks",
+      "id":11,
+      "pad_name":"Resistance-Dark",
+	  "abr":"Blind Resist",
+	  "name":"Blind Resistance"
+   },
+   {  
+      "desc":"20% chance to resist jammer and bomb attacks",
+      "pad_desc":"May block Jammer & Bomb attacks",
+      "id":12,
+      "pad_name":"Resistance-Jammers",
+	  "abr":"Jammer Resist",
+	  "name":"Jammer Resistance"
+   },
+   {  
+      "desc":"20% chance to resist poison attacks",
+      "pad_desc":"May block Poison attacks",
+      "id":13,
+      "pad_name":"Resistance-Poison",
+	  "abr":"Poison Resist",
+	  "name":"Poison Resistance"
+   },
+   {  
+      "desc":"20% chance for dropped Fire orbs to spawn as enhanced orbs (+)",
+      "pad_desc":"Enhanced Fire Orbs may appear",
+      "id":14,
+      "pad_name":"Enhanced Fire Orbs",
+	  "abr":"Fire Enhance",
+	  "name":"Fire Enhance"
+   },
+   {  
+      "desc":"20% chance for dropped Water orbs to spawn as enhanced orbs (+)",
+      "pad_desc":"Enhanced Water Orbs may appear",
+      "id":15,
+      "pad_name":"Enhanced Water Orbs",
+	  "abr":"Water Enhance",
+	  "name":"Water Enhance"
+   },
+   {  
+      "desc":"20% chance for dropped Wood orbs to spawn as enhanced orbs (+)",
+      "pad_desc":"Enhanced Wood Orbs may appear",
+      "id":16,
+      "pad_name":"Enhanced Wood Orbs",
+	  "abr":"Wood Enhance",
+	  "name":"Wood Enhance"
+   },
+   {  
+      "desc":"20% chance for dropped Light orbs to spawn as enhanced orbs (+)",
+      "pad_desc":"Enhanced Light Orbs may appear",
+      "id":17,
+      "pad_name":"Enhanced Light Orbs",
+	  "abr":"Light Enhance",
+	  "name":"Light Enhance"
+   },
+   {  
+      "desc":"20% chance for dropped Dark orbs to spawn as enhanced orbs (+)",
+      "pad_desc":"Enhanced Dark Orbs may appear",
+      "id":18,
+      "pad_name":"Enhanced Dark Orbs",
+	  "abr":"Dark Enhance",
+	  "name":"Dark Enhance"
+   },
+   {  
+      "desc":"Extra 0.5s to move orbs",
+      "pad_desc":"Slighty extends time to move Orbs",
+      "id":19,
+      "pad_name":"Extend Time",
+	  "abr":"TE",
+	  "name":"Time Extend"
+   },
+   {  
+      "desc":"Matching an entire row of Heart orbs will reduce binds by 3 turns",
+      "pad_desc":"Matching a full row of Heal Orbs reduces bind status by 3 turns",
+      "id":20,
+      "pad_name":"Recover Bind",
+	  "abr":"Bind Recover",
+	  "name":"Bind Recovery"
+   },
+   {  
+      "desc":"The entire team starts with skills requiring 1 less turn to charge",
+      "pad_desc":"Team starts with 1 less turn needed to activate skills",
+      "id":21,
+      "pad_name":"Skill Boost",
+	  "abr":"SB",
+	  "name":"Skill Boost"
+   },
+   {  
+      "desc":"Matching an entire row of Fire orbs will increase Fire damage by 10%",
+      "pad_desc":"Matching a full row of Fire Orbs increases Fire Att. ATK",
+      "id":22,
+      "pad_name":"Enhanced Fire Att.",
+	  "abr":"Fire Row",
+	  "name":"Fire Row"
+   },
+   {  
+      "desc":"Matching an entire row of Water orbs will increase Water damage by 10%",
+      "pad_desc":"Matching a full row of Water Orbs increases Water Att. ATK",
+      "id":23,
+      "pad_name":"Enhanced Water Att.",
+	  "abr":"Water Row",
+	  "name":"Water Row"
+   },
+   {  
+      "desc":"Matching an entire row of Wood orbs will increase Wood damage by 10%",
+      "pad_desc":"Matching a full row of Wood Orbs increases Wood Att. ATK",
+      "id":24,
+      "pad_name":"Enhanced Wood Att.",
+	  "abr":"Wood Row",
+	  "name":"Wood Row"
+   },
+   {  
+      "desc":"Matching an entire row of Light orbs will increase Light damage by 10%",
+      "pad_desc":"Matching a full row of Light Orbs increases Light Att. ATK",
+      "id":25,
+      "pad_name":"Enhanced Light Att.",
+	  "abr":"Light Row",
+	  "name":"Light Row"
+   },
+   {  
+      "desc":"Matching an entire row of Dark orbs will increase Dark damage by 10%",
+      "pad_desc":"Matching a full row of Dark Orbs increases Dark Att. ATK",
+      "id":26,
+      "pad_name":"Enhanced Dark Att.",
+	  "abr":"Dark Row",
+	  "name":"Dark Row"
+   },
+   {  
+      "desc":"Eliminating 4 connected orbs of the same color will result in a 1.5x ATK attack on 2 enemies by this monster",
+      "pad_desc":"Matching 4 Orbs of the same Att. as this monster boosts ATK and launches an attack on two enemies",
+      "id":27,
+      "pad_name":"Two-Pronged Attack",
+	  "abr":"TPA",
+	  "name":"Two-Pronged Attack"
+   },
+   {  
+      "desc":"20% chance to resist Skill Bind attacks",
+      "pad_desc":"May block Skill Bind attacks",
+      "id":28,
+      "pad_name":"Resistance-Skill Bind",
+	  "abr":"SBR",
+	  "name":"Skill Bind Resistance"
+   },
+   {  
+      "desc":"20% chance for dropped Heart orbs to spawn as enhanced orbs (+)",
+      "pad_desc":"Enhanced Heal Orbs may appear",
+      "id":29,
+      "pad_name":"Enhanced Heart Orbs",
+	  "abr":"TPA",
+	  "name":"Two-Pronged Attack"
+   },
+   {  
+      "desc":"1.5x stat boost in Multiplayer Dungeons",
+      "pad_desc":"Increases this ally's stats when playing with another player",
+      "id":30,
+      "pad_name":"Multi Boost",
+	  "abr":"Multi Boost",
+	  "name":"Multi Boost"
+   },
+   {  
+      "desc":"3x ATK against Dragon type enemies",
+      "pad_desc":"Increases ATK against Dragon Type enemies",
+      "id":31,
+      "pad_name":"Dragon Killer",
+	  "abr":"Dragon Killer",
+	  "name":"Dragon Killer"
+   },
+   {  
+      "desc":"3x ATK against God type enemies",
+      "pad_desc":"Increases ATK against God Type enemies",
+      "id":32,
+      "pad_name":"God Killer",
+	  "abr":"God Killer",
+	  "name":"God Killer"
+   },
+   {  
+      "desc":"3x ATK against Devil type enemies",
+      "pad_desc":"Increases ATK against Devil Type enemies",
+      "id":33,
+      "pad_name":"Devil Killer",
+	  "abr":"Devil Killer",
+	  "name":"Devil Killer"
+   },
+   {  
+      "desc":"3x ATK against Machine type enemies",
+      "pad_desc":"Increases ATK against Machine Type enemies",
+      "id":34,
+      "pad_name":"Machine Killer",
+	  "abr":"Machine Killer",
+	  "name":"Machine Killer"
+   },
+   {  
+      "desc":"3x ATK against Attacker type enemies",
+      "pad_desc":"Increases ATK against Attacker Type enemies",
+      "id":35,
+      "pad_name":"Attacker Killer",
+	  "abr":"Attacker Killer",
+	  "name":"Attacker Killer"
+   },
+   {  
+      "desc":"3x ATK against Physical type enemies",
+      "pad_desc":"Increases ATK against Physical Type enemies",
+      "id":36,
+      "pad_name":"Physical Killer",
+	  "abr":"Physical Killer",
+	  "name":"Physical Killer"
+   },
+   {  
+      "desc":"3x ATK against Healer type enemies",
+      "pad_desc":"Increases ATK against Healer Type enemies",
+      "id":37,
+      "pad_name":"Healer Killer",
+	  "abr":"Healer Killer",
+	  "name":"Healer Killer"
+   },
+   {  
+      "desc":"3x ATK against Balanced type enemies",
+      "pad_desc":"Increases ATK against Balanced Type enemies",
+      "id":38,
+      "pad_name":"Balanced Killer",
+	  "abr":"Balanced Killer",
+	  "name":"Balanced Killer"
+   },
+   {  
+      "desc":"3x ATK against Awaken Material type enemies",
+      "pad_desc":"Increases ATK against Awaken Material Type enemies",
+      "id":39,
+      "pad_name":"Awaken Material Killer",
+	  "abr":"Awaken Material Killer",
+	  "name":"Awaken Material Killer"
+   },
+   {  
+      "desc":"3x ATK against Enhance Material type enemies",
+      "pad_desc":"Increases ATK against Enhance Material Type enemies",
+      "id":40,
+      "pad_name":"Enhance Material Killer",
+	  "abr":"Enhance Material Killer",
+	  "name":"Enhance Material Killer"
+   },
+   {  
+      "desc":"3x ATK against Redeemable Material type enemies",
+      "pad_desc":"Increases ATK against Redeemable Material Type enemies",
+      "id":41,
+      "pad_name":"Redeemable Material Killer",
+	  "abr":"Redeemable Material Killer",
+	  "name":"Redeemable Material Killer"
+   },
+   {  
+      "desc":"3x ATK against Evo Material type enemies",
+      "pad_desc":"Increases ATK against Evolve Material Type enemies",
+      "id":42,
+      "pad_name":"Evolve Material Killer",
+	  "abr":"Evolve Material Killer",
+	  "name":"Evolve Material Killer"
+   },
+   {  
+      "desc":"2x ATK for this card with 7 or more combos",
+      "pad_desc":"ATK increases with 7+ combos",
+      "id":43,
+      "pad_name":"Enhanced Combos",
+	  "abr":"7combo",
+	  "name":"Combo Enhance"
+   },
+   {  
+      "desc":"Card with this will ignore enemy Defense when team attacks with Fire, Water, Wood, Light, and Dark attributes.",
+      "pad_desc":"Ignores enemies' DEF and inflicts damage when attacking with 5 Att.",
+      "id":44,
+      "pad_name":"Guard Break",
+	  "abr":"Guard Break",
+	  "name":"Guard Break"
+   },
+   {  
+      "desc":"Card with this will deal 1 fixed damage follow-up attack when matching 1 column of heal orbs",
+      "pad_desc":"Inflicts 1 bonus damage when erasing a column of Heal Orbs",
+      "id":45,
+      "pad_name":"Follow Up Attack",
+	  "abr":"FUA",
+	  "name":"Follow Up Attack"
+   },
+   {  
+      "desc":"Increase Team HP by 5%",
+      "pad_desc":"Increase Team HP by 5%",
+      "id":46,
+      "pad_name":"Enhance Team HP",
+	  "abr":"Team HP Boost",
+	  "name":"Enhance Team HP"
+   },
+   {  
+      "desc":"Increase Team RCV by 10%",
+      "pad_desc":"Increase Team RCV by 10%",
+      "id":47,
+      "pad_name":"Enhance Team RCV",
+	  "abr":"Team RCV Boost",
+	  "name":"Enhance Team RCV"
+   },
+   {  
+      "desc":"Card with this will penetrate void damage shields and deal extra 2.5x damage when matching a 3x3 block of orbs.",
+      "pad_desc":"Matching a 3x3 Orb square of the same Att. as this monster boosts ATK and ignores damage-voiding status",
+      "id":48,
+      "pad_name":"Damage Void Piercer",
+	  "abr":"Damage Void Piercer",
+	  "name":"Damage Void Piercer"
+   },
+   {  
+      "desc":"?Unknown Awakening?",
+      "pad_desc":"?Unknown Awakening?",
+      "id":49,
+      "pad_name":"?Unknown Awakening?",
+	  "abr":"?Unknown Awakening?",
+	  "name":"?Unknown Awakening?"
+   },
+   {  
+      "desc":"?Unknown Awakening?",
+      "pad_desc":"?Unknown Awakening?",
+      "id":50,
+      "pad_name":"?Unknown Awakening?",
+	  "abr":"?Unknown Awakening?",
+	  "name":"?Unknown Awakening?"
+   },
+   {  
+      "desc":"?Unknown Awakening?",
+      "pad_desc":"?Unknown Awakening?",
+      "id":51,
+      "pad_name":"?Unknown Awakening?",
+	  "abr":"?Unknown Awakening?",
+	  "name":"?Unknown Awakening?"
+   },
+   {  
+      "desc":"?Unknown Awakening?",
+      "pad_desc":"?Unknown Awakening?",
+      "id":52,
+      "pad_name":"?Unknown Awakening?",
+	  "abr":"?Unknown Awakening?",
+	  "name":"?Unknown Awakening?"
+   },
+   {  
+      "desc":"?Unknown Awakening?",
+      "pad_desc":"?Unknown Awakening?",
+      "id":53,
+      "pad_name":"?Unknown Awakening?",
+	  "abr":"?Unknown Awakening?",
+	  "name":"?Unknown Awakening?"
+   },
+   {  
+      "desc":"?Unknown Awakening?",
+      "pad_desc":"?Unknown Awakening?",
+      "id":54,
+      "pad_name":"?Unknown Awakening?",
+	  "abr":"?Unknown Awakening?",
+	  "name":"?Unknown Awakening?"
+   },
+   {  
+      "desc":"?Unknown Awakening?",
+      "pad_desc":"?Unknown Awakening?",
+      "id":55,
+      "pad_name":"?Unknown Awakening?",
+	  "abr":"?Unknown Awakening?",
+	  "name":"?Unknown Awakening?"
+   },
+   {  
+      "desc":"?Unknown Awakening?",
+      "pad_desc":"?Unknown Awakening?",
+      "id":56,
+      "pad_name":"?Unknown Awakening?",
+	  "abr":"?Unknown Awakening?",
+	  "name":"?Unknown Awakening?"
+   },
+   {  
+      "desc":"?Unknown Awakening?",
+      "pad_desc":"?Unknown Awakening?",
+      "id":57,
+      "pad_name":"?Unknown Awakening?",
+	  "abr":"?Unknown Awakening?",
+	  "name":"?Unknown Awakening?"
+   },
+   {  
+      "desc":"?Unknown Awakening?",
+      "pad_desc":"?Unknown Awakening?",
+      "id":58,
+      "pad_name":"?Unknown Awakening?",
+	  "abr":"?Unknown Awakening?",
+	  "name":"?Unknown Awakening?"
+   },
+   {  
+      "desc":"?Unknown Awakening?",
+      "pad_desc":"?Unknown Awakening?",
+      "id":59,
+      "pad_name":"?Unknown Awakening?",
+	  "abr":"?Unknown Awakening?",
+	  "name":"?Unknown Awakening?"
+   }
+]
