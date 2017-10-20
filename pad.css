@@ -110,10 +110,12 @@ body {
 	overflow:hidden;
 }
 #changes {
-	width: 542px;
+	width: 540px;
 	height: 250px;
 	background:#fff;
 	margin: 0px auto 0px auto;
+    border-left: 1px solid #d2d2d2;
+    border-right: 1px solid #d2d2d2;
 	position: relative;
 }
 #colorchange,#pluschange,#lockchange,#blindchange,#swapperchange,#cloudchange {
@@ -218,8 +220,10 @@ body {
 #buttons {
 	padding-top:10px;
 	margin:0 auto;
-	width: 542px;
+	width: 540px;
 	background-color: #fff;
+    border-left: 1px solid #d2d2d2;
+    border-right: 1px solid #d2d2d2;
 	min-height:42px
 }
 #buttons>button {
@@ -229,8 +233,11 @@ body {
 	border: 1px solid #d2d2d2;
 	border-right: none;
 }
-#buttons>button:first-child {
+#buttons>button.no-front {
 	border-left: none;
+}
+#buttons>button.no-top {
+	border-top: none;
 }
 #colorchange>button,#pluschange>button,#lockchange>button,#blindchange>button,#swapperchange>button,#cloudchange>button {
 	border: 1px solid #d2d2d2;
