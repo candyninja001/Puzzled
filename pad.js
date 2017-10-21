@@ -918,14 +918,14 @@ function canvas_arrow(ctx, fromx, fromy, tox, toy, special) {
 function getMatches(bombs=0) {
     var comboPositionList = [];
     var comboColor = ''
-	  , comboPluses = 0
+	  , comboPlusses = 0
 	  , comboCross = false
 	  , comboRow = false
-	  , comboColumn = false //TODO see if this is where pluses are added
+	  , comboColumn = false //TODO see if this is where plusses are added
       , comboPosition = [];
     for (var f = 0; f < cols; f++) {
         comboColor = '';
-		comboPluses = 0;
+		comboPlusses = 0;
 		comboCross = false;
 		comboRow = false;
 		comboColumn = false;
