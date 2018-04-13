@@ -1738,7 +1738,7 @@ function spinnerUpdate() {
 	for (var i = 0; i < c.length; i++){
 		c[i].setAttribute('d', getSpinnerPath());
 	}
-	var spinnerTime = spinx.time() % 1000;
+	var spinnerTime = spinx.time() % spinnerTimer;
 	if (previousSpinnerTime > spinnerTime){
 		spinOrbs();
 	}
@@ -1783,7 +1783,7 @@ function getSpinnerPath() {
 	var rotation = 0; // This is not set up for change
 	var arc = 1; // Do not change
 	var sweep = 1; // Do not change
-	var percent = 1 - spinx.time() % 1000 / 1000;
+	var percent = 1 - spinx.time() % spinnerTimer / spinnerTimer;
 	d[0] = width / 2;
 	d[1] = height / 2;
 	d[2] = width / 2;
@@ -1979,6 +1979,9 @@ $(function() {
 	if ($_GET['start'] && $.isNumeric($_GET['start'])){
 		startPosition = $_GET['start'];
 		toggle('draggable', 1);
+	}
+	if ($_GET['spintimer']){
+		spinnerTimer = $_GET['spintimer'] * 1000;
 	}
     $(function() {
         document.getElementById('time').innerHTML = formatTime(x.time());
