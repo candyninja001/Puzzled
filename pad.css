@@ -138,6 +138,14 @@ body {
 	height:20px;
 	text-align:center;
 }
+#spinnerTimer {
+	border:1px solid #eee;
+	float:left;
+	width:35px;
+    resize: none;
+	font: 18px/1.2 Courier New;
+	height:20px;
+}
 #infobooth {
 	width:500px;
 	background:#fff;

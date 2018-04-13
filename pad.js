@@ -724,8 +724,11 @@ function copyPattern(modifier, noOutput=1, record) {
 				params += "&locks=" + lockPattern;
 			if (blindPattern.includes('B') || blindPattern.includes('D'))
 				params += "&blinds=" + blindPattern;
-			if (swapperPattern.includes('S'))
+			if (swapperPattern.includes('S')){
 				params += "&spinners=" + swapperPattern;
+				if (spinnerTimer != 1000)
+					params += "&spintimer=" + (spinnerTimer / 1000);
+			}
 			if (cloudPattern.includes('C'))
 				params += "&clouds=" + cloudPattern;
 			if (getScroll())
@@ -1666,6 +1669,11 @@ function requestAction(action, modifier, modifier2=1) {
 		var showHelp = ['<br />Scroll: <a onclick="requestAction(\'setScroll\', \'0\');" href="#">None</a> / <a onclick="requestAction(\'setScroll\', \'1\');" href="#">Top</a> / <a onclick="requestAction(\'setScroll\', \'3\');" href="#">Bottom</a> / <a onclick="requestAction(\'setScroll\', \'4\');" href="#">Left</a> / <a onclick="requestAction(\'setScroll\', \'2\');" href="#">Right</a>'].join('');
         displayOutput(showHelp, 0);
 	}
+	if (action == 'applyspintimer'){
+		var temptime = parseFloat(document.getElementById("spinnerTimer").value)
+		if (temptime != NaN)
+			spinnerTimer = parseFloat(document.getElementById("spinnerTimer").value) * 1000;
+	}
 }
 var clsStopwatch = function() {
     var startAt = 0;
@@ -1981,8 +1989,10 @@ $(function() {
 		toggle('draggable', 1);
 	}
 	if ($_GET['spintimer']){
-		spinnerTimer = $_GET['spintimer'] * 1000;
-	}
+		document.getElementById("spinnerTimer").value = $_GET['spintimer']
+		requestAction('applyspintimer', 2, 0);
+	} else
+		document.getElementById("spinnerTimer").value = '1.0'
     $(function() {
         document.getElementById('time').innerHTML = formatTime(x.time());
     });
@@ -2162,6 +2172,12 @@ $(function() {
             return false;
         }
     });
+	$("#spinnerTimer").bind({
+        keydown: function(e) {
+            if (e.which == 13)
+                requestAction('applyspintimer');
+		}
+	});
 	$("#revealOrbs").hover(function(){ 
         $(".tile").addClass('reveal');
 		$("#scroll").addClass('reveal');
